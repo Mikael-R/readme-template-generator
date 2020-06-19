@@ -1,0 +1,28 @@
+{
+  "name": "readme-template-generator",
+  "version": "0.0.1",
+  "description": "A readme template generator for your repositories",
+  "main" : "dist/index.js",
+  "types" : "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc --declaration",
+    "dev": "nodemon --watch \"src//\" --exec \"ts-node src/sample.ts\" -e ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mikael-R/readme-template-generator.git"
+  },
+  "author": "Mikael Rolim de Aquino <mikarg9@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Mikael-R/readme-template-generator/issues"
+  },
+  "homepage": "https://github.com/Mikael-R/readme-template-generator#readme",
+  "devDependencies": {
+    "@types/node": "^14.0.13",
+    "nodemon": "^2.0.4",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.5"
+  }
+}
