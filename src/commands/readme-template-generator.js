@@ -1,25 +1,38 @@
-const getCurrentPast = require('../extensions/getCurrentPast')
-const existReadmeFile = require('../extensions/existReadmeFile')
+const getCurrentPast = require('../service/getCurrentPast')
+const existReadmeFile = require('../service/existReadmeFile')
+const ask = require('../service/ask')
 
 module.exports = {
   name: 'readme-template-generator',
   run: async toolbox => {
     const {
       parameters,
-      print: { success, error, info },
-      template,
+      print: { success },
+      template
     } = toolbox
+
+    if (await existReadmeFile(toolbox)) {
+      const { overwrite } = await ask(toolbox, {
+        type: 'confirm',
+        name: 'overwrite',
+        message: 'There is already a README file in the current directory, do you want to overwrite it?'
+      })
+
+      if (!overwrite) return
+    }
 
     const project_name = parameters.first || getCurrentPast()
 
-    if (await existReadmeFile(toolbox)) {
-      error('Readme file alredy exists in current dir')
-      return
-    }
+    const { useHtml } = await ask(toolbox, {
+      type: 'select',
+      name: 'useHtml',
+      message: 'Do you want to use HTML in your README file for best results?',
+      choices: ['Yes', 'No']
+    })
 
     await template.generate({
-      template: 'README.md.ejs',
-      target: './README.md',
+      template: useHtml === 'Yes' ? 'README.md.ejs' : 'README-no-html.md.ejs',
+      target: `./README.md`,
       props: { project_name }
     })
 

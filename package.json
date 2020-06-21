@@ -1,6 +1,6 @@
 {
   "name": "readme-template-generator",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "readme-template-generator CLI",
   "private": false,
   "bin": {
