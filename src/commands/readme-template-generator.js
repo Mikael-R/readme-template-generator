@@ -3,38 +3,36 @@ module.exports = {
   run: async toolbox => {
     const {
       parameters,
-      print: { success },
-      template,
-      existReadmeFile,
-      getCurrentPast,
-      ask
+      existingFiles,
+      getPastName,
+      question,
+      removeFiles,
+      generateFile
     } = toolbox
 
-    if (await existReadmeFile()) {
-      const { overwrite } = await ask({
+    const additional_files = await existingFiles('readme.md')
+
+    if (additional_files.length) {
+      const confirm_remove = await question({
         type: 'confirm',
-        name: 'overwrite',
-        message: 'There is already a README file in the current directory, do you want to overwrite it?'
+        message: 'There are other readme files, do you want to remove them?'
       })
 
-      if (!overwrite) return
+      if (confirm_remove) removeFiles(additional_files)
     }
 
-    const project_name = parameters.first || getCurrentPast()
+    const project_name = parameters.first || getPastName()
 
-    const { useHtml } = await ask({
+    const useHtml = await question({
       type: 'select',
-      name: 'useHtml',
       message: 'Do you want to use HTML in your README file for best results?',
       choices: ['Yes', 'No']
     })
 
-    await template.generate({
+    generateFile({
       template: useHtml === 'Yes' ? 'README.md.ejs' : 'README-no-html.md.ejs',
       target: `./README.md`,
       props: { project_name }
     })
-
-    success('Generated README file with success')
   }
 }
