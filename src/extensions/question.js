@@ -1,4 +1,4 @@
-module.exports = (toolbox) => {
+module.exports = toolbox => {
   const { prompt: { ask } } = toolbox
 
   const question = async ({ type, message, default_value, choices }) => {

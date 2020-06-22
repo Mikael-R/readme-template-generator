@@ -2,11 +2,11 @@ module.exports = {
   name: 'readme-template-generator',
   run: async toolbox => {
     const {
-      parameters,
       existingFiles,
-      getPastName,
+      deleteFiles,
+      getRepoUrl,
+      getLastUrlItem,
       question,
-      removeFiles,
       generateFile
     } = toolbox
 
@@ -18,10 +18,12 @@ module.exports = {
         message: 'There are other readme files, do you want to remove them?'
       })
 
-      if (confirm_remove) removeFiles(additional_files)
+      if (confirm_remove) deleteFiles(additional_files)
     }
 
-    const project_name = parameters.first || getPastName()
+    const repository_url = await getRepoUrl()
+
+    const project_name = getLastUrlItem(repository_url) || getLastUrlItem('cwd')
 
     const useHtml = await question({
       type: 'select',

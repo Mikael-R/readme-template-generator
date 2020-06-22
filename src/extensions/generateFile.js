@@ -1,4 +1,4 @@
-module.exports = (toolbox) => {
+module.exports = toolbox => {
   const {
     template: { generate },
     print: { success, error }

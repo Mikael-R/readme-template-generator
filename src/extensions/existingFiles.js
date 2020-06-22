@@ -1,4 +1,4 @@
-module.exports = (toolbox) => {
+module.exports = toolbox => {
   const { filesystem: { list, read } } = toolbox
 
   const existingFiles = async (file) => {
