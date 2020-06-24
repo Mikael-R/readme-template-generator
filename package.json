@@ -48,5 +48,6 @@
   "prettier": {
     "semi": false,
     "singleQuote": true
-  }
+  },
+  "eslintIgnore": ["*.test.js"]
 }

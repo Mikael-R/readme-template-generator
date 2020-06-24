@@ -8,6 +8,5 @@
   "parserOptions": {
     "ecmaVersion": 11
   },
-  "eslintIgnore": ["*.test.js"],
   "rules": {}
 }
