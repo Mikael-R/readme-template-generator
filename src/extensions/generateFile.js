@@ -6,7 +6,7 @@ module.exports = toolbox => {
 
   const generateFile = ({ template, target, props }) => {
     generate({ template, target, props })
-      .then(() => success(`Generated ${target} with success`))
+      .then(() => success(`Generated ${target} with success!`))
 
       .catch(err => error(err))
   }

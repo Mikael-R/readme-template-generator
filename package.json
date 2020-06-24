@@ -1,6 +1,6 @@
 {
   "name": "readme-template-generator",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "readme-template-generator CLI",
   "private": false,
   "bin": {
@@ -49,5 +49,7 @@
     "semi": false,
     "singleQuote": true
   },
-  "eslintIgnore": ["*.test.js"]
+  "eslintIgnore": [
+    "*.test.js"
+  ]
 }

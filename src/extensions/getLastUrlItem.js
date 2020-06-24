@@ -1,5 +1,7 @@
 module.exports = toolbox => {
-  const { filesystem: { cwd } } = toolbox
+  const {
+    filesystem: { cwd }
+  } = toolbox
 
   const getLastUrlItem = url => {
     if (url === './') url = cwd()

@@ -1,5 +1,7 @@
 module.exports = toolbox => {
-  const { prompt: { ask } } = toolbox
+  const {
+    prompt: { ask }
+  } = toolbox
 
   const question = async ({ type, message, defaultValue, choices }) => {
     const answer = await ask({
