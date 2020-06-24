@@ -7,9 +7,9 @@ module.exports = toolbox => {
     const existing = []
     const files = list().filter(f => f.toLowerCase() === file.toLowerCase())
 
-    for (const i in files) {
-      if ((await read(files[i])) !== undefined) existing.unshift(files[i])
-    }
+    files.map(async file => {
+      if (await read(file) !== undefined) existing.unshift(file)
+    })
 
     return existing
   }
