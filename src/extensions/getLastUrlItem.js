@@ -1,15 +1,15 @@
 module.exports = toolbox => {
   const { filesystem: { cwd } } = toolbox
 
-  const getLastUrlItem = (url) => {
-    if (url === 'cwd') url = cwd()
+  const getLastUrlItem = url => {
+    if (url === './') url = cwd()
 
-    const last_item =
+    const lastItem =
       url.split('/')[url.split('/').length - 1] === url
         ? url.split('\\')[url.split('\\').length - 1]
         : url.split('/')[url.split('/').length - 1]
 
-    return last_item
+    return lastItem
   }
 
   toolbox.getLastUrlItem = getLastUrlItem

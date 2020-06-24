@@ -10,20 +10,20 @@ module.exports = {
       generateFile
     } = toolbox
 
-    const additional_files = await existingFiles('readme.md')
+    const additionalFiles = await existingFiles('readme.md')
 
-    if (additional_files.length) {
-      const confirm_remove = await question({
+    if (additionalFiles.length) {
+      const confirmRemove = await question({
         type: 'confirm',
         message: 'There are other readme files, do you want to remove them?'
       })
 
-      if (confirm_remove) deleteFiles(additional_files)
+      if (confirmRemove) deleteFiles(additionalFiles)
     }
 
-    const repository_url = await getRepoUrl()
+    const repositoryUrl = await getRepoUrl('./')
 
-    const project_name = getLastUrlItem(repository_url) || getLastUrlItem('cwd')
+    const projectName = getLastUrlItem(repositoryUrl) || getLastUrlItem('./')
 
     const useHtml = await question({
       type: 'select',
@@ -33,8 +33,8 @@ module.exports = {
 
     generateFile({
       template: useHtml === 'Yes' ? 'README.md.ejs' : 'README-no-html.md.ejs',
-      target: `./README.md`,
-      props: { project_name }
+      target: './README.md',
+      props: { projectName }
     })
   }
 }

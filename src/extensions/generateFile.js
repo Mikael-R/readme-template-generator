@@ -8,7 +8,7 @@ module.exports = toolbox => {
     generate({ template, target, props })
       .then(() => success(`Generated ${target} with success`))
 
-      .catch((err) => error(err))
+      .catch(err => error(err))
   }
 
   toolbox.generateFile = generateFile
