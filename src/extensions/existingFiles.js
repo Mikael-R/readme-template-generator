@@ -3,12 +3,14 @@ module.exports = toolbox => {
     filesystem: { list, read }
   } = toolbox
 
-  const existingFiles = async file => {
+  const existingFiles = fileBase => {
     const existing = []
-    const files = list().filter(f => f.toLowerCase() === file.toLowerCase())
+    const files = list().filter(
+      file => file.toLowerCase() === fileBase.toLowerCase()
+    )
 
-    files.map(async file => {
-      if (await read(file) !== undefined) existing.unshift(file)
+    files.map(file => {
+      if (read(file) !== undefined) existing.unshift(file)
     })
 
     return existing

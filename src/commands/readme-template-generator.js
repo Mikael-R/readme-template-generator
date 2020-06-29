@@ -4,14 +4,63 @@ module.exports = {
     const {
       existingFiles,
       deleteFiles,
-      getRepoUrl,
-      getLastUrlItem,
+      getGithubRepoUrl,
+      getUrlItem,
       question,
       message,
-      generateFile
+      generateFile,
+      isWebUrl
     } = toolbox
 
-    const additionalFiles = await existingFiles('readme.md')
+    const githubRepository = { url: getGithubRepoUrl('.') }
+    githubRepository.name = getUrlItem(githubRepository.url)
+    githubRepository.user = getUrlItem(githubRepository.url, 2)
+
+    const projectName = githubRepository.name || getUrlItem('.')
+
+    const badgeChoices = ['Open Source', 'Awesome']
+
+    if (githubRepository.url) {
+      badgeChoices.unshift(
+        'Language Most Used',
+        'Implementations',
+        'Gitpod',
+        'Social Medias',
+        'License',
+        'Last Commit'
+      )
+    }
+
+    const herokuUrl = (await question({
+      message: 'Heroku Url:',
+      validate: value =>
+        isWebUrl(value) || value === ''
+          ? true
+          : 'Invalid URL, if you not have a URL, leave it blank'
+    }))
+      ? badgeChoices.unshift('Heroku')
+      : ''
+
+    const replitUrl = (await question({
+      message: 'Rep.it Url:',
+      validate: value =>
+        isWebUrl(value) || value === ''
+          ? true
+          : 'Invalid URL, if you not have a URL, leave it blank'
+    }))
+      ? badgeChoices.unshift('Repl.it')
+      : ''
+
+    let useBadges = await question({
+      type: 'checkbox',
+      message: 'Select badges for use:',
+      choices: badgeChoices
+    })
+
+    // Remove all espaces and lowercase letters
+    useBadges = useBadges.map(badge => badge.toLowerCase().replace(/\s/g, ''))
+
+    const additionalFiles = existingFiles('readme.md')
 
     if (additionalFiles.length) {
       if (additionalFiles.indexOf('README.md') !== -1) {
@@ -29,14 +78,15 @@ module.exports = {
       if (confirmRemove) deleteFiles(additionalFiles)
     }
 
-    const repositoryUrl = await getRepoUrl('./')
-
-    const projectName = getLastUrlItem(repositoryUrl) || getLastUrlItem('./')
-
-    generateFile({
+    await generateFile({
       template: 'README.md.ejs',
-      target: './README.md',
-      props: { projectName }
+      target: 'README.md',
+      props: { projectName, useBadges, githubRepository, herokuUrl, replitUrl }
+    })
+
+    message({
+      type: 'success',
+      content: 'README.md file generated with success in current dir!'
     })
   }
 }

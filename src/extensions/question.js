@@ -1,15 +1,20 @@
 module.exports = toolbox => {
-  const {
-    prompt: { ask }
-  } = toolbox
+  const { prompt } = require('inquirer')
 
-  const question = async ({ type, message, defaultValue, choices }) => {
-    const answer = await ask({
+  const question = async ({
+    type,
+    message,
+    defaultValue,
+    choices,
+    validate
+  }) => {
+    const answer = await prompt({
       type,
       name: 'value',
       message,
       default: defaultValue,
-      choices
+      choices,
+      validate
     })
 
     return answer.value
