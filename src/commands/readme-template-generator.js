@@ -31,25 +31,25 @@ module.exports = {
       )
     }
 
-    const herokuUrl = (await question({
+    const herokuUrl = await question({
       message: 'Heroku Url:',
       validate: value =>
         isWebUrl(value) || value === ''
           ? true
           : 'Invalid URL, if you not have a URL, leave it blank'
-    }))
-      ? badgeChoices.unshift('Heroku')
-      : ''
+    })
 
-    const replitUrl = (await question({
+    if (herokuUrl) badgeChoices.unshift('Heroku')
+
+    const replitUrl = (githubRepository.url && await question({
       message: 'Rep.it Url:',
       validate: value =>
         isWebUrl(value) || value === ''
           ? true
           : 'Invalid URL, if you not have a URL, leave it blank'
     }))
-      ? badgeChoices.unshift('Repl.it')
-      : ''
+
+    if (replitUrl) badgeChoices.unshift('Repl.it')
 
     let useBadges = await question({
       type: 'checkbox',
