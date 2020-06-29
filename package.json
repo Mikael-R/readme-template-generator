@@ -1,6 +1,6 @@
 {
   "name": "readme-template-generator",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "description": "readme-template-generator CLI",
   "private": false,
   "bin": {
@@ -24,7 +24,8 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "gluegun": "latest"
+    "gluegun": "latest",
+    "inquirer": "^7.2.0"
   },
   "devDependencies": {
     "eslint": "^7.3.1",
