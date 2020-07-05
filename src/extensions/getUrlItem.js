@@ -4,7 +4,7 @@ module.exports = toolbox => {
   } = toolbox
 
   const getUrlItem = (url, index = 1) => {
-    if (typeof url !== 'string') return null
+    if (typeof url !== 'string') return ''
 
     if (url === '.') url = cwd()
 
@@ -13,7 +13,7 @@ module.exports = toolbox => {
         ? url.split('\\')[url.split('\\').length - index]
         : url.split('/')[url.split('/').length - index]
 
-    if (!item) return null
+    if (!item) return ''
 
     return item
   }

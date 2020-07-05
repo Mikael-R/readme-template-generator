@@ -6,7 +6,10 @@ module.exports = toolbox => {
     message,
     defaultValue,
     choices,
-    validate
+    pageSize = 5,
+    validate,
+    transformer,
+    customReturn = value => value
   }) => {
     const answer = await prompt({
       type,
@@ -14,10 +17,12 @@ module.exports = toolbox => {
       message,
       default: defaultValue,
       choices,
-      validate
+      pageSize,
+      validate,
+      transformer: transformer || customReturn
     })
 
-    return answer.value
+    return customReturn(answer.value) || defaultValue
   }
 
   toolbox.question = question

@@ -5,9 +5,9 @@ module.exports = toolbox => {
   } = toolbox
 
   const generateFile = async ({ template, target, props, trim = true }) => {
-    const trimSpaces = str => {
-      // Remove the whitespace at the beginning and end of the string
-      str = str.replace(/^\s+|\s+$/g, '')
+    const trimFile = str => {
+      // Remove the whitespace at the beginning of the string
+      str = str.replace(/^\s+|\s+$/m, '')
 
       // Removes whitespace at the beginning and end of each line in the str
       str = str
@@ -23,7 +23,7 @@ module.exports = toolbox => {
 
     await generate({ template, target, props })
 
-    if (trim) write(target, trimSpaces(read(target)))
+    if (trim) write(target, trimFile(read(target)))
   }
 
   toolbox.generateFile = generateFile

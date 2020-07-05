@@ -1,21 +1,19 @@
 module.exports = toolbox => {
   const {
-    filesystem: { read, cwd }
+    filesystem: { read }
   } = toolbox
   const { resolve } = require('path')
 
   const getGithubRepoUrl = dir => {
-    if (dir === '.') dir = cwd()
-
     const gitFile = read(
       resolve(dir, '.git', 'logs', 'refs', 'remotes', 'origin', 'HEAD')
     )
 
-    const webUrlRegex = /(http|https|ftp|ftps):\/\/[a-zA-Z0-9\-.]+\.[a-zA-Z]{2,3}(\/\S*)?/
+    const pattern = /(?:git|ssh|https?|git@[-\w.]+):(\/\/)?(.*?)(.git|)(\/?|#[-\d\w._]+?)$/gm
 
-    const haveUrl = webUrlRegex.test(gitFile)
+    const haveUrl = pattern.test(gitFile)
 
-    const url = haveUrl ? gitFile.match(webUrlRegex)[0] : null
+    const url = haveUrl ? gitFile.match(pattern)[0] : ''
 
     return url
   }

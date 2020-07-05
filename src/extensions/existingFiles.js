@@ -3,10 +3,10 @@ module.exports = toolbox => {
     filesystem: { list, read }
   } = toolbox
 
-  const existingFiles = fileBase => {
+  const existingFiles = baseFile => {
     const existing = []
-    const files = list().filter(
-      file => file.toLowerCase() === fileBase.toLowerCase()
+    const files = list('.').filter(
+      file => file.toLowerCase() === baseFile.toLowerCase()
     )
 
     files.map(file => {

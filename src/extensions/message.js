@@ -3,7 +3,7 @@ module.exports = toolbox => {
     print: { info, success, warning, error }
   } = toolbox
 
-  const message = ({ type = 'info', content }) => {
+  const message = (type = 'info', content) => {
     if (type === 'info') info(content)
 
     if (type === 'success') success(content)
