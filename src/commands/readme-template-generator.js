@@ -9,8 +9,17 @@ module.exports = {
       message,
       generateFile,
       isWebUrl,
-      readJsonFile
+      readJsonFile,
+      banner
     } = toolbox
+
+    banner({ text: 'Readme|Template Generator' })
+
+    message(
+      'warning',
+      'Project under development, this is a alpha version!\n' +
+        'Contribute: https://github.com/Mikael-R/readme-template-generator\n'
+    )
 
     if (existingFiles('README.md').indexOf('README.md') !== -1) {
       const overwrite = await question({
