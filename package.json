@@ -1,6 +1,6 @@
 {
   "name": "readme-template-generator",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "readme-template-generator CLI",
   "private": false,
   "bin": {
@@ -15,6 +15,13 @@
     "snapupdate": "jest --updateSnapshot",
     "coverage": "jest --coverage"
   },
+  "keywords": [
+    "readme",
+    "readme-template",
+    "readme-template-generator",
+    "generator"
+  ],
+  "author": "Mikael Rolim de Aquino <mikarg9@gmail.com>",
   "files": [
     "src",
     "LICENSE",
@@ -29,15 +36,31 @@
     "inquirer": "^7.3.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^9.0.1",
+    "@commitlint/config-conventional": "^9.0.1",
     "eslint": "^7.3.1",
     "eslint-config-standard": "^14.1.1",
     "eslint-plugin-import": "^2.21.2",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
+    "commitizen": "^4.1.2",
+    "cz-conventional-changelog": "3.2.0",
+    "husky": "^4.2.5",
     "jest": "^24.1.0",
     "prettier": "^1.12.1",
     "standard": "^12.0.1"
+  },
+  "husky": {
+    "hooks": {
+      "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   },
   "jest": {
     "testEnvironment": "node"
