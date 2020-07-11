@@ -1,7 +1,20 @@
 {
   "name": "readme-template-generator",
-  "version": "0.3.1",
-  "description": "readme-template-generator CLI",
+  "version": "0.3.2",
+  "description": "CLI to help create readme file to document your project",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mikael-R/readme-template-generator.git"
+  },
+  "keywords": [
+    "generator",
+    "cli",
+    "readme",
+    "readme-template",
+    "readme-template-generator"
+  ],
+  "author": "Mikael Rolim de Aquino <mikarg9@gmail.com>",
+  "license": "MIT",
   "private": false,
   "bin": {
     "readme-template-generator": "bin/readme-template-generator"
@@ -15,13 +28,6 @@
     "snapupdate": "jest --updateSnapshot",
     "coverage": "jest --coverage"
   },
-  "keywords": [
-    "readme",
-    "readme-template",
-    "readme-template-generator",
-    "generator"
-  ],
-  "author": "Mikael Rolim de Aquino <mikarg9@gmail.com>",
   "files": [
     "src",
     "LICENSE",
@@ -29,7 +35,6 @@
     "docs",
     "bin"
   ],
-  "license": "MIT",
   "dependencies": {
     "cfonts": "^2.8.5",
     "gluegun": "latest",
@@ -51,6 +56,10 @@
     "prettier": "^1.12.1",
     "standard": "^12.0.1"
   },
+  "bugs": {
+    "url": "https://github.com/Mikael-R/bot-admin-discord/issues"
+  },
+  "homepage": "https://github.com/Mikael-R/bot-admin-discord#readme",
   "husky": {
     "hooks": {
       "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true",
