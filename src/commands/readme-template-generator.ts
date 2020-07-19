@@ -1,4 +1,9 @@
-module.exports = {
+/* eslint-disable no-unused-vars */
+import { GluegunCommand } from 'gluegun'
+
+import { GithubRepository } from '../types'
+
+const command: GluegunCommand = {
   name: 'readme-template-generator',
   run: async toolbox => {
     const {
@@ -18,21 +23,23 @@ module.exports = {
     message(
       'warning',
       'Project under development, this is a alpha version!\n' +
-        'Contribute: https://github.com/Mikael-R/readme-template-generator\n'
+      'Contribute: https://github.com/Mikael-R/readme-template-generator\n'
     )
 
     if (existingFiles('README.md').indexOf('README.md') !== -1) {
       const overwrite = await question({
         type: 'confirm',
-        message: 'Alredy exists a README.md file, overwrite it?'
+        message: 'Already exists a README.md file, overwrite it?'
       })
 
       if (!overwrite) process.exit(0)
     }
 
-    const githubRepository = { url: getGithubRepoUrl('.') }
-    githubRepository.name = getUrlItem(githubRepository.url)
-    githubRepository.user = getUrlItem(githubRepository.url, 2)
+    const githubRepository: GithubRepository = {
+      url: getGithubRepoUrl('.'),
+      name: getUrlItem(getGithubRepoUrl('.')),
+      user: getUrlItem(getGithubRepoUrl('.'), 2)
+    }
 
     const projectName = githubRepository.name || getUrlItem('.')
 
@@ -100,6 +107,8 @@ module.exports = {
       }
     })
 
-    message('success', 'Generated README.md file with success in current dir!')
+    message('success', '\nGenerated README.md file with success in current dir!')
   }
 }
+
+module.exports = command
