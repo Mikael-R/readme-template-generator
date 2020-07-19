@@ -1,10 +1,16 @@
-const { build } = require('gluegun')
+import { build } from 'gluegun'
 
-async function run (argv) {
+import { join } from 'path'
+
+export async function run (argv) {
   const cli = build()
     .brand('readme-template-generator')
     .src(__dirname)
-    .plugins('./node_modules', { matching: 'readme-template-generator-*', hidden: true })
+    // .plugins('./node_modules', { matching: 'readme-template-generator-*', hidden: true })
+    .plugin(join(__dirname, '..', 'node_modules', '@lenne.tech', 'cli-plugin-helper', 'dist'), {
+      commandFilePattern: ['*.js'],
+      extensionFilePattern: ['*.js']
+    })
     .help()
     .version()
     .create()
@@ -13,5 +19,3 @@ async function run (argv) {
 
   return toolbox
 }
-
-module.exports = { run }

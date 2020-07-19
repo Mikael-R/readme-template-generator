@@ -1,11 +1,12 @@
 /* eslint-disable no-unused-vars */
 import { GluegunCommand } from 'gluegun'
 
+import ExtendedGluegunToolbox from '../interfaces/extended-gluegun-toolbox'
 import { GithubRepository } from '../types'
 
 const command: GluegunCommand = {
   name: 'readme-template-generator',
-  run: async toolbox => {
+  run: async (toolbox: ExtendedGluegunToolbox) => {
     const {
       existingFiles,
       getGithubRepoUrl,
@@ -15,18 +16,19 @@ const command: GluegunCommand = {
       generateFile,
       isWebUrl,
       readJsonFile,
-      banner
+      showBanner
     } = toolbox
 
-    banner({ text: 'Readme|Template Generator' })
+    showBanner({ text: 'Readme|Template Generator' })
 
     message(
+      toolbox,
       'warning',
       'Project under development, this is a alpha version!\n' +
       'Contribute: https://github.com/Mikael-R/readme-template-generator\n'
     )
 
-    if (existingFiles('README.md').indexOf('README.md') !== -1) {
+    if (existingFiles(toolbox, 'README.md').indexOf('README.md') !== -1) {
       const overwrite = await question({
         type: 'confirm',
         message: 'Already exists a README.md file, overwrite it?'
@@ -36,14 +38,14 @@ const command: GluegunCommand = {
     }
 
     const githubRepository: GithubRepository = {
-      url: getGithubRepoUrl('.'),
-      name: getUrlItem(getGithubRepoUrl('.')),
-      user: getUrlItem(getGithubRepoUrl('.'), 2)
+      url: getGithubRepoUrl(toolbox, '.'),
+      name: getUrlItem(toolbox, getGithubRepoUrl(toolbox, '.'), 1),
+      user: getUrlItem(toolbox, getGithubRepoUrl(toolbox, '.'), 2)
     }
 
-    const projectName = githubRepository.name || getUrlItem('.')
+    const projectName: string = githubRepository.name || getUrlItem(toolbox, '.', 1)
 
-    const packageJson = readJsonFile('package.json')
+    const packageJson = readJsonFile(toolbox, 'package.json')
 
     const badgeChoices = ['Open Source', 'Awesome']
 
@@ -62,11 +64,11 @@ const command: GluegunCommand = {
       badgeChoices.push('NPM Version', 'NPM Monthly Downloads')
     }
 
-    const herokuUrl = await question({
+    const herokuUrl: string = await question({
       message: 'Heroku Url (use empty value to skip):',
       validate: value =>
         isWebUrl(`https://${value}`) || value === '' ? true : 'Invalid URL',
-      customReturn: value => {
+      customReturn: (value: string) => {
         if (value !== '') return `https://${value}`
         return value
       }
@@ -74,11 +76,11 @@ const command: GluegunCommand = {
 
     if (herokuUrl) badgeChoices.push('Heroku')
 
-    const replitUrl =
+    const replitUrl: string =
       githubRepository.url &&
       (await question({
         message: 'Rep.it Url (use empty value to skip):',
-        customReturn: value => {
+        customReturn: (value: string) => {
           if (value !== '') return `https://${value}.repl.run`
           return value
         }
@@ -86,15 +88,16 @@ const command: GluegunCommand = {
 
     if (replitUrl) badgeChoices.push('Repl.it')
 
-    const useBadges = await question({
+    const useBadges: Array<string> = await question({
       type: 'checkbox',
       message: 'Select badges for use:\n',
       choices: badgeChoices,
-      customReturn: value =>
-        value.map(badge => badge.toLowerCase().replace(/\s/g, ''))
+      customReturn: (value: Array<string>) =>
+        value.map((badge: string) => badge.toLowerCase().replace(/\s/g, ''))
     })
 
-    await generateFile({
+    generateFile({
+      toolbox,
       template: 'README.md.ejs',
       target: 'README.md',
       props: {
@@ -107,8 +110,8 @@ const command: GluegunCommand = {
       }
     })
 
-    message('success', '\nGenerated README.md file with success in current dir!')
+    message(toolbox, 'success', '\nGenerated README.md file with success in current dir!')
   }
 }
 
-module.exports = command
+export default command
