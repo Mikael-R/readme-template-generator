@@ -26,7 +26,6 @@
   "scripts": {
     "format": "eslint src --ext ts",
     "build": "rm -rf build && babel src --extensions \".ts\" --out-dir build --copy-files --no-comments",
-    "prepublishOnly": "npm run format && npm run build",
     "test": "jest",
     "watch": "jest --watch",
     "snapupdate": "jest --updateSnapshot",
@@ -77,6 +76,7 @@
   },
   "husky": {
     "hooks": {
+      "pre-commit": "npm run format && npm run build",
       "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
