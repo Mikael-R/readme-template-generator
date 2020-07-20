@@ -60,31 +60,28 @@ const command: GluegunCommand = {
 
     const herokuUrl: string = await question({
       message: 'Heroku Url (use empty value to skip):',
-      validate: value =>
-        isWebUrl(`https://${value}`) || value === '' ? true : 'Invalid URL',
-      customReturn: (value: string) => {
-        if (value !== '') return `https://${value}`
-        return value
-      }
+      validate: (value: string) =>
+        isWebUrl(`https://${value}`) || value === ''
+          ? value === '' ? true : !!(badgeChoices.push('Heroku') + 1)
+          : 'Invalid URL',
+      customReturn: (value: string) => value !== '' ? `https://${value}` : value
     })
-
-    if (herokuUrl) badgeChoices.push('Heroku')
 
     const replitUrl: string =
       githubRepository.url &&
       (await question({
         message: 'Rep.it Url (use empty value to skip):',
-        customReturn: (value: string) => {
-          if (value !== '') return `https://${value}.repl.run`
-          return value
-        }
+        validate: (value: string) =>
+          isWebUrl(`https://${value}`) || value === ''
+            ? value === '' ? true : !!(badgeChoices.push('Repl.it') + 1)
+            : 'Invalid URL',
+        customReturn: (value: string) =>
+          value !== '' ? `https://${value}.repl.run` : value
       }))
-
-    if (replitUrl) badgeChoices.push('Repl.it')
 
     const useBadges: Array<string> = await question({
       type: 'checkbox',
-      message: 'Select badges for use:\n',
+      message: 'Select badges for use:\n ',
       choices: badgeChoices,
       customReturn: (value: Array<string>) =>
         value.map((badge: string) => badge.toLowerCase().replace(/\s/g, ''))
