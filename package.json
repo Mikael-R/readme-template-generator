@@ -1,6 +1,6 @@
 {
   "name": "readme-template-generator",
-  "version": "0.3.9",
+  "version": "0.4.0",
   "description": "CLI to help create readme file to document your project",
   "private": false,
   "repository": {
@@ -25,7 +25,7 @@
   },
   "scripts": {
     "format": "eslint src --ext ts",
-    "build": "babel src --extensions \".ts\" --out-dir build --copy-files",
+    "build": "rm -rf build && babel src --extensions \".ts\" --out-dir build --copy-files --no-comments",
     "prepublishOnly": "npm run format && npm run build",
     "test": "jest",
     "watch": "jest --watch",
