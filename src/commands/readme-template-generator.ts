@@ -5,7 +5,7 @@ import ExtendedGluegunToolbox from '../interfaces/extended-gluegun-toolbox'
 
 const command: GluegunCommand = {
   name: 'readme-template-generator',
-  run: async (toolbox: ExtendedGluegunToolbox) => {
+  async run (toolbox: ExtendedGluegunToolbox) {
     const {
       existingFiles,
       getGithubRepoInfo,
@@ -21,13 +21,12 @@ const command: GluegunCommand = {
     showBanner({ text: 'Readme|Template Generator' })
 
     message(
-      toolbox,
       'warning',
       'Project under development, this is a alpha version!\n' +
       'Contribute: https://github.com/Mikael-R/readme-template-generator\n'
     )
 
-    if (existingFiles(toolbox, 'README.md').indexOf('README.md') !== -1) {
+    if (existingFiles('README.md').indexOf('README.md') !== -1) {
       const overwrite = await question({
         type: 'confirm',
         message: 'Already exists a README.md file, overwrite it?'
@@ -36,11 +35,11 @@ const command: GluegunCommand = {
       if (!overwrite) process.exit(0)
     }
 
-    const githubRepository = getGithubRepoInfo(toolbox, '.')
+    const githubRepository = getGithubRepoInfo('.')
 
-    const projectName = githubRepository.name || getUrlItem(toolbox, '.', 1)
+    const projectName = githubRepository.name || getUrlItem('.', 1)
 
-    const packageJson = readJsonFile(toolbox, 'package.json')
+    const packageJson = readJsonFile('package.json')
 
     const badgeChoices = ['Open Source', 'Awesome']
 
@@ -92,7 +91,6 @@ const command: GluegunCommand = {
     })
 
     generateFile({
-      toolbox,
       template: 'README.md.ejs',
       target: 'README.md',
       props: {
@@ -105,7 +103,7 @@ const command: GluegunCommand = {
       }
     })
 
-    message(toolbox, 'success', '\nGenerated README.md file with success in current dir!')
+    message('success', '\nGenerated README.md file with success in current dir!')
   }
 }
 

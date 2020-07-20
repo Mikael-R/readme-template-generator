@@ -16,32 +16,32 @@ export interface Question {
   }): any
 }
 
-const question: Question = async ({
-  type = 'input',
-  message,
-  defaultValue,
-  choices,
-  pageSize = 5,
-  validate,
-  transformer,
-  customReturn = (value: string) => value
-}) => {
-  const { prompt } = require('inquirer')
-
-  const { value } = await prompt({
-    type,
-    name: 'value',
-    message,
-    default: defaultValue,
-    choices,
-    pageSize,
-    validate,
-    transformer: transformer || customReturn
-  })
-
-  return customReturn(value) || defaultValue
-}
-
 export default (toolbox: ExtendedGluegunToolbox) => {
+  const question: Question = async ({
+    type = 'input',
+    message,
+    defaultValue,
+    choices,
+    pageSize = 5,
+    validate,
+    transformer,
+    customReturn = (value: string) => value
+  }) => {
+    const { prompt } = require('inquirer')
+
+    const { value } = await prompt({
+      type,
+      name: 'value',
+      message,
+      default: defaultValue,
+      choices,
+      pageSize,
+      validate,
+      transformer: transformer || customReturn
+    })
+
+    return customReturn(value) || defaultValue
+  }
+
   toolbox.question = question
 }

@@ -6,7 +6,6 @@ const wantsCompiled = process.argv.indexOf('--compiled-build') >= 0
 if (wantsCompiled || !devMode) {
   require(`${__dirname}/../build/cli`).run(process.argv)
 } else {
-  console.log('DevMode: ON')
   require('ts-node').register({ project: `${__dirname}/../tsconfig.json` })
   require(`${__dirname}/../src/cli`).run(process.argv)
 }
