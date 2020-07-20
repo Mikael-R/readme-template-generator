@@ -1,4 +1,5 @@
 [![Open Source](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://opensource.org/) [![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome)
+
 [![Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/Mikael-R/readme-template-generator)
 
 [![NPM Version](https://img.shields.io/npm/v/readme-template-generator.svg?style=flat-square)](https://www.npmjs.com/package/readme-template-generator) [![NPM Monthly Downloads](https://img.shields.io/npm/dm/readme-template-generator.svg?style=flat-square)](https://npmjs.org/package/readme-template-generator)

@@ -16,12 +16,12 @@ const generateFile: GenerateFile = ({ toolbox, template, target, props, trim = t
 
   const trimFile = (str: string) => {
     // Remove the whitespace at the beginning of the string
-    str = str.replace(/^\s+|\s+$/m, '')
+    str = str.trim()
 
     // Removes whitespace at the beginning and end of each line in the str
     str = str
       .split('\n')
-      .map(line => line.replace(/^\s+|\s+$/g, ''))
+      .map(line => line.trim())
       .join('\n')
 
     // Removes blank lines, starting from two or more
@@ -34,6 +34,7 @@ const generateFile: GenerateFile = ({ toolbox, template, target, props, trim = t
 
   if (trim) {
     const data: string = trimFile(read(target))
+    console.log(data)
 
     write(target, data)
   }
