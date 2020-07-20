@@ -2,14 +2,13 @@
 import { GluegunCommand } from 'gluegun'
 
 import ExtendedGluegunToolbox from '../interfaces/extended-gluegun-toolbox'
-import { GithubRepository } from '../types'
 
 const command: GluegunCommand = {
   name: 'readme-template-generator',
   run: async (toolbox: ExtendedGluegunToolbox) => {
     const {
       existingFiles,
-      getGithubRepoUrl,
+      getGithubRepoInfo,
       getUrlItem,
       question,
       message,
@@ -37,13 +36,9 @@ const command: GluegunCommand = {
       if (!overwrite) process.exit(0)
     }
 
-    const githubRepository: GithubRepository = {
-      url: getGithubRepoUrl(toolbox, '.'),
-      name: getUrlItem(toolbox, getGithubRepoUrl(toolbox, '.'), 1),
-      user: getUrlItem(toolbox, getGithubRepoUrl(toolbox, '.'), 2)
-    }
+    const githubRepository = getGithubRepoInfo(toolbox, '.')
 
-    const projectName: string = githubRepository.name || getUrlItem(toolbox, '.', 1)
+    const projectName = githubRepository.name || getUrlItem(toolbox, '.', 1)
 
     const packageJson = readJsonFile(toolbox, 'package.json')
 
