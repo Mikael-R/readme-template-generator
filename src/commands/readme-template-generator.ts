@@ -1,7 +1,6 @@
-/* eslint-disable no-unused-vars */
 import { GluegunCommand } from 'gluegun'
 
-import ExtendedGluegunToolbox from '../interfaces/extended-gluegun-toolbox'
+import ExtendedGluegunToolbox from 'src/interfaces/extended-gluegun-toolbox'
 
 const command: GluegunCommand = {
   name: 'readme-template-generator',

@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import ExtendedGluegunToolbox from '../interfaces/extended-gluegun-toolbox'
 
 export interface ReadJsonFile {
