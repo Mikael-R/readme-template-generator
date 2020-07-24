@@ -1,6 +1,7 @@
 import { GluegunCommand } from 'gluegun'
 
 import ExtendedGluegunToolbox from 'src/interfaces/extended-gluegun-toolbox'
+import { Images } from 'src/types'
 
 const command: GluegunCommand = {
   name: 'readme-template-generator',
@@ -34,6 +35,31 @@ const command: GluegunCommand = {
       if (!overwrite) process.exit(0)
     }
 
+    const logoImage = await question({
+      message: 'Logo image URL (use empty value to skip):',
+      validate: (value: string) =>
+        isWebUrl(value) || value === ''
+          ? true
+          : 'Invalid URL'
+    })
+
+    const images: Images = {
+      logo: logoImage,
+      screenshots: []
+    }
+
+    while (1) {
+      const screenshot = await question({
+        message: 'GIF/image URL for screenshots (use empty value to skip):',
+        validate: (value: string) =>
+          isWebUrl(value) || value === ''
+            ? value === '' ? true : !!(images.screenshots.push(value) + 1)
+            : 'Invalid URL'
+      })
+
+      if (!screenshot) break
+    }
+
     const githubRepository = getGithubRepoInfo('.')
 
     const projectName = githubRepository.name || getUrlItem('.', 1)
@@ -49,7 +75,8 @@ const command: GluegunCommand = {
         'Gitpod',
         'Social Medias',
         'License',
-        'Last Commit'
+        'Last Commit',
+        'Repository Size'
       )
     }
 
@@ -78,11 +105,11 @@ const command: GluegunCommand = {
           value !== '' ? `https://${value}.repl.run` : value
       }))
 
-    const useBadges: Array<string> = await question({
+    const useBadges: string[] = await question({
       type: 'checkbox',
       message: 'Select badges for use:\n ',
       choices: badgeChoices,
-      customReturn: (value: Array<string>) =>
+      customReturn: (value: string[]) =>
         value.map((badge: string) => badge.toLowerCase().replace(/\s/g, ''))
     })
 
@@ -95,7 +122,8 @@ const command: GluegunCommand = {
         githubRepository,
         herokuUrl,
         replitUrl,
-        packageJson
+        packageJson,
+        images
       }
     })
 
