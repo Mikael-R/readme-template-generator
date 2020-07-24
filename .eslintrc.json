@@ -30,5 +30,7 @@
       }
     }
   ],
-  "rules": {}
+  "rules": {
+    "no-unused-vars":"off"
+  }
 }

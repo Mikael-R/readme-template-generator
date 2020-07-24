@@ -1,4 +1,4 @@
-import ExtendedGluegunToolbox from '../interfaces/extended-gluegun-toolbox'
+import ExtendedGluegunToolbox from 'src/interfaces/extended-gluegun-toolbox'
 
 import { say } from 'cfonts'
 
@@ -21,7 +21,7 @@ export interface ShowBanner {
     text: string
     font?: string
     align?: string
-    colors?: Array<string>
+    colors?: string[]
     background?: string,
     letterSpacing?: number,
     lineHeight?: number,

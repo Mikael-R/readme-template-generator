@@ -1,4 +1,4 @@
-import ExtendedGluegunToolbox from '../interfaces/extended-gluegun-toolbox'
+import ExtendedGluegunToolbox from 'src/interfaces/extended-gluegun-toolbox'
 
 export interface Question {
   ({
@@ -7,7 +7,7 @@ export interface Question {
     type?: 'input' | 'number' | 'confirm' | 'list' | 'rawlist' | 'expand'| 'checkbox' | 'password' | 'editor',
     message: string,
     defaultValue?: any,
-    choices?: Array<any> | Function,
+    choices?: any[] | Function,
     pageSize?: number,
     validate?: Function,
     transformer?: Function,

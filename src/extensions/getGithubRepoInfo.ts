@@ -1,4 +1,4 @@
-import ExtendedGluegunToolbox from '../interfaces/extended-gluegun-toolbox'
+import ExtendedGluegunToolbox from 'src/interfaces/extended-gluegun-toolbox'
 
 export interface GetGithubRepoInfo {
   (dir: string): RepositoryInfo

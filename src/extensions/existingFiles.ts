@@ -1,7 +1,7 @@
-import ExtendedGluegunToolbox from '../interfaces/extended-gluegun-toolbox'
+import ExtendedGluegunToolbox from 'src/interfaces/extended-gluegun-toolbox'
 
 export interface ExistingFiles {
-  (baseFile: string): Array<string>
+  (baseFile: string): string[]
 }
 
 export default (toolbox: ExtendedGluegunToolbox) => {
@@ -10,9 +10,9 @@ export default (toolbox: ExtendedGluegunToolbox) => {
       filesystem: { list, read }
     } = toolbox
 
-    const existing: Array<string> = []
+    const existing: string[] = []
 
-    const files: Array<string> = list('.').filter(
+    const files: string[] = list('.').filter(
       (file: string) => file.toLowerCase() === baseFile.toLowerCase()
     )
 

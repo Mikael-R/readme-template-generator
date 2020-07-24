@@ -1,9 +1,9 @@
-import ExtendedGluegunToolbox from '../interfaces/extended-gluegun-toolbox'
+import ExtendedGluegunToolbox from 'src/interfaces/extended-gluegun-toolbox'
 
 export interface GenerateFile {
   (
     { template, target, props, trim }:
-    { template: string, target: string, props: Object, trim?: boolean}
+    { template: string, target: string, props: {}, trim?: boolean }
   ): void
 }
 
