@@ -1,9 +1,8 @@
-.DS_Store
-.vscode
-node_modules
-npm-debug.log
-coverage
-.nyc_output
-dist
-build
+node_modules/
+.vscode/
+dist/
+
 *-lock.json
+*.lock
+*.env
+*.log

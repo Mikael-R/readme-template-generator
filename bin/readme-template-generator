@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
 const devMode = require('fs').existsSync(`${__dirname}/../src`)
-const wantsCompiled = process.argv.indexOf('--compiled-build') >= 0
+const wantsCompiled = process.argv.indexOf('--compiled-dist') >= 0
 
 if (wantsCompiled || !devMode) {
-  require(`${__dirname}/../build/cli`).run(process.argv)
+  require(`${__dirname}/../dist/cli`).run(process.argv)
 } else {
   require('ts-node').register({ project: `${__dirname}/../tsconfig.json` })
   require(`${__dirname}/../src/cli`).run(process.argv)

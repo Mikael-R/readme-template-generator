@@ -19,13 +19,13 @@
     "url": "https://github.com/Mikael-R/readme-template-generator/issues"
   },
   "homepage": "https://github.com/Mikael-R/readme-template-generator#readme",
-  "types": "build/types/types.d.ts",
+  "types": "dist/types/types.d.ts",
   "bin": {
     "readme-template-generator": "bin/readme-template-generator"
   },
   "scripts": {
     "format": "eslint src --ext ts",
-    "build": "rm -rf build && babel src --extensions \".ts\" --out-dir build --copy-files --no-comments",
+    "dist": "rm -rf dist && babel src --extensions \".ts\" --out-dir dist --copy-files --no-comments",
     "test": "jest",
     "watch": "jest --watch",
     "snapupdate": "jest --updateSnapshot",
@@ -33,7 +33,7 @@
   },
   "files": [
     "tsconfig.json",
-    "build",
+    "dist",
     "LICENSE",
     "README.md",
     "docs",
@@ -76,7 +76,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run format && npm run build",
+      "pre-commit": "npm run format && npm run dist",
       "prepare-commit-msg": "exec < /dev/tty && gitcz --hook || true",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }

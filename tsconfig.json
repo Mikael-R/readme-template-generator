@@ -6,7 +6,7 @@
       "ES6"
     ],
     "allowJs": true,
-    "outDir": "./build",
+    "outDir": "./dist",
     "rootDir": "./src",
     "removeComments": true,
     "typeRoots": [
