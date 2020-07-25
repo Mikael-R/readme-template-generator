@@ -1,26 +1,24 @@
 import ExtendedGluegunToolbox from 'src/interfaces/extended-gluegun-toolbox'
 
 export interface ExistingFiles {
-  (baseFile: string): string[]
+  (filePath: string): string[]
 }
 
 export default (toolbox: ExtendedGluegunToolbox) => {
-  const existingFiles: ExistingFiles = (baseFile) => {
+  const existingFiles: ExistingFiles = (filePath) => {
     const {
-      filesystem: { list, read }
+      filesystem: { list },
+      getUrlItem
     } = toolbox
 
-    const existing: string[] = []
+    const baseFile = getUrlItem(filePath, 1)
+    const directory = filePath.replace(baseFile, '')
 
-    const files: string[] = list('.').filter(
+    const existingFiles: string[] = list(directory).filter(
       (file: string) => file.toLowerCase() === baseFile.toLowerCase()
     )
 
-    files.map(file => {
-      if (read(file) !== undefined) existing.unshift(file)
-    })
-
-    return existing
+    return existingFiles
   }
 
   toolbox.existingFiles = existingFiles

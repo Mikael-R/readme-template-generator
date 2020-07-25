@@ -35,31 +35,6 @@ const command: GluegunCommand = {
       if (!overwrite) process.exit(0)
     }
 
-    const logoImage = await question({
-      message: 'Logo image URL (use empty value to skip):',
-      validate: (value: string) =>
-        isWebUrl(value) || value === ''
-          ? true
-          : 'Invalid URL'
-    })
-
-    const images: Images = {
-      logo: logoImage,
-      screenshots: []
-    }
-
-    while (1) {
-      const screenshot = await question({
-        message: 'GIF/image URL for screenshots (use empty value to skip):',
-        validate: (value: string) =>
-          isWebUrl(value) || value === ''
-            ? value === '' ? true : !!(images.screenshots.push(value) + 1)
-            : 'Invalid URL'
-      })
-
-      if (!screenshot) break
-    }
-
     const githubRepository = getGithubRepoInfo('.')
 
     const projectName = githubRepository.name || getUrlItem('.', 1)
@@ -85,10 +60,10 @@ const command: GluegunCommand = {
     }
 
     const herokuUrl: string = await question({
-      message: 'Heroku Url (use empty value to skip):',
+      message: 'Heroku URL (use empty value to skip):',
       validate: (value: string) =>
         isWebUrl(`https://${value}`) || value === ''
-          ? value === '' ? true : !!(badgeChoices.push('Heroku') + 1)
+          ? value === '' ? true : badgeChoices.push('Heroku') + 1
           : 'Invalid URL',
       customReturn: (value: string) => value !== '' ? `https://${value}` : value
     })
@@ -96,10 +71,10 @@ const command: GluegunCommand = {
     const replitUrl: string =
       githubRepository.url &&
       (await question({
-        message: 'Rep.it Url (use empty value to skip):',
+        message: 'Repl.it URL (use empty value to skip):',
         validate: (value: string) =>
           isWebUrl(`https://${value}`) || value === ''
-            ? value === '' ? true : !!(badgeChoices.push('Repl.it') + 1)
+            ? value === '' ? true : badgeChoices.push('Repl.it') + 1
             : 'Invalid URL',
         customReturn: (value: string) =>
           value !== '' ? `https://${value}.repl.run` : value
@@ -112,6 +87,31 @@ const command: GluegunCommand = {
       customReturn: (value: string[]) =>
         value.map((badge: string) => badge.toLowerCase().replace(/\s/g, ''))
     })
+
+    const logoImage = await question({
+      message: 'Logo image URL or path (use empty value to skip):',
+      validate: (value: string) =>
+        isWebUrl(value) || existingFiles(value).length || value === ''
+          ? true
+          : !isWebUrl(value) && existingFiles(value).length ? 'Invalid URL' : 'Invalid path'
+    })
+
+    const images: Images = {
+      logo: logoImage,
+      screenshots: []
+    }
+
+    while (1) {
+      const screenshot = await question({
+        message: 'GIF/image URL or path for screenshots (use empty value to skip):',
+        validate: (value: string) =>
+          isWebUrl(value) || existingFiles(value).length || value === ''
+            ? value === '' ? true : images.screenshots.push(value) + 1
+            : !isWebUrl(value) && existingFiles(value).length ? 'Invalid URL' : 'Invalid path'
+      })
+
+      if (!screenshot) break
+    }
 
     generateFile({
       template: 'README.md.ejs',
@@ -127,7 +127,7 @@ const command: GluegunCommand = {
       }
     })
 
-    message('success', '\nGenerated README.md file with success in current dir!')
+    message('success', '\nGenerated README.md file with success in current dir!\n')
   }
 }
 
