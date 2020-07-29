@@ -1,10 +1,8 @@
 import ExtendedGluegunToolbox from 'src/interfaces/extended-gluegun-toolbox'
 
-export interface GetGithubRepoInfo {
-  (dir: string): RepositoryInfo
-}
+export type GetGithubRepoInfo = (dir: string) => RepositoryInfo
 
-interface RepositoryInfo {
+type RepositoryInfo = {
   url?: string,
   name?: string,
   author?: string

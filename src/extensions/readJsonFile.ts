@@ -1,8 +1,6 @@
 import ExtendedGluegunToolbox from 'src/interfaces/extended-gluegun-toolbox'
 
-export interface ReadJsonFile {
-  (file: string): any
-}
+export type ReadJsonFile = (file: string) => any
 
 export default (toolbox: ExtendedGluegunToolbox) => {
   const readJsonFile: ReadJsonFile = (file) => {

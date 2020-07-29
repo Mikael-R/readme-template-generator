@@ -1,6 +1,6 @@
 import ExtendedGluegunToolbox from 'src/interfaces/extended-gluegun-toolbox'
 
-export interface Question {
+export type Question =
   ({
     type, message, defaultValue, choices, pageSize, validate, transformer, customReturn
   }: {
@@ -12,8 +12,7 @@ export interface Question {
     validate?: Function,
     transformer?: Function,
     customReturn?: Function
-  }): any
-}
+  }) => any
 
 export default (toolbox: ExtendedGluegunToolbox) => {
   const question: Question = async ({

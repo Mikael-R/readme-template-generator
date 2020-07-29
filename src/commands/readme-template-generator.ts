@@ -1,7 +1,7 @@
 import { GluegunCommand } from 'gluegun'
 
 import ExtendedGluegunToolbox from 'src/interfaces/extended-gluegun-toolbox'
-import { Images } from 'src/types'
+import * as Types from 'src/types'
 
 const command: GluegunCommand = {
   name: 'readme-template-generator',
@@ -96,7 +96,7 @@ const command: GluegunCommand = {
           : !isWebUrl(value) && existingFiles(value).length ? 'Invalid URL' : 'Invalid path'
     })
 
-    const images: Images = {
+    const images: Types.Images = {
       logo: logoImage,
       screenshots: []
     }

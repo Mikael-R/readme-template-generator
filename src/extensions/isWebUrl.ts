@@ -1,8 +1,6 @@
 import ExtendedGluegunToolbox from 'src/interfaces/extended-gluegun-toolbox'
 
-export interface IsWebUrl {
-  (url: string): boolean
-}
+export type IsWebUrl = (url: string) => boolean
 
 export default (toolbox: ExtendedGluegunToolbox) => {
   const isWebUrl: IsWebUrl = (url) => {

@@ -1,8 +1,6 @@
 import ExtendedGluegunToolbox from 'src/interfaces/extended-gluegun-toolbox'
 
-export interface ExistingFiles {
-  (filePath: string): string[]
-}
+export type ExistingFiles = (filePath: string) => string[]
 
 export default (toolbox: ExtendedGluegunToolbox) => {
   const existingFiles: ExistingFiles = (filePath) => {

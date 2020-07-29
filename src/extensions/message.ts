@@ -1,11 +1,10 @@
 import ExtendedGluegunToolbox from 'src/interfaces/extended-gluegun-toolbox'
 
-export interface Message {
+export type Message =
   (
     type: 'info' | 'success' | 'warning' | 'error',
     content: string
-  ): void
-}
+  ) => void
 
 export default (toolbox: ExtendedGluegunToolbox) => {
   const message: Message = (type, content) => {
