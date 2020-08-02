@@ -63,7 +63,7 @@ const command: GluegunCommand = {
       message: 'Heroku URL (use empty value to skip):',
       validate: (value: string) =>
         isWebUrl(`https://${value}`) || value === ''
-          ? value === '' ? true : badgeChoices.push('Heroku') + 1
+          ? value === '' ? true : !!(badgeChoices.push('Heroku') + 1)
           : 'Invalid URL',
       customReturn: (value: string) => value !== '' ? `https://${value}` : value
     })
@@ -74,7 +74,7 @@ const command: GluegunCommand = {
         message: 'Repl.it URL (use empty value to skip):',
         validate: (value: string) =>
           isWebUrl(`https://${value}`) || value === ''
-            ? value === '' ? true : badgeChoices.push('Repl.it') + 1
+            ? value === '' ? true : !!(badgeChoices.push('Repl.it') + 1)
             : 'Invalid URL',
         customReturn: (value: string) =>
           value !== '' ? `https://${value}.repl.run` : value
@@ -106,7 +106,7 @@ const command: GluegunCommand = {
         message: 'GIF/image URL or path for screenshots (use empty value to skip):',
         validate: (value: string) =>
           isWebUrl(value) || existingFiles(value).length || value === ''
-            ? value === '' ? true : images.screenshots.push(value) + 1
+            ? value === '' ? true : !!(images.screenshots.push(value) + 1)
             : !isWebUrl(value) && existingFiles(value).length ? 'Invalid URL' : 'Invalid path'
       })
 
