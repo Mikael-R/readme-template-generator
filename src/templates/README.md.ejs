@@ -10,7 +10,7 @@
 
 <% if (props.useBadges.indexOf('socialmedias') !== -1) {%><%= `[![Forks](https://img.shields.io/github/forks/${props.githubRepository.author}/${props.githubRepository.name}?style=social)](${props.githubRepository.url}/network/members) [![Stars](https://img.shields.io/github/stars/${props.githubRepository.author}/${props.githubRepository.name}?style=social)](${props.githubRepository.url}/stargazers) [![Watches](https://img.shields.io/github/watchers/${props.githubRepository.author}/${props.githubRepository.name}?style=social)](${props.githubRepository.url}/watchers)` %><% } %>
 
-<h1 align="center">Welcome to <%= props.projectName %> 👋</h1>
+<h1 id="title" align="center">Welcome to <%= props.projectName %> 👋</h1>
 
 <% if (props.images.logo) {%><%- `<p align="center">
 <img src="${props.images.logo}">
@@ -20,6 +20,26 @@
 <% if (props.images.screenshots.length > 0) {%><%- '<summary>Screenshots</summary>'%><% } %>
 <% for (i in props.images.screenshots) {%><%- `<img src="${props.images.screenshots[i]}">`%><% } %>
 <% if (props.images.screenshots.length > 0) {%><%- '</details>'%><% } %>
+
+### 🔎 Table Of Contents
+- [Description](#Description)
+<% if (props.technologies.length) {%><%= '- [Technologies](#Technologies)'%><% } %>
+
+---
+
+## 📋Description
+
+<%= props.description %>
+
+[Back To The Top](#title)
+
+---
+
+## 🚀Technologies
+
+<% for (i in props.technologies) {%><%= `- ${props.technologies[i]}\n`%><% } %>
+
+[Back To The Top](#title)
 
 ---
 

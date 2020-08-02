@@ -113,6 +113,24 @@ const command: GluegunCommand = {
       if (!screenshot) break
     }
 
+    const description = await question({
+      type: 'editor',
+      message: 'Write a long text describing project:',
+      validate: (value: string) => value === '' ? 'Description its necessary' : true
+    })
+
+    const technologies: string[] = []
+
+    while (1) {
+      const tech = await question({
+        message: 'List project technologies (use empty value to skip):'
+      })
+
+      if (!tech) break
+
+      technologies.push(tech)
+    }
+
     generateFile({
       template: 'README.md.ejs',
       target: 'README.md',
@@ -123,7 +141,9 @@ const command: GluegunCommand = {
         herokuUrl,
         replitUrl,
         packageJson,
-        images
+        images,
+        description,
+        technologies
       }
     })
 
