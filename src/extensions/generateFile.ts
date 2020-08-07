@@ -26,7 +26,7 @@ export default (toolbox: ExtendedGluegunToolbox) => {
       // Removes blank lines, starting from two or more
       str = str.replace(/[\r\n]{2,}/g, '\n\n')
 
-      return str
+      return str + '\n'
     }
 
     generate({ template, target, props })

@@ -11,8 +11,11 @@ export default (toolbox: ExtendedGluegunToolbox) => {
 
     const baseFile = getUrlItem(filePath, 1)
     const directory = filePath.replace(baseFile, '')
+    const directoryListed = list(directory)
 
-    const existingFiles: string[] = list(directory).filter(
+    if (!directoryListed) return []
+
+    const existingFiles: string[] = directoryListed.filter(
       (file: string) => file.toLowerCase() === baseFile.toLowerCase()
     )
 

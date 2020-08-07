@@ -15,7 +15,8 @@ const command: GluegunCommand = {
       generateFile,
       isWebUrl,
       readJsonFile,
-      showBanner
+      showBanner,
+      isGithubUrl
     } = toolbox
 
     showBanner({ text: 'Readme|Template Generator' })
@@ -37,9 +38,23 @@ const command: GluegunCommand = {
 
     const githubRepository = getGithubRepoInfo('.')
 
-    const projectName = githubRepository.name || getUrlItem('.', 1)
-
     const packageJson = readJsonFile('package.json')
+
+    githubRepository.url = await question({
+      message: 'Repository URL in GitHub:',
+      defaultValue: githubRepository.url,
+      validate: (value: string) =>
+        isGithubUrl(value) || value === ''
+          ? true
+          : 'Invalid GitHub repository URL'
+    })
+
+    const projectNameDefault = githubRepository.name || getUrlItem(packageJson?.repository?.url, 1)?.split('.')[0] || packageJson?.name || getUrlItem('.', 1)
+
+    const projectName = await question({
+      message: 'Project name:',
+      defaultValue: projectNameDefault
+    })
 
     const badgeChoices = ['Open Source', 'Awesome']
 
@@ -48,7 +63,7 @@ const command: GluegunCommand = {
         'Language Most Used',
         'Implementations',
         'Gitpod',
-        'Social Medias',
+        'Repository Social Status',
         'License',
         'Last Commit',
         'Repository Size'
@@ -68,60 +83,53 @@ const command: GluegunCommand = {
       customReturn: (value: string) => value !== '' ? `https://${value}` : value
     })
 
-    const replitUrl: string =
-      githubRepository.url &&
-      (await question({
-        message: 'Repl.it URL (use empty value to skip):',
-        validate: (value: string) =>
-          isWebUrl(`https://${value}`) || value === ''
-            ? value === '' ? true : !!(badgeChoices.push('Repl.it') + 1)
-            : 'Invalid URL',
-        customReturn: (value: string) =>
-          value !== '' ? `https://${value}.repl.run` : value
-      }))
-
-    const useBadges: string[] = await question({
-      type: 'checkbox',
-      message: 'Select badges for use:\n ',
-      choices: badgeChoices,
-      customReturn: (value: string[]) =>
-        value.map((badge: string) => badge.toLowerCase().replace(/\s/g, ''))
+    const replitUrl: string = await question({
+      message: 'Repl.it URL (use empty value to skip):',
+      validate: (value: string) =>
+        isWebUrl(`https://${value}`) || value === ''
+          ? value === '' ? true : !!(badgeChoices.push('Repl.it') + 1)
+          : 'Invalid URL',
+      customReturn: (value: string) =>
+        value !== '' ? `https://${value}.repl.run` : value
     })
 
-    const logoImage = await question({
+    const logo: string = await question({
       message: 'Logo image URL or path (use empty value to skip):',
-      validate: (value: string) =>
-        isWebUrl(value) || existingFiles(value).length || value === ''
-          ? true
-          : !isWebUrl(value) && existingFiles(value).length ? 'Invalid URL' : 'Invalid path'
+      validate: (value: string) => {
+        if (value === '') return true
+        if (!isWebUrl(value) && !existingFiles(value).length) return 'Value informed not is URL/Path'
+        return true
+      }
     })
 
     const images: Types.Images = {
-      logo: logoImage,
+      logo,
       screenshots: []
     }
 
     while (1) {
-      const screenshot = await question({
+      const screenshot: string = await question({
         message: 'GIF/image URL or path for screenshots (use empty value to skip):',
-        validate: (value: string) =>
-          isWebUrl(value) || existingFiles(value).length || value === ''
-            ? value === '' ? true : !!(images.screenshots.push(value) + 1)
-            : !isWebUrl(value) && existingFiles(value).length ? 'Invalid URL' : 'Invalid path'
+        validate: (value: string) => {
+          if (value === '') return true
+          if (!isWebUrl(value) && !existingFiles(value).length) return 'Value informed not is URL/Path'
+          return true
+        }
       })
 
       if (!screenshot) break
     }
 
-    const description = await question({
+    const description: string = await question({
       type: 'editor',
-      message: 'Write a long text describing project:',
+      message: 'Write a describing about project:',
+      defaultValue: packageJson?.description,
       validate: (value: string) => value === '' ? 'Description its necessary' : true
     })
 
     const technologies: string[] = []
 
-    while (1) {
+    while (true) {
       const tech = await question({
         message: 'List project technologies (use empty value to skip):'
       })
@@ -130,6 +138,46 @@ const command: GluegunCommand = {
 
       technologies.push(tech)
     }
+
+    const author = {
+      github: '',
+      twitter: '',
+      website: '',
+      linkedin: ''
+    }
+
+    author.github = await question({
+      message: `You GitHub username ${!githubRepository.author ? '(use empty value to skip)' : ''}:`,
+      defaultValue: githubRepository?.author
+    })
+
+    author.twitter = await question({
+      message: 'You twitter username (use empty value to skip):',
+      validate: (value: string) => {
+        if (value !== '') badgeChoices.push('Author Twitter')
+        return true
+      }
+    })
+
+    author.linkedin = await question({
+      message: 'You LinkedIn username (use empty value to skip):'
+    })
+
+    author.website = await question({
+      message: 'You website (use empty value to skip):',
+      validate: (value: string) => {
+        if (value !== '' && !isWebUrl(value)) return 'Invalid URL'
+        return true
+      }
+    })
+
+    const useBadges: string[] = await question({
+      type: 'checkbox',
+      message: 'Select badges for use:\n ',
+      choices: badgeChoices,
+      customReturn: (value: string[]) =>
+        value.map((badge) => badge.toLowerCase().replace(/\s/g, ''))
+    })
 
     generateFile({
       template: 'README.md.ejs',
@@ -143,7 +191,8 @@ const command: GluegunCommand = {
         packageJson,
         images,
         description,
-        technologies
+        technologies,
+        author
       }
     })
 

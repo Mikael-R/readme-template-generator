@@ -7,7 +7,7 @@ export type Question =
     type?: 'input' | 'number' | 'confirm' | 'list' | 'rawlist' | 'expand'| 'checkbox' | 'password' | 'editor',
     message: string,
     defaultValue?: any,
-    choices?: any[] | Function,
+    choices?: string[] | Function,
     pageSize?: number,
     validate?: Function,
     transformer?: Function,
@@ -23,7 +23,7 @@ export default (toolbox: ExtendedGluegunToolbox) => {
     pageSize = 5,
     validate,
     transformer,
-    customReturn = (value: string) => value
+    customReturn = (value) => value
   }) => {
     const { prompt } = require('inquirer')
 
@@ -38,7 +38,11 @@ export default (toolbox: ExtendedGluegunToolbox) => {
       transformer: transformer || customReturn
     })
 
-    return customReturn(value) || defaultValue
+    let returning = customReturn(value) || defaultValue
+
+    returning = typeof returning === 'string' ? returning.trim() : returning
+
+    return returning
   }
 
   toolbox.question = question

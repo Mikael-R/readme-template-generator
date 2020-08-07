@@ -9,6 +9,7 @@ import { Message } from 'src/extensions/message'
 import { Question } from 'src/extensions/question'
 import { ReadJsonFile } from 'src/extensions/readJsonFile'
 import { ShowBanner } from 'src/extensions/showBanner'
+import { IsGithubUrl } from 'src/extensions/isGithubUrl'
 
 export default interface ExtendedGluegunToolbox extends IHelperExtendedGluegunToolbox {
   existingFiles: ExistingFiles,
@@ -20,4 +21,5 @@ export default interface ExtendedGluegunToolbox extends IHelperExtendedGluegunTo
   question: Question,
   readJsonFile: ReadJsonFile,
   showBanner: ShowBanner
+  isGithubUrl: IsGithubUrl
 }

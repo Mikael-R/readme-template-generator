@@ -8,7 +8,9 @@
 
 <% if (props.useBadges.indexOf('license') !== -1) {%><%= `[![License](https://img.shields.io/github/license/${props.githubRepository.author}/${props.githubRepository.name}?style=flat-square)](LICENSE.md)`%><% } %> <% if (props.useBadges.indexOf('lastcommit') !== -1) {%><%= `[![Last Commit](https://img.shields.io/github/last-commit/${props.githubRepository.author}/${props.githubRepository.name}?style=flat-square)](${props.githubRepository.url}/commits/)`%><% } %> <% if (props.useBadges.indexOf('languagemostused') !== -1) {%><%= `![Language Most Used](https://img.shields.io/github/languages/top/${props.githubRepository.author}/${props.githubRepository.name}?style=flat-square)` %><% } %> <% if (props.useBadges.indexOf('implementations') !== -1) {%><%= `[![Implementations](https://img.shields.io/badge/%F0%9F%92%A1-implementations-8C8E93.svg?style=flat-square)](${props.githubRepository.url}/issues)` %><% } %> <%if (props.useBadges.indexOf('repositorysize') !== -1) {%><%= `![Repository Size](https://img.shields.io/github/repo-size/${props.githubRepository.author}/${props.githubRepository.name}?style=flat-square)`%><% } %>
 
-<% if (props.useBadges.indexOf('socialmedias') !== -1) {%><%= `[![Forks](https://img.shields.io/github/forks/${props.githubRepository.author}/${props.githubRepository.name}?style=social)](${props.githubRepository.url}/network/members) [![Stars](https://img.shields.io/github/stars/${props.githubRepository.author}/${props.githubRepository.name}?style=social)](${props.githubRepository.url}/stargazers) [![Watches](https://img.shields.io/github/watchers/${props.githubRepository.author}/${props.githubRepository.name}?style=social)](${props.githubRepository.url}/watchers)` %><% } %>
+<% if (props.useBadges.indexOf('repositorysocialstatus') !== -1) {%><%= `[![Forks](https://img.shields.io/github/forks/${props.githubRepository.author}/${props.githubRepository.name}?style=social)](${props.githubRepository.url}/network/members) [![Stars](https://img.shields.io/github/stars/${props.githubRepository.author}/${props.githubRepository.name}?style=social)](${props.githubRepository.url}/stargazers) [![Watches](https://img.shields.io/github/watchers/${props.githubRepository.author}/${props.githubRepository.name}?style=social)](${props.githubRepository.url}/watchers)` %><% } %>
+
+<% if (props.useBadges.indexOf('authortwitter') !== -1) {%><%= `[![Author Twitter](https://img.shields.io/twitter/follow/${props.author.twitter}.svg?style=social)](https://twitter.com/${props.author.twitter})`%><% } %>
 
 <h1 id="title" align="center">Welcome to <%= props.projectName %> 👋</h1>
 
@@ -16,18 +18,18 @@
 <img src="${props.images.logo}">
 </p>`%><% } %>
 
-<% if (props.images.screenshots.length > 0) {%><%- '<details>'%><% } %>
-<% if (props.images.screenshots.length > 0) {%><%- '<summary>Screenshots</summary>'%><% } %>
-<% for (i in props.images.screenshots) {%><%- `<img src="${props.images.screenshots[i]}">`%><% } %>
-<% if (props.images.screenshots.length > 0) {%><%- '</details>'%><% } %>
+<% if (props.images.screenshots.length) {%><%- '<details>\n<summary>Screenshots</summary>'%><% } %>
+<%= props.images.screenshots.map(screenshot => `<img src="${screenshot}">`)%>
+<% if (props.images.screenshots.length) {%><%- '</details>'%><% } %>
 
 ### 🔎 Table Of Contents
+
 - [Description](#Description)
 <% if (props.technologies.length) {%><%= '- [Technologies](#Technologies)'%><% } %>
 
 ---
 
-## 📋Description
+## 📜Description
 
 <%= props.description %>
 
@@ -35,12 +37,19 @@
 
 ---
 
-## 🚀Technologies
+<% if (props.technologies.length) {%><%= '## 🚀Technologies\n'%><% } %>
+<% for (tech of props.technologies) {%><%= `\n- ${tech}`%><% } %>
+<% if (props.technologies.length) {%><%= '\n\n[Back To The Top](#title)\n\n---\n'%><% } %>
 
-<% for (i in props.technologies) {%><%= `- ${props.technologies[i]}\n`%><% } %>
+<% if (props.packageJson.author || props.author.website || props.author.twitter || props.author.github || props.author.linkedin) {%><%= '## 👤Author'%><% } %>
 
-[Back To The Top](#title)
+<% if (props.packageJson.author) {%><%- `**${props.packageJson.author}**`%><% } %>
 
----
+<% if (props.author.website) {%><%= `- Website: [${props.author.website}](${props.author.website})`%><% } %>
+<% if (props.author.twitter) {%><%= `- Twitter: [@${props.author.twitter}](https://twitter.com/${props.author.twitter})`%><% } %>
+<% if (props.author.github) {%><%= `- Github: [@${props.author.github}](https://github.com/${props.author.github})`%><% } %>
+<% if (props.author.linkedin) {%><%= `- LinkedIn: [@${props.author.linkedin}](https://linkedin.com/in/${props.author.linkedin})`%><% } %>
 
-_This README was generated with ❤️ by [readme-template-generator](https://github.com/Mikael-R/readme-template-generator)_
+<% if (props.packageJson.author || props.author.website || props.author.twitter || props.author.github || props.author.linkedin) {%><%= '---'%><% } %>
+
+_This README was generated with 💟 by [readme-template-generator](https://github.com/Mikael-R/readme-template-generator)_
