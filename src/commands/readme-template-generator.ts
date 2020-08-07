@@ -56,6 +56,12 @@ const command: GluegunCommand = {
       defaultValue: projectNameDefault
     })
 
+    const description: string = await question({
+      message: 'Write a short description about project:',
+      defaultValue: packageJson?.description,
+      validate: (value: string) => value === '' ? 'Description its necessary' : true
+    })
+
     const badgeChoices = ['Open Source', 'Awesome']
 
     if (githubRepository.url) {
@@ -120,11 +126,9 @@ const command: GluegunCommand = {
       if (!screenshot) break
     }
 
-    const description: string = await question({
+    const about: string = await question({
       type: 'editor',
-      message: 'Write a describing about project:',
-      defaultValue: packageJson?.description,
-      validate: (value: string) => value === '' ? 'Description its necessary' : true
+      message: 'Write about project (use empty value to skip):'
     })
 
     const technologies: string[] = []
@@ -140,6 +144,7 @@ const command: GluegunCommand = {
     }
 
     const author = {
+      exists: false,
       github: '',
       twitter: '',
       website: '',
@@ -171,6 +176,8 @@ const command: GluegunCommand = {
       }
     })
 
+    if (packageJson.author || author.website || author.twitter || author.github || author.linkedin) author.exists = true
+
     const useBadges: string[] = await question({
       type: 'checkbox',
       message: 'Select badges for use:\n ',
@@ -191,6 +198,7 @@ const command: GluegunCommand = {
         packageJson,
         images,
         description,
+        about,
         technologies,
         author
       }

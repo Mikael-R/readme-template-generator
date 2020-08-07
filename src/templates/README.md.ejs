@@ -18,38 +18,31 @@
 <img src="${props.images.logo}">
 </p>`%><% } %>
 
+<%- `> ${props.description}`%>
+
 <% if (props.images.screenshots.length) {%><%- '<details>\n<summary>Screenshots</summary>'%><% } %>
 <%= props.images.screenshots.map(screenshot => `<img src="${screenshot}">`)%>
 <% if (props.images.screenshots.length) {%><%- '</details>'%><% } %>
 
-### 🔎 Table Of Contents
-
-- [Description](#Description)
-<% if (props.technologies.length) {%><%= '- [Technologies](#Technologies)'%><% } %>
+### 🔖 Table Of Contents
+<% if (props.about) {%><%= '\n- 📃 [About](#about)'%><% } %><% if (props.technologies.length) {%><%= '\n- 🚀 [Technologies](#technologies)'%><% } %><% if (props.author.exists) {%><%= '\n- 👤 [Author](#author)'%><% } %>
 
 ---
 
-## 📜Description
+<% if (props.about) {%><%- '<h2 id="about">📃 About</h2>\n'%><% } %>
+<% if (props.about) {%><%- props.about%><% } %>
+<% if (props.about) {%><%= '\n\n[Back To The Top](#title)\n\n---\n'%><% } %>
 
-<%= props.description %>
-
-[Back To The Top](#title)
-
----
-
-<% if (props.technologies.length) {%><%= '## 🚀Technologies\n'%><% } %>
+<% if (props.technologies.length) {%><%- '<h2 id="technologies">🚀 Technologies</h2>\n'%><% } %>
 <% for (tech of props.technologies) {%><%= `\n- ${tech}`%><% } %>
 <% if (props.technologies.length) {%><%= '\n\n[Back To The Top](#title)\n\n---\n'%><% } %>
 
-<% if (props.packageJson.author || props.author.website || props.author.twitter || props.author.github || props.author.linkedin) {%><%= '## 👤Author'%><% } %>
-
-<% if (props.packageJson.author) {%><%- `**${props.packageJson.author}**`%><% } %>
-
+<% if (props.author.exists) {%><%- '<h2 id="author">👤 Author</h2>\n'%><% } %>
+<% if (props.packageJson.author) {%><%- `\n**${props.packageJson.author}**\n`%><% } %>
 <% if (props.author.website) {%><%= `- Website: [${props.author.website}](${props.author.website})`%><% } %>
 <% if (props.author.twitter) {%><%= `- Twitter: [@${props.author.twitter}](https://twitter.com/${props.author.twitter})`%><% } %>
 <% if (props.author.github) {%><%= `- Github: [@${props.author.github}](https://github.com/${props.author.github})`%><% } %>
 <% if (props.author.linkedin) {%><%= `- LinkedIn: [@${props.author.linkedin}](https://linkedin.com/in/${props.author.linkedin})`%><% } %>
+<% if (props.author.exists) {%><%= '\n\n[Back To The Top](#title)\n\n---\n'%><% } %>
 
-<% if (props.packageJson.author || props.author.website || props.author.twitter || props.author.github || props.author.linkedin) {%><%= '---'%><% } %>
-
-_This README was generated with 💟 by [readme-template-generator](https://github.com/Mikael-R/readme-template-generator)_
+_This README was generated with 💟 by [readme-template-generator](https://github.com/Mikael-R/Readme-Template-Generator)_
