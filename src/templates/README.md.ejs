@@ -25,7 +25,7 @@
 <% if (props.images.screenshots.length) {%><%- '</details>'%><% } %>
 
 ### 🔖 Table Of Contents
-<% if (props.about) {%><%= '\n- 📃 [About](#about)'%><% } %><% if (props.technologies.length) {%><%= '\n- 🚀 [Technologies](#technologies)'%><% } %><% if (props.author.exists) {%><%= '\n- 👤 [Author](#author)'%><% } %>
+<% if (props.about) {%><%= '\n- 📃 [About](#about)'%><% } %><% if (props.technologies.length) {%><%= '\n- 🚀 [Technologies](#technologies)'%><% } %><% if (props.contributeInformation) {%><%= '\n- 💡 [How To Contribute](#contribute)'%><% } %><% if (props.author.exists) {%><%= '\n- 👤 [Author](#author)'%><% } %>
 
 ---
 
@@ -36,6 +36,16 @@
 <% if (props.technologies.length) {%><%- '<h2 id="technologies">🚀 Technologies</h2>\n'%><% } %>
 <% for (tech of props.technologies) {%><%= `\n- ${tech}`%><% } %>
 <% if (props.technologies.length) {%><%= '\n\n[Back To The Top](#title)\n\n---\n'%><% } %>
+
+<% if (props.contributeInformation) {%><%- `<h2 id="contribute">💡 How To Contribute</h2>\n\n
+- Make a fork of this repository
+- Clone to you machine and entry on respective paste
+- Create a branch with your resource: \`git checkout -b my-feature\`
+- Commit your changes: \`git commit -m 'feat: My new feature'\`
+- Push your branch: \`git push origin my-feature\`
+- A green button will appear at the beginning of this repository
+- Click to open and fill in the pull request information
+\n[Back To The Top](#title)\n\n---`%><% } %>
 
 <% if (props.author.exists) {%><%- '<h2 id="author">👤 Author</h2>\n'%><% } %>
 <% if (props.packageJson.author) {%><%- `\n**${props.packageJson.author}**\n`%><% } %>

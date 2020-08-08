@@ -28,7 +28,7 @@ const command: GluegunCommand = {
     )
 
     if (existingFiles('README.md').indexOf('README.md') !== -1) {
-      const overwrite = await question({
+      const overwrite: boolean = await question({
         type: 'confirm',
         message: 'Already exists a README.md file, overwrite it?'
       })
@@ -49,9 +49,9 @@ const command: GluegunCommand = {
           : 'Invalid GitHub repository URL'
     })
 
-    const projectNameDefault = githubRepository.name || getUrlItem(packageJson?.repository?.url, 1)?.split('.')[0] || packageJson?.name || getUrlItem('.', 1)
+    const projectNameDefault: string = githubRepository.name || getUrlItem(packageJson?.repository?.url, 1)?.split('.')[0] || packageJson?.name || getUrlItem('.', 1)
 
-    const projectName = await question({
+    const projectName: string = await question({
       message: 'Project name:',
       defaultValue: projectNameDefault
     })
@@ -143,6 +143,11 @@ const command: GluegunCommand = {
       technologies.push(tech)
     }
 
+    const contributeInformation: boolean = githubRepository.url && await question({
+      type: 'confirm',
+      message: 'Add tutor how to contribute for this project:'
+    })
+
     const author = {
       exists: false,
       github: '',
@@ -200,6 +205,7 @@ const command: GluegunCommand = {
         description,
         about,
         technologies,
+        contributeInformation,
         author
       }
     })
