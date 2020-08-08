@@ -25,7 +25,7 @@
 <% if (props.images.screenshots.length) {%><%- '</details>'%><% } %>
 
 ### 🔖 Table Of Contents
-<% if (props.about) {%><%= '\n- 📃 [About](#about)'%><% } %><% if (props.technologies.length) {%><%= '\n- 🚀 [Technologies](#technologies)'%><% } %><% if (props.contributeInformation) {%><%= '\n- 💡 [How To Contribute](#contribute)'%><% } %><% if (props.author.exists) {%><%= '\n- 👤 [Author](#author)'%><% } %>
+<% if (props.about) {%><%= '\n- 📃 [About](#about)'%><% } %><% if (props.technologies.length) {%><%= '\n- 🚀 [Technologies](#technologies)'%><% } %><% if (props.contributeInformation) {%><%= '\n- 💡 [How To Contribute](#contribute)'%><% } %><% if (props.author.exists) {%><%= '\n- 👤 [Author](#author)'%><% } %><% if (props.license.name) {%><%= '\n- 🔏 [License](#license)'%><% } %>
 
 ---
 
@@ -45,14 +45,18 @@
 - Push your branch: \`git push origin my-feature\`
 - A green button will appear at the beginning of this repository
 - Click to open and fill in the pull request information
-\n[Back To The Top](#title)\n\n---`%><% } %>
+\n\n[Back To The Top](#title)\n\n---`%><% } %>
 
-<% if (props.author.exists) {%><%- '<h2 id="author">👤 Author</h2>\n'%><% } %>
-<% if (props.packageJson.author) {%><%- `\n**${props.packageJson.author}**\n`%><% } %>
+<% if (props.author.exists) {%><%- '<h2 id="author">👤 Author</h2>\n\n'%><% } %>
+<% if (props.author.name) {%><%- `**${props.author.name}**\n`%><% } %>
 <% if (props.author.website) {%><%= `- Website: [${props.author.website}](${props.author.website})`%><% } %>
 <% if (props.author.twitter) {%><%= `- Twitter: [@${props.author.twitter}](https://twitter.com/${props.author.twitter})`%><% } %>
 <% if (props.author.github) {%><%= `- Github: [@${props.author.github}](https://github.com/${props.author.github})`%><% } %>
 <% if (props.author.linkedin) {%><%= `- LinkedIn: [@${props.author.linkedin}](https://linkedin.com/in/${props.author.linkedin})`%><% } %>
 <% if (props.author.exists) {%><%= '\n\n[Back To The Top](#title)\n\n---\n'%><% } %>
+
+<% if (props.license.name) {%><%- `<h2 id="license">🔏 License</h2>\n\n
+${props.author.name && props.author.github && `Copyright © ${new Date().getFullYear()} [${props.author.name}](https://github.com/${props.author.github})\n\n`}
+This project is [${props.license.name}](${props.license.url}) licensed.\n\n[Back To The Top](#title)\n\n---\n`%><% } %>
 
 _This README was generated with 💟 by [readme-template-generator](https://github.com/Mikael-R/Readme-Template-Generator)_

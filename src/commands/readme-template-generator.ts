@@ -14,9 +14,9 @@ const command: GluegunCommand = {
       message,
       generateFile,
       isWebUrl,
-      readJsonFile,
       showBanner,
-      isGithubUrl
+      isGithubUrl,
+      filesystem: { read }
     } = toolbox
 
     showBanner({ text: 'Readme|Template Generator' })
@@ -29,8 +29,10 @@ const command: GluegunCommand = {
 
     if (existingFiles('README.md').indexOf('README.md') !== -1) {
       const overwrite: boolean = await question({
-        type: 'confirm',
-        message: 'Already exists a README.md file, overwrite it?'
+        type: 'list',
+        message: 'Already exists a README.md file, overwrite it?',
+        choices: ['Yes', 'No'],
+        customReturn: (value: string) => value === 'Yes'
       })
 
       if (!overwrite) process.exit(0)
@@ -38,11 +40,15 @@ const command: GluegunCommand = {
 
     const githubRepository = getGithubRepoInfo('.')
 
-    const packageJson = readJsonFile('package.json')
+    const packageJson = (() => {
+      const packageJsonFile = read('package.json')
+      const packageJson = packageJsonFile !== undefined ? JSON.parse(packageJsonFile) : {}
+      return packageJson
+    })()
 
     githubRepository.url = await question({
       message: 'Repository URL in GitHub:',
-      defaultValue: githubRepository.url,
+      defaultValue: githubRepository.url || packageJson?.repository?.url?.replace('git+', '')?.replace('.git', ''),
       validate: (value: string) =>
         isGithubUrl(value) || value === ''
           ? true
@@ -144,25 +150,33 @@ const command: GluegunCommand = {
     }
 
     const contributeInformation: boolean = githubRepository.url && await question({
-      type: 'confirm',
-      message: 'Add tutor how to contribute for this project:'
+      type: 'list',
+      message: 'Add tutor how to contribute for this project:',
+      choices: ['Yes', 'No'],
+      customReturn: (value: string) => value === 'Yes'
     })
 
     const author = {
       exists: false,
-      github: '',
+      name: packageJson?.author,
+      github: githubRepository?.author,
       twitter: '',
       website: '',
       linkedin: ''
     }
 
+    author.name = await question({
+      message: `Author name${!author.name ? ' (use empty value to skip)' : ''}:`,
+      defaultValue: author.name
+    })
+
     author.github = await question({
-      message: `You GitHub username ${!githubRepository.author ? '(use empty value to skip)' : ''}:`,
-      defaultValue: githubRepository?.author
+      message: `Author GitHub username${!githubRepository.author ? ' (use empty value to skip)' : ''}:`,
+      defaultValue: author.github
     })
 
     author.twitter = await question({
-      message: 'You twitter username (use empty value to skip):',
+      message: 'Author twitter username (use empty value to skip):',
       validate: (value: string) => {
         if (value !== '') badgeChoices.push('Author Twitter')
         return true
@@ -170,25 +184,45 @@ const command: GluegunCommand = {
     })
 
     author.linkedin = await question({
-      message: 'You LinkedIn username (use empty value to skip):'
+      message: 'Author LinkedIn username (use empty value to skip):'
     })
 
     author.website = await question({
-      message: 'You website (use empty value to skip):',
+      message: 'Author website (use empty value to skip):',
       validate: (value: string) => {
         if (value !== '' && !isWebUrl(value)) return 'Invalid URL'
         return true
       }
     })
 
-    if (packageJson.author || author.website || author.twitter || author.github || author.linkedin) author.exists = true
+    if (author.name || author.website || author.twitter || author.github || author.linkedin) author.exists = true
 
     const useBadges: string[] = await question({
       type: 'checkbox',
-      message: 'Select badges for use:\n ',
+      message: 'Select badges for use:',
       choices: badgeChoices,
       customReturn: (value: string[]) =>
         value.map((badge) => badge.toLowerCase().replace(/\s/g, ''))
+    })
+
+    const license = {
+      name: read('LICENSE')?.split('\n')[0]?.toUpperCase()?.replace('LICENSE', '')?.trim() ||
+      packageJson?.license,
+      url: githubRepository.url && read('LICENSE') && `https://${githubRepository.url}/blob/master/LICENSE`
+    }
+
+    console.table(license)
+
+    license.name = await question({
+      message: `Project license name${!license.name ? ' (use empty value to skip)' : ''}:`,
+      defaultValue: license.name
+    })
+
+    license.url = await question({
+      message: `Project license URL${!license.name ? ' (use empty value to skip)' : ''}:`,
+      defaultValue: license.url,
+      validate: (value: string) =>
+        license.name && value === '' ? `License URL for ${license.name}` : true
     })
 
     generateFile({
@@ -206,7 +240,8 @@ const command: GluegunCommand = {
         about,
         technologies,
         contributeInformation,
-        author
+        author,
+        license
       }
     })
 
