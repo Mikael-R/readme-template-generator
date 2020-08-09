@@ -42,8 +42,7 @@ const command: GluegunCommand = {
 
     const packageJson = (() => {
       const packageJsonFile = read('package.json')
-      const packageJson = packageJsonFile !== undefined ? JSON.parse(packageJsonFile) : {}
-      return packageJson
+      return packageJsonFile !== undefined ? JSON.parse(packageJsonFile) : {}
     })()
 
     githubRepository.url = await question({
@@ -68,10 +67,14 @@ const command: GluegunCommand = {
       validate: (value: string) => value === '' ? 'Description its necessary' : true
     })
 
-    const badgeChoices = ['Open Source', 'Awesome']
+    const badges: Types.Badges = {
+      toSelect: [],
+      selected: [],
+      exists: (badgeName) => badges.selected.indexOf(badgeName) !== -1
+    }
 
     if (githubRepository.url) {
-      badgeChoices.push(
+      badges.toSelect.push(
         'Language Most Used',
         'Implementations',
         'Gitpod',
@@ -83,33 +86,36 @@ const command: GluegunCommand = {
     }
 
     if (packageJson.name) {
-      badgeChoices.push('NPM Version', 'NPM Monthly Downloads')
+      badges.toSelect.push('NPM Version', 'NPM Monthly Downloads')
     }
 
     const herokuUrl: string = await question({
       message: 'Heroku URL (use empty value to skip):',
-      validate: (value: string) =>
-        isWebUrl(`https://${value}`) || value === ''
-          ? value === '' ? true : !!(badgeChoices.push('Heroku') + 1)
-          : 'Invalid URL',
+      validate: (value: string) => {
+        if (value === '') return true
+        if (!isWebUrl(value)) return 'Invalid URL'
+        badges.toSelect.push('Heroku')
+        return true
+      },
       customReturn: (value: string) => value !== '' ? `https://${value}` : value
     })
 
     const replitUrl: string = await question({
       message: 'Repl.it URL (use empty value to skip):',
-      validate: (value: string) =>
-        isWebUrl(`https://${value}`) || value === ''
-          ? value === '' ? true : !!(badgeChoices.push('Repl.it') + 1)
-          : 'Invalid URL',
-      customReturn: (value: string) =>
-        value !== '' ? `https://${value}.repl.run` : value
+      validate: (value: string) => {
+        if (value === '') return true
+        if (!isWebUrl(value)) return 'Invalid URL'
+        badges.toSelect.push('Repl.it')
+        return true
+      },
+      customReturn: (value: string) => value !== '' ? `https://${value}.repl.run` : value
     })
 
     const logo: string = await question({
       message: 'Logo image URL or path (use empty value to skip):',
       validate: (value: string) => {
         if (value === '') return true
-        if (!isWebUrl(value) && !existingFiles(value).length) return 'Value informed not is URL/Path'
+        if (!isWebUrl(value) && !existingFiles(value).length) return 'Value informed not is URL/Path valid'
         return true
       }
     })
@@ -124,7 +130,7 @@ const command: GluegunCommand = {
         message: 'GIF/image URL or path for screenshots (use empty value to skip):',
         validate: (value: string) => {
           if (value === '') return true
-          if (!isWebUrl(value) && !existingFiles(value).length) return 'Value informed not is URL/Path'
+          if (!isWebUrl(value) && !existingFiles(value).length) return 'Value informed not is URL/Path valid'
           return true
         }
       })
@@ -135,6 +141,18 @@ const command: GluegunCommand = {
     const about: string = await question({
       type: 'editor',
       message: 'Write about project (use empty value to skip):'
+    })
+
+    const howToUse = await question({
+      type: 'editor',
+      message: 'Inform how to use project:',
+      defaultValue: '#### 💻 Desktop\n\n\n#### 🌐 Online',
+      validate: (value) => {
+        if (value === '#### 💻 Desktop\n\n\n#### 🌐 Online' || value === '') {
+          return 'Information how to use its necessary'
+        }
+        return true
+      }
     })
 
     const technologies: string[] = []
@@ -178,7 +196,7 @@ const command: GluegunCommand = {
     author.twitter = await question({
       message: 'Author twitter username (use empty value to skip):',
       validate: (value: string) => {
-        if (value !== '') badgeChoices.push('Author Twitter')
+        if (value !== '') badges.toSelect.push('Author Twitter')
         return true
       }
     })
@@ -197,10 +215,10 @@ const command: GluegunCommand = {
 
     if (author.name || author.website || author.twitter || author.github || author.linkedin) author.exists = true
 
-    const useBadges: string[] = await question({
+    badges.selected = await question({
       type: 'checkbox',
       message: 'Select badges for use:',
-      choices: badgeChoices,
+      choices: badges.toSelect,
       customReturn: (value: string[]) =>
         value.map((badge) => badge.toLowerCase().replace(/\s/g, ''))
     })
@@ -208,10 +226,8 @@ const command: GluegunCommand = {
     const license = {
       name: read('LICENSE')?.split('\n')[0]?.toUpperCase()?.replace('LICENSE', '')?.trim() ||
       packageJson?.license,
-      url: githubRepository.url && read('LICENSE') && `https://${githubRepository.url}/blob/master/LICENSE`
+      url: githubRepository.url && read('LICENSE') && `${githubRepository.url}/blob/master/LICENSE`
     }
-
-    console.table(license)
 
     license.name = await question({
       message: `Project license name${!license.name ? ' (use empty value to skip)' : ''}:`,
@@ -230,7 +246,7 @@ const command: GluegunCommand = {
       target: 'README.md',
       props: {
         projectName,
-        useBadges,
+        badges,
         githubRepository,
         herokuUrl,
         replitUrl,
@@ -238,6 +254,7 @@ const command: GluegunCommand = {
         images,
         description,
         about,
+        howToUse,
         technologies,
         contributeInformation,
         author,
