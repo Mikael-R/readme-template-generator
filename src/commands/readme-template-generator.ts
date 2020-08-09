@@ -111,6 +111,13 @@ const command: GluegunCommand = {
       customReturn: (value: string) => value !== '' ? `https://${value}.repl.run` : value
     })
 
+    const status: 'development' | 'production' | 'finished' = await question({
+      type: 'list',
+      message: 'Project status:',
+      choices: ['Development', 'Production', 'Finished'],
+      customReturn: (value: string) => value.toLowerCase()
+    })
+
     const logo: string = await question({
       message: 'Logo image URL or path (use empty value to skip):',
       validate: (value: string) => {
@@ -148,7 +155,7 @@ const command: GluegunCommand = {
       message: 'Inform how to use project:',
       defaultValue: '#### 💻 Desktop\n\n\n#### 🌐 Online',
       validate: (value) => {
-        if (value === '#### 💻 Desktop\n\n\n#### 🌐 Online' || value === '') {
+        if (value === '') {
           return 'Information how to use its necessary'
         }
         return true
@@ -251,6 +258,7 @@ const command: GluegunCommand = {
         herokuUrl,
         replitUrl,
         packageJson,
+        status,
         images,
         description,
         about,
