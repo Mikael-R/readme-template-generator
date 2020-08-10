@@ -28,7 +28,7 @@
 <% if (props.images.screenshots.length) {%><%- '</details>'%><% } %>
 
 ### 🔖 Table Of Contents
-<% if (props.about) {%><%= '\n- 📃 [About](#about)'%><% } %><% if (props.technologies.length) {%><%= '\n- 🤔 [How To Use](#how-to-use)'%><%= '\n- 🚀 [Technologies](#technologies)'%><% } %><% if (props.contributeInformation) {%><%= '\n- 💡 [How To Contribute](#how-to-contribute)'%><% } %><% if (props.author.exists) {%><%= '\n- 👤 [Author](#author)'%><% } %><% if (props.license.name) {%><%= '\n- 🔏 [License](#license)'%><% } %>
+<% if (props.about) {%><%= '\n- 📃 [About](#about)'%><% } %><% if (props.technologies.length) {%><%= '\n- 🤔 [How To Use](#how-to-use)'%><%= '\n- 🚀 [Technologies](#technologies)'%><% } %><% if (props.contributeInformation) {%><% if (props.features.finished.length || props.features.pendent.length) {%><%= '\n- 🎇 [Features](#features)'%><% } %><%= '\n- 💡 [How To Contribute](#how-to-contribute)'%><% } %><% if (props.author.exists) {%><%= '\n- 👤 [Author](#author)'%><% } %><% if (props.license.name) {%><%= '\n- 🔏 [License](#license)'%><% } %>
 
 ---
 
@@ -36,9 +36,13 @@
 
 <%- `<h2 id="how-to-use">🤔 How To Use</h2>\n\n${props.howToUse}\n\n[Back To The Top](#title)\n\n---\n`%>
 
-<% if (props.technologies.length) {%><%- '<h2 id="technologies">🚀 Technologies</h2>\n'%><% } %>
-<% for (tech of props.technologies) {%><%= `\n- ${tech}`%><% } %>
+<% if (props.technologies.length) {%><%- '<h2 id="technologies">🚀 Technologies</h2>\n\n'%><% } %>
+<% for (tech of props.technologies) {%><%= `- ${tech}\n`%><% } %>
 <% if (props.technologies.length) {%><%= '\n\n[Back To The Top](#title)\n\n---\n'%><% } %>
+
+<% if (props.features.finished.length || props.features.pendent.length) {%><%- '<h2 id="features">🎇 Features</h2>\n\n'%><% } %>
+<% for (featureFinished of props.features.finished) {%><%= `- [x] ${featureFinished}\n`%><% } %><% for (featurePendent of props.features.finished) {%><%= `- [ ] ${featurePendent}\n`%><% } %>
+<% if (props.features.finished.length || props.features.pendent.length) {%><%- '\n\n[Back To The Top](#title)\n\n---\n'%><% } %>
 
 <% if (props.contributeInformation) {%><%- `<h2 id="how-to-contribute">💡 How To Contribute</h2>\n\n
 - Make a fork of this repository
@@ -48,8 +52,8 @@
 - Push your branch: \`git push origin my-feature\`
 - A green button will appear at the beginning of this repository
 - Click to open and fill in the pull request information\n\n
-<p align="center">
-<strong>Contributions, issues and features requests are welcome!</strong><br />
+<p align="center" style="font-style: italic;">
+Contributions, issues and features requests are welcome!<br />
 📮 Submit PRs to help solve issues or add features<br />
 🐛 Find and report issues<br />
 🌟 Star the project<br />
@@ -68,4 +72,6 @@
 ${props.author.name && props.author.github && `Copyright © ${new Date().getFullYear()} [${props.author.name}](https://github.com/${props.author.github})\n\n`}
 This project is [${props.license.name}](${props.license.url}) licensed.\n\n[Back To The Top](#title)\n\n---\n`%><% } %>
 
-_This README was generated with 💟 by [readme-template-generator](https://github.com/Mikael-R/Readme-Template-Generator)_
+<span style="font-style: italic;font-size: 12px;">
+This README was generated with 💟 by <a href="https://github.com/Mikael-R/Readme-Template-Generator">Readme-Template-Generator</a>
+</span>

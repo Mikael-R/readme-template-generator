@@ -8,3 +8,8 @@ export type Badges = {
   selected: string[],
   exists: (badgeName: string) => boolean
 }
+
+export type Features = {
+  finished: string[],
+  pendent: string[]
+}

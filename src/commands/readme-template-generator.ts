@@ -153,7 +153,7 @@ const command: GluegunCommand = {
     const howToUse = await question({
       type: 'editor',
       message: 'Inform how to use project:',
-      defaultValue: '#### 💻 Desktop\n\n\n#### 🌐 Online',
+      defaultValue: '#### 💻 Desktop\n\n\n\n#### 🌐 Online',
       validate: (value) => {
         if (value === '') {
           return 'Information how to use its necessary'
@@ -172,6 +172,31 @@ const command: GluegunCommand = {
       if (!tech) break
 
       technologies.push(tech)
+    }
+
+    const features: Types.Features = {
+      finished: [],
+      pendent: []
+    }
+
+    while (true) {
+      const finished = await question({
+        message: 'List project features finished (use empty value to skip):'
+      })
+
+      if (!finished) break
+
+      features.finished.push(finished)
+    }
+
+    while (true) {
+      const pendent = await question({
+        message: 'List project features pendents (use empty value to skip):'
+      })
+
+      if (!pendent) break
+
+      features.pendent.push(pendent)
     }
 
     const contributeInformation: boolean = githubRepository.url && await question({
@@ -264,6 +289,7 @@ const command: GluegunCommand = {
         about,
         howToUse,
         technologies,
+        features,
         contributeInformation,
         author,
         license
