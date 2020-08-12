@@ -1,6 +1,6 @@
 import ExtendedGluegunToolbox from 'src/interfaces/extended-gluegun-toolbox'
 
-export type GetUrlItem = (url: string | undefined, index: number) => string
+export type GetUrlItem = (url: string | undefined, index: number) => string | null
 
 export default (toolbox: ExtendedGluegunToolbox) => {
   const getUrlItem: GetUrlItem = (url, index) => {
@@ -8,7 +8,7 @@ export default (toolbox: ExtendedGluegunToolbox) => {
       filesystem: { cwd }
     } = toolbox
 
-    if (url === undefined) return
+    if (url === undefined) return null
     if (url === '.') url = cwd()
 
     const item: string | undefined =
@@ -16,7 +16,7 @@ export default (toolbox: ExtendedGluegunToolbox) => {
         ? url.split('\\')[url.split('\\').length - index]
         : url.split('/')[url.split('/').length - index]
 
-    if (!item) return ''
+    if (!item) return null
 
     return item
   }
