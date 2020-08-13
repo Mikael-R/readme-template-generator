@@ -46,7 +46,7 @@ export default (toolbox: ExtendedGluegunToolbox) => {
 
         return formattedURL
       },
-      test: (url) => !!url.match(pattern)?.length,
+      test: (url) => !!url?.match(pattern)?.length,
       inCWD: () => {
         const dir = resolve('.git', 'logs', 'refs', 'remotes', 'origin', 'HEAD')
         const gitFile = read(dir)

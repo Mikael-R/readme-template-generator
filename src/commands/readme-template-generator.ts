@@ -54,14 +54,14 @@ const command: GluegunCommand = {
       customReturn: (value: string) => githubRepository.url.format(value)
     })
 
-    const spinner = spin('Getting information about repository')
+    const spinner = githubRepoURL && spin('Getting information about repository')
 
     const githubRepoInfo = await githubRepository.information(githubRepoURL)
 
     if (!githubRepoInfo.api.index) {
-      spinner.fail('Repository not found in GitHub API')
+      spinner?.fail('Repository not found in GitHub API')
     } else {
-      spinner.succeed('Found with success repository information in GitHub API')
+      spinner?.succeed('Found with success repository information in GitHub API')
     }
 
     const projectName: string = await question({
