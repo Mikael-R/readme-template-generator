@@ -3,6 +3,7 @@ import ExtendedGluegunToolbox from 'src/interfaces/extended-gluegun-toolbox'
 import axios from 'axios'
 
 type Info = {
+  url: string,
   name: string,
   author: string,
   api: {
@@ -15,14 +16,13 @@ export type GithubRepository = {
   url: {
     format: (url: string) => string,
     test: (url: string) => boolean,
-    inCWD: () => string | null
+    inCWD: () => string
   },
-  information: (url: string) => Promise<Info>
+  information: (author: string, name: string) => Promise<Info>
 }
 
 export default (toolbox: ExtendedGluegunToolbox) => {
   const {
-    getUrlItem,
     filesystem: { read, resolve }
   } = toolbox
 
@@ -56,27 +56,25 @@ export default (toolbox: ExtendedGluegunToolbox) => {
         return url
       }
     },
-    information: async (url) => {
+    information: async (author, name) => {
       const info: Info = {
-        name: null,
-        author: null,
+        url: `https://github.com/${author}/${name}`,
+        name,
+        author,
         api: {
           index: null,
           contributors: null
         }
       }
 
-      if (!githubRepository.url.test(url)) return info
-
-      info.name = getUrlItem(url, 1)
-      info.author = getUrlItem(url, 2)
+      if (!githubRepository.url.test(info.url)) return info
 
       const apiURL = `https://api.github.com/repos/${info.author}/${info.name}`
 
       info.api.index = await axios.get(apiURL)
         .then(resp => resp.data)
         .catch(error => error.response?.data)
-      info.api.index = await axios.get(`${apiURL}/contributors`)
+      info.api.contributors = await axios.get(`${apiURL}/contributors`)
         .then(resp => resp.data)
         .catch(error => error.response?.data)
 

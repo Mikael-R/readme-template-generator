@@ -1,13 +1,14 @@
 import { build } from 'gluegun'
+import { resolve } from 'path'
 
-import { join } from 'path'
+import { Options } from 'gluegun/build/types/domain/options'
 
-export async function run (argv) {
+export async function run (argv: string | Options) {
   const cli = build()
     .brand('readme-template-generator')
     .src(__dirname)
     // .plugins('./node_modules', { matching: 'readme-template-generator-*', hidden: true })
-    .plugin(join(__dirname, '..', 'node_modules', '@lenne.tech', 'cli-plugin-helper', 'dist'), {
+    .plugin(resolve(__dirname, '..', 'node_modules', '@lenne.tech', 'cli-plugin-helper', 'dist'), {
       commandFilePattern: ['*.js'],
       extensionFilePattern: ['*.js']
     })

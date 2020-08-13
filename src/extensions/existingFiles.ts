@@ -6,16 +6,16 @@ export default (toolbox: ExtendedGluegunToolbox) => {
   const existingFiles: ExistingFiles = (filePath) => {
     const {
       filesystem: { list },
-      getUrlItem
+      itemURL
     } = toolbox
 
-    const baseFile = getUrlItem(filePath, 1)
+    const baseFile = itemURL(filePath, 1)
     const directory = filePath.replace(baseFile, '')
     const directoryListed = list(directory)
 
     if (!directoryListed) return []
 
-    const existingFiles: string[] = directoryListed.filter(
+    const existingFiles = directoryListed.filter(
       (file: string) => file.toLowerCase() === baseFile.toLowerCase()
     )
 

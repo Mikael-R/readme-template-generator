@@ -1,9 +1,9 @@
 import ExtendedGluegunToolbox from 'src/interfaces/extended-gluegun-toolbox'
 
-export type IsWebUrl = (url: string) => boolean
+export type IsWebURL = (url: string) => boolean
 
 export default (toolbox: ExtendedGluegunToolbox) => {
-  const isWebUrl: IsWebUrl = (url) => {
+  const isWebURL: IsWebURL = (url) => {
     const pattern = new RegExp(
       '^(https?:\\/\\/)?' + // protocol
       '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
@@ -17,5 +17,5 @@ export default (toolbox: ExtendedGluegunToolbox) => {
     return pattern.test(url)
   }
 
-  toolbox.isWebUrl = isWebUrl
+  toolbox.isWebURL = isWebURL
 }

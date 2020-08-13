@@ -8,11 +8,11 @@ const command: GluegunCommand = {
   async run (toolbox: ExtendedGluegunToolbox) {
     const {
       existingFiles,
-      getUrlItem,
+      itemURL,
       question,
       message,
       generateFile,
-      isWebUrl,
+      isWebURL,
       showBanner,
       githubRepository,
       filesystem: { read },
@@ -38,14 +38,11 @@ const command: GluegunCommand = {
       if (!overwrite) process.exit(0)
     }
 
-    const packageJson = (() => {
-      const packageJsonFile = read('package.json')
-      return packageJsonFile !== undefined ? JSON.parse(packageJsonFile) : {}
-    })()
+    const packageJson = JSON.parse(read('package.json') || '{}')
 
-    const githubRepoURL = await question({
+    const githubRepoURL: string = await question({
       message: 'Repository URL in GitHub (recommend not skip):',
-      defaultValue: githubRepository.url.inCWD() || packageJson?.repository?.url?.replace('git+', '')?.replace('.git', ''),
+      defaultValue: githubRepository.url.inCWD() || packageJson.repository?.url?.replace('git+', '')?.replace('.git', ''),
       validate: (value: string) => {
         if (value === '') return true
         if (!githubRepository.url.test(value)) return 'Invalid GitHub repository URL'
@@ -56,7 +53,7 @@ const command: GluegunCommand = {
 
     const spinner = githubRepoURL && spin('Getting information about repository')
 
-    const githubRepoInfo = await githubRepository.information(githubRepoURL)
+    const githubRepoInfo = await githubRepository.information(itemURL(githubRepoURL, 2), itemURL(githubRepoURL, 1))
 
     if (!githubRepoInfo.api.index) {
       spinner?.fail('Repository not found in GitHub API')
@@ -66,12 +63,12 @@ const command: GluegunCommand = {
 
     const projectName: string = await question({
       message: 'Project name:',
-      defaultValue: githubRepoInfo.name || getUrlItem(packageJson?.repository?.url, 1)?.split('.')[0] || packageJson?.name || getUrlItem('.', 1)
+      defaultValue: githubRepoInfo.name || itemURL(packageJson.repository?.url, 1)?.split('.')[0] || packageJson?.name || itemURL('.', 1)
     })
 
     const description: string = await question({
       message: 'Write a short description about project:',
-      defaultValue: packageJson?.description,
+      defaultValue: packageJson.description,
       validate: (value: string) => value === '' ? 'Description its necessary' : true
     })
 
@@ -101,7 +98,7 @@ const command: GluegunCommand = {
       message: 'Heroku URL (use empty value to skip):',
       validate: (value: string) => {
         if (value === '') return true
-        if (!isWebUrl(value)) return 'Invalid URL'
+        if (!isWebURL(value)) return 'Invalid URL'
         badges.toSelect.push('Heroku')
         return true
       },
@@ -112,7 +109,7 @@ const command: GluegunCommand = {
       message: 'Repl.it URL (use empty value to skip):',
       validate: (value: string) => {
         if (value === '') return true
-        if (!isWebUrl(value)) return 'Invalid URL'
+        if (!isWebURL(value)) return 'Invalid URL'
         badges.toSelect.push('Repl.it')
         return true
       },
@@ -130,7 +127,7 @@ const command: GluegunCommand = {
       message: 'Logo image URL or path (use empty value to skip):',
       validate: (value: string) => {
         if (value === '') return true
-        if (!isWebUrl(value) && !existingFiles(value).length) return 'Value informed not is URL/Path valid'
+        if (!isWebURL(value) && !existingFiles(value).length) return 'Value informed not is URL/Path valid'
         return true
       }
     })
@@ -145,7 +142,7 @@ const command: GluegunCommand = {
         message: 'GIF/image URL or path for screenshots (use empty value to skip):',
         validate: (value: string) => {
           if (value === '') return true
-          if (!isWebUrl(value) && !existingFiles(value).length) return 'Value informed not is URL/Path valid'
+          if (!isWebURL(value) && !existingFiles(value).length) return 'Value informed not is URL/Path valid'
           return true
         }
       })
@@ -158,7 +155,7 @@ const command: GluegunCommand = {
       message: 'Write about project (use empty value to skip):'
     })
 
-    const howToUse = await question({
+    const howToUse: string = await question({
       type: 'editor',
       message: 'Inform how to use project:',
       defaultValue: '#### 💻 Desktop\n\n\n\n#### 🌐 Online',
@@ -173,7 +170,7 @@ const command: GluegunCommand = {
     const technologies: string[] = []
 
     while (true) {
-      const tech = await question({
+      const tech: string = await question({
         message: 'List project technologies (use empty value to skip):'
       })
 
@@ -188,7 +185,7 @@ const command: GluegunCommand = {
     }
 
     while (true) {
-      const finished = await question({
+      const finished: string = await question({
         message: 'List project features finished (use empty value to skip):'
       })
 
@@ -198,7 +195,7 @@ const command: GluegunCommand = {
     }
 
     while (true) {
-      const pendent = await question({
+      const pendent: string = await question({
         message: 'List project features pendents (use empty value to skip):'
       })
 
@@ -214,13 +211,13 @@ const command: GluegunCommand = {
       customReturn: (value: string) => value === 'Yes'
     })
 
-    const author = {
+    const author: Types.Author = {
       exists: false,
-      name: packageJson?.author,
-      github: githubRepoInfo?.author,
-      twitter: '',
-      website: '',
-      linkedin: ''
+      name: githubRepoInfo.author || packageJson.author,
+      github: githubRepoInfo.author,
+      twitter: null,
+      website: null,
+      linkedin: null
     }
 
     author.name = await question({
@@ -229,7 +226,7 @@ const command: GluegunCommand = {
     })
 
     author.github = await question({
-      message: `Author GitHub username${!githubRepoInfo?.author ? ' (use empty value to skip)' : ''}:`,
+      message: `Author GitHub username${!githubRepoInfo.author ? ' (use empty value to skip)' : ''}:`,
       defaultValue: author.github
     })
 
@@ -248,7 +245,7 @@ const command: GluegunCommand = {
     author.website = await question({
       message: 'Author website (use empty value to skip):',
       validate: (value: string) => {
-        if (value !== '' && !isWebUrl(value)) return 'Invalid URL'
+        if (value !== '' && !isWebURL(value)) return 'Invalid URL'
         return true
       }
     })
@@ -263,10 +260,10 @@ const command: GluegunCommand = {
         value.map((badge) => badge.toLowerCase().replace(/\s/g, ''))
     })
 
-    const license = {
+    const license: Types.License = {
       name: read('LICENSE')?.split('\n')[0]?.toUpperCase()?.replace('LICENSE', '')?.trim() ||
-      packageJson?.license,
-      url: githubRepoInfo && read('LICENSE') && `${githubRepository.url}/blob/master/LICENSE`
+      packageJson.license,
+      url: githubRepoInfo.url && read('LICENSE') && `${githubRepoInfo.url}/blob/master/LICENSE`
     }
 
     license.name = await question({
@@ -287,7 +284,7 @@ const command: GluegunCommand = {
       props: {
         projectName,
         badges,
-        githubRepository,
+        githubRepoInfo,
         herokuUrl,
         replitUrl,
         packageJson,
