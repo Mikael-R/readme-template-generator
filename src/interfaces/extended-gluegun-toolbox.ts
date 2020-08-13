@@ -7,7 +7,7 @@ import { ItemURL } from 'src/extensions/itemURL'
 import { Message } from 'src/extensions/message'
 import { Question } from 'src/extensions/question'
 import { ShowBanner } from 'src/extensions/showBanner'
-import { GithubRepository } from 'src/extensions/githubRepository'
+import { GithubRepoInfo } from 'src/extensions/githubRepoInfo'
 
 export default interface ExtendedGluegunToolbox extends IHelperExtendedGluegunToolbox {
   existingFiles: ExistingFiles,
@@ -17,5 +17,5 @@ export default interface ExtendedGluegunToolbox extends IHelperExtendedGluegunTo
   message: Message,
   question: Question,
   showBanner: ShowBanner,
-  githubRepository: GithubRepository
+  githubRepoInfo: GithubRepoInfo
 }

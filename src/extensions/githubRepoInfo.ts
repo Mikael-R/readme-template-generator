@@ -12,7 +12,7 @@ type Info = {
   }
 }
 
-export type GithubRepository = {
+export type GithubRepoInfo = {
   url: {
     format: (url: string) => string,
     test: (url: string) => boolean,
@@ -28,23 +28,31 @@ export default (toolbox: ExtendedGluegunToolbox) => {
 
   const pattern = /(https|http):\/\/github\.com\/([A-z0-9]|((?<!\/)-(?!(-|\/))))+\/(\w|-|\.)+/gm
 
-  const githubRepository: GithubRepository = {
+  const githubRepoInfo: GithubRepoInfo = {
     url: {
       format: (url) => {
-        let lastGitInvalidWord = false
+        const lastGitInvalidWord = [false, false]
 
         const formattedURL = url
           .split('.')
           .reverse()
           .filter(group => {
-            if (group.toLowerCase() === 'git') return lastGitInvalidWord
-            lastGitInvalidWord = true
+            if (group.toLowerCase() === 'git') return lastGitInvalidWord[0]
+            lastGitInvalidWord[0] = true
             return true
           })
           .reverse()
           .join('.')
 
-        return formattedURL
+          .split('+')
+          .filter(group => {
+            if (group.toLowerCase() === 'git') return lastGitInvalidWord[1]
+            lastGitInvalidWord[1] = true
+            return true
+          })
+          .join('+')
+
+        return formattedURL.trim()
       },
       test: (url) => !!url?.match(pattern)?.length,
       inCWD: () => {
@@ -67,20 +75,22 @@ export default (toolbox: ExtendedGluegunToolbox) => {
         }
       }
 
-      if (!githubRepository.url.test(info.url)) return info
+      if (!githubRepoInfo.url.test(info.url)) return info
 
       const apiURL = `https://api.github.com/repos/${info.author}/${info.name}`
 
       info.api.index = await axios.get(apiURL)
         .then(resp => resp.data)
-        .catch(error => error.response?.data)
+        .catch(() => null)
+        // .catch(error => error.response?.data)
       info.api.contributors = await axios.get(`${apiURL}/contributors`)
         .then(resp => resp.data)
-        .catch(error => error.response?.data)
+        .catch(() => null)
+        // .catch(error => error.response?.data)
 
       return info
     }
   }
 
-  toolbox.githubRepository = githubRepository
+  toolbox.githubRepoInfo = githubRepoInfo
 }

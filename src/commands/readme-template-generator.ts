@@ -14,7 +14,7 @@ const command: GluegunCommand = {
       generateFile,
       isWebURL,
       showBanner,
-      githubRepository,
+      githubRepoInfo,
       filesystem: { read },
       print: { spin }
     } = toolbox
@@ -42,20 +42,20 @@ const command: GluegunCommand = {
 
     const githubRepoURL: string = await question({
       message: 'Repository URL in GitHub (recommend not skip):',
-      defaultValue: githubRepository.url.inCWD() || packageJson.repository?.url?.replace('git+', '')?.replace('.git', ''),
+      defaultValue: githubRepoInfo.url.format(githubRepoInfo.url.inCWD()) || githubRepoInfo.url.format(packageJson.repository?.url),
       validate: (value: string) => {
         if (value === '') return true
-        if (!githubRepository.url.test(value)) return 'Invalid GitHub repository URL'
+        if (!githubRepoInfo.url.test(value)) return 'Invalid GitHub repository URL'
         return true
       },
-      customReturn: (value: string) => githubRepository.url.format(value)
+      customReturn: (value: string) => githubRepoInfo.url.format(value)
     })
 
     const spinner = githubRepoURL && spin('Getting information about repository')
 
-    const githubRepoInfo = await githubRepository.information(itemURL(githubRepoURL, 2), itemURL(githubRepoURL, 1))
+    const githubRepository = await githubRepoInfo.information(itemURL(githubRepoURL, 2), itemURL(githubRepoURL, 1))
 
-    if (!githubRepoInfo.api.index) {
+    if (!githubRepository.api.index) {
       spinner?.fail('Repository not found in GitHub API')
     } else {
       spinner?.succeed('Found with success repository information in GitHub API')
@@ -63,12 +63,12 @@ const command: GluegunCommand = {
 
     const projectName: string = await question({
       message: 'Project name:',
-      defaultValue: githubRepoInfo.name || itemURL(packageJson.repository?.url, 1)?.split('.')[0] || packageJson?.name || itemURL('.', 1)
+      defaultValue: githubRepository.name || itemURL(packageJson.repository?.url, 1)?.split('.')[0] || packageJson?.name || itemURL('.', 1)
     })
 
     const description: string = await question({
       message: 'Write a short description about project:',
-      defaultValue: packageJson.description,
+      defaultValue: githubRepository.api.index.description || packageJson.description,
       validate: (value: string) => value === '' ? 'Description its necessary' : true
     })
 
@@ -213,8 +213,8 @@ const command: GluegunCommand = {
 
     const author: Types.Author = {
       exists: false,
-      name: githubRepoInfo.author || packageJson.author,
-      github: githubRepoInfo.author,
+      name: packageJson.author,
+      github: githubRepository.author,
       twitter: null,
       website: null,
       linkedin: null
@@ -226,7 +226,7 @@ const command: GluegunCommand = {
     })
 
     author.github = await question({
-      message: `Author GitHub username${!githubRepoInfo.author ? ' (use empty value to skip)' : ''}:`,
+      message: `Author GitHub username${!author.github ? ' (use empty value to skip)' : ''}:`,
       defaultValue: author.github
     })
 
@@ -260,10 +260,12 @@ const command: GluegunCommand = {
         value.map((badge) => badge.toLowerCase().replace(/\s/g, ''))
     })
 
+    /// /////
+
     const license: Types.License = {
-      name: read('LICENSE')?.split('\n')[0]?.toUpperCase()?.replace('LICENSE', '')?.trim() ||
+      name: githubRepository.api.index.license.name || read('LICENSE')?.split('\n')[0]?.trim() ||
       packageJson.license,
-      url: githubRepoInfo.url && read('LICENSE') && `${githubRepoInfo.url}/blob/master/LICENSE`
+      url: githubRepository.api.index.license.url || (githubRepository.url && read('LICENSE') && `${githubRepository.url}/blob/master/LICENSE`)
     }
 
     license.name = await question({
@@ -284,7 +286,7 @@ const command: GluegunCommand = {
       props: {
         projectName,
         badges,
-        githubRepoInfo,
+        githubRepository,
         herokuUrl,
         replitUrl,
         packageJson,
