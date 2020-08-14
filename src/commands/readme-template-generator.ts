@@ -72,7 +72,7 @@ const command: GluegunCommand = {
 
     const description: string = await question({
       message: 'Write a short description about project:',
-      defaultValue: githubRepository.api.index.description || packageJson.description,
+      defaultValue: githubRepository.api.index?.description || packageJson.description,
       validate: (value: string) => value === '' ? 'Description its necessary' : true
     })
 
@@ -284,9 +284,9 @@ const command: GluegunCommand = {
     })
 
     const license: Types.License = {
-      name: githubRepository.api.index.license.name || read('LICENSE')?.split('\n')[0]?.trim() ||
+      name: githubRepository.api.index?.license.name || read('LICENSE')?.split('\n')[0]?.trim() ||
       packageJson.license,
-      url: githubRepository.api.index.license.url || (githubRepository.url && read('LICENSE') && `${githubRepository.url}/blob/master/LICENSE`)
+      url: githubRepository.api.index?.license.url || (githubRepository.url && read('LICENSE') && `${githubRepository.url}/blob/master/LICENSE`)
     }
 
     license.name = await question({
