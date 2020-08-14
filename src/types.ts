@@ -27,3 +27,13 @@ export type License = {
   name: string,
   url: string
 }
+
+export type Contribute = {
+  tutor: {
+    show: boolean
+  },
+  contributors: {
+    users: {}[],
+    show: boolean
+  }
+}

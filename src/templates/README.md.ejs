@@ -14,7 +14,7 @@
 
 <h1 id="title">Welcome to <%= props.projectName %> 👋</h1>
 
-<% if (props.status !== 'finished') {%><%- `#### 🚧 ${props.projectName} in ${props.status}... 🚧` %><% } %>
+<% if (props.status === 'development' || props.status === 'production') {%><%- `#### 🚧 ${props.projectName} in ${props.status}... 🚧` %><% } %>
 
 <% if (props.images.logo) {%><%- `<p>
 <img src="${props.images.logo}">
@@ -28,7 +28,7 @@
 <% if (props.images.screenshots.length) {%><%- '</details>'%><% } %>
 
 ### 🔖 Table Of Contents
-<% if (props.about) {%><%= '\n- 📃 [About](#about)'%><% } %><% if (props.technologies.length) {%><%= '\n- 🤔 [How To Use](#how-to-use)'%><%= '\n- 🚀 [Technologies](#technologies)'%><% } %><% if (props.contributeInformation) {%><% if (props.features.finished.length || props.features.pendent.length) {%><%= '\n- 🎇 [Features](#features)'%><% } %><%= '\n- 💡 [How To Contribute](#how-to-contribute)'%><% } %><% if (props.author.exists) {%><%= '\n- 👤 [Author](#author)'%><% } %><% if (props.license.name) {%><%= '\n- 🔏 [License](#license)'%><% } %>
+<% if (props.about) {%><%= '\n- 📃 [About](#about)'%><% } %><% if (props.technologies.length) {%><%= '\n- 🤔 [How To Use](#how-to-use)'%><%= '\n- 🚀 [Technologies](#technologies)'%><% } %><% if (props.contribute.tutor.show) {%><% if (props.features.finished.length || props.features.pendent.length) {%><%= '\n- 🎇 [Features](#features)'%><% } %><%= '\n- 💡 [How To Contribute](#how-to-contribute)'%><% } %><% if (props.contribute.contributors.show) {%><%= '\n - 🤗 [Contributors](#contributors)'%><% } %><% if (props.author.exists) {%><%= '\n- 👤 [Author](#author)'%><% } %><% if (props.license.name) {%><%= '\n- 🔏 [License](#license)'%><% } %>
 
 ---
 
@@ -44,7 +44,7 @@
 <% for (featureFinished of props.features.finished) {%><%= `- [x] ${featureFinished}\n`%><% } %><% for (featurePendent of props.features.finished) {%><%= `- [ ] ${featurePendent}\n`%><% } %>
 <% if (props.features.finished.length || props.features.pendent.length) {%><%- '\n\n[Back To The Top](#title)\n\n---\n'%><% } %>
 
-<% if (props.contributeInformation) {%><%- `<h2 id="how-to-contribute">💡 How To Contribute</h2>\n\n
+<% if (props.contribute.tutor.show) {%><%- `<h2 id="how-to-contribute">💡 How To Contribute</h2>\n\n
 - Make a fork of this repository
 - Clone to you machine and entry on respective paste
 - Create a branch with your resource: \`git checkout -b my-feature\`
@@ -60,6 +60,14 @@ Contributions, issues and features requests are welcome!<br />
 </p>
 \n\n[Back To The Top](#title)\n\n---`%><% } %>
 
+<% if (props.contribute.contributors.show) {%><%- `<h2 id="contributors">🤗 Contributors</h2>\n\n\n<div style="display: flex">`%><% } %>
+<% for (contributor of props.contribute.contributors.users) {%><%- `<img
+style="width: 60px; border-radius: 33px; padding: 3px 3px 3px 3px"
+href="${contributor.html_url}"
+src="${contributor.avatar_url}"
+/>`%><% } %>
+<% if (props.contribute.contributors.show) {%><%- `</div>\n\n\n[Back To The Top](#title)\n\n---`%><% } %>
+
 <% if (props.author.exists) {%><%- '<h2 id="author">👤 Author</h2>\n\n'%><% } %>
 <% if (props.author.name) {%><%- `🤓 **${props.author.name}**\n`%><% } %>
 <% if (props.author.website) {%><%= `- Website: [${props.author.website}](${props.author.website})`%><% } %>
@@ -70,7 +78,7 @@ Contributions, issues and features requests are welcome!<br />
 
 <% if (props.license.name) {%><%- `<h2 id="license">🔏 License</h2>\n\n
 ${props.author.name && props.author.github && `Copyright © ${new Date().getFullYear()} [${props.author.name}](https://github.com/${props.author.github})\n\n`}
-This project is [${props.license.name}](${props.license.url}) licensed.\n\n[Back To The Top](#title)\n\n---\n`%><% } %>
+This project is licensed by [${props.license.name}](${props.license.url}).\n\n[Back To The Top](#title)\n\n---\n`%><% } %>
 
 <span style="font-style: italic;font-size: 12px;">
 This README was generated with 💟 by <a href="https://github.com/Mikael-R/Readme-Template-Generator">Readme-Template-Generator</a>

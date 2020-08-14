@@ -8,15 +8,14 @@ export default (toolbox: ExtendedGluegunToolbox) => {
       filesystem: { cwd }
     } = toolbox
 
-    if (url === undefined) return null
     if (url === '.') url = cwd()
 
-    const item: string =
-      url.split('/')[url.split('/').length - index] === url
-        ? url.split('\\')[url.split('\\').length - index]
-        : url.split('/')[url.split('/').length - index]
+    const item =
+      url?.split('/')[url.split('/').length - index] === url
+        ? url?.split('\\')[url.split('\\').length - index]
+        : url?.split('/')[url.split('/').length - index]
 
-    if (!item) return null
+    if (!item) return ''
 
     return item
   }

@@ -34,7 +34,7 @@ export default (toolbox: ExtendedGluegunToolbox) => {
         const lastGitInvalidWord = [false, false]
 
         const formattedURL = url
-          .split('.')
+          ?.split('.')
           .reverse()
           .filter(group => {
             if (group.toLowerCase() === 'git') return lastGitInvalidWord[0]
@@ -52,14 +52,16 @@ export default (toolbox: ExtendedGluegunToolbox) => {
           })
           .join('+')
 
-        return formattedURL.trim()
+          .trim()
+
+        return formattedURL
       },
       test: (url) => !!url?.match(pattern)?.length,
       inCWD: () => {
         const dir = resolve('.git', 'logs', 'refs', 'remotes', 'origin', 'HEAD')
         const gitFile = read(dir)
 
-        const url = pattern.test(gitFile) ? gitFile.match(pattern)[0] : null
+        const url = gitFile?.match(pattern)[0] || ''
 
         return url
       }

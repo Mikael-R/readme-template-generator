@@ -23,7 +23,7 @@ const command: GluegunCommand = {
 
     message(
       'warning',
-      'Project under development, this is a alpha version!\n' +
+      'Project under development, this is a beta version!\n' +
       'Contribute: https://github.com/Mikael-R/readme-template-generator\n'
     )
 
@@ -45,10 +45,14 @@ const command: GluegunCommand = {
       defaultValue: githubRepoInfo.url.format(githubRepoInfo.url.inCWD()) || githubRepoInfo.url.format(packageJson.repository?.url),
       validate: (value: string) => {
         if (value === '') return true
-        if (!githubRepoInfo.url.test(value)) return 'Invalid GitHub repository URL'
+        if (!githubRepoInfo.url.test(`https://github.com/${value}`)) return 'Invalid GitHub repository URL'
         return true
       },
-      customReturn: (value: string) => githubRepoInfo.url.format(value)
+      customReturn: (value: string) => {
+        if (githubRepoInfo.url.test(value)) return value
+        if (value !== '') return githubRepoInfo.url.format(`https://github.com/${value}`)
+        return value
+      }
     })
 
     const spinner = githubRepoURL && spin('Getting information about repository')
@@ -116,10 +120,10 @@ const command: GluegunCommand = {
       customReturn: (value: string) => value !== '' ? `https://${value}.repl.run` : value
     })
 
-    const status: 'development' | 'production' | 'finished' = await question({
+    const status: 'development' | 'production' | 'finished' | 'skip' = await question({
       type: 'list',
       message: 'Project status:',
-      choices: ['Development', 'Production', 'Finished'],
+      choices: ['Development', 'Production', 'Finished', 'Skip'],
       customReturn: (value: string) => value.toLowerCase()
     })
 
@@ -204,9 +208,28 @@ const command: GluegunCommand = {
       features.pendent.push(pendent)
     }
 
-    const contributeInformation: boolean = githubRepository.url && await question({
+    const contribute: Types.Contribute = {
+      tutor: {
+        show: false
+      },
+      contributors: {
+        users: [],
+        show: false
+      }
+    }
+
+    contribute.tutor.show = githubRepository.url && await question({
       type: 'list',
       message: 'Add tutor how to contribute for this project:',
+      choices: ['Yes', 'No'],
+      customReturn: (value: string) => value === 'Yes'
+    })
+
+    contribute.contributors.users = githubRepository.api.contributors?.filter(contributor => contributor.type === 'User').sort((a, b) => b.contributions - a.contributions) || []
+
+    contribute.contributors.show = contribute.contributors.users.length && await question({
+      type: 'list',
+      message: 'Add contributors profile?',
       choices: ['Yes', 'No'],
       customReturn: (value: string) => value === 'Yes'
     })
@@ -215,13 +238,13 @@ const command: GluegunCommand = {
       exists: false,
       name: packageJson.author,
       github: githubRepository.author,
-      twitter: null,
-      website: null,
-      linkedin: null
+      twitter: '',
+      website: '',
+      linkedin: ''
     }
 
     author.name = await question({
-      message: `Author name${!author.name ? ' (use empty value to skip)' : ''}:`,
+      message: `Author full name${!author.name ? ' (use empty value to skip)' : ''}:`,
       defaultValue: author.name
     })
 
@@ -260,8 +283,6 @@ const command: GluegunCommand = {
         value.map((badge) => badge.toLowerCase().replace(/\s/g, ''))
     })
 
-    /// /////
-
     const license: Types.License = {
       name: githubRepository.api.index.license.name || read('LICENSE')?.split('\n')[0]?.trim() ||
       packageJson.license,
@@ -297,7 +318,7 @@ const command: GluegunCommand = {
         howToUse,
         technologies,
         features,
-        contributeInformation,
+        contribute,
         author,
         license
       }
