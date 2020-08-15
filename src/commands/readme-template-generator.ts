@@ -10,19 +10,17 @@ const command: GluegunCommand = {
       existingFiles,
       itemURL,
       question,
-      message,
       generateFile,
       isWebURL,
       showBanner,
       githubRepoInfo,
       filesystem: { read },
-      print: { spin }
+      print
     } = toolbox
 
     showBanner({ text: 'Readme|Template Generator' })
 
-    message(
-      'warning',
+    print.warning(
       'Project under development, this is a beta version!\n' +
       'Contribute: https://github.com/Mikael-R/readme-template-generator\n'
     )
@@ -44,25 +42,25 @@ const command: GluegunCommand = {
       message: 'Repository URL in GitHub (recommend not skip):',
       defaultValue: githubRepoInfo.url.format(githubRepoInfo.url.inCWD()) || githubRepoInfo.url.format(packageJson.repository?.url),
       validate: (value: string) => {
-        if (value === '') return true
-        if (!githubRepoInfo.url.test(`https://github.com/${value}`)) return 'Invalid GitHub repository URL'
-        return true
+        if (value === '' || githubRepoInfo.url.test(`https://github.com/${value}`)) return true
+        return 'Invalid GitHub repository URL'
       },
       customReturn: (value: string) => {
-        if (githubRepoInfo.url.test(value)) return value
-        if (value !== '') return githubRepoInfo.url.format(`https://github.com/${value}`)
-        return value
+        if (githubRepoInfo.url.test(value) || value === '') return value
+        return githubRepoInfo.url.format(`https://github.com/${value}`)
       }
     })
 
-    const spinner = githubRepoURL && spin('Getting information about repository')
+    const spinner = githubRepoURL && print.spin('Getting information about repository')
 
     const githubRepository = await githubRepoInfo.information(itemURL(githubRepoURL, 2), itemURL(githubRepoURL, 1))
 
-    if (!githubRepository.api.index) {
-      spinner?.fail('Repository not found in GitHub API')
-    } else {
+    if (githubRepository.api.index) {
       spinner?.succeed('Found with success repository information in GitHub API')
+    } else if (!await githubRepoInfo.testConnection()) {
+      spinner?.warn('Not found repository because wi-fi connection')
+    } else {
+      spinner?.fail('Repository not found in GitHub API')
     }
 
     const projectName: string = await question({
@@ -101,10 +99,11 @@ const command: GluegunCommand = {
     const herokuUrl: string = await question({
       message: 'Heroku URL (use empty value to skip):',
       validate: (value: string) => {
-        if (value === '') return true
-        if (!isWebURL(value)) return 'Invalid URL'
-        badges.toSelect.push('Heroku')
-        return true
+        if (value === '' || isWebURL(value)) {
+          badges.toSelect.push('Heroku')
+          return true
+        }
+        return 'Invalid URL'
       },
       customReturn: (value: string) => value !== '' ? `https://${value}` : value
     })
@@ -112,10 +111,11 @@ const command: GluegunCommand = {
     const replitUrl: string = await question({
       message: 'Repl.it URL (use empty value to skip):',
       validate: (value: string) => {
-        if (value === '') return true
-        if (!isWebURL(value)) return 'Invalid URL'
-        badges.toSelect.push('Repl.it')
-        return true
+        if (value === '' || isWebURL(value)) {
+          badges.toSelect.push('Repl.it')
+          return true
+        }
+        return 'Invalid URL'
       },
       customReturn: (value: string) => value !== '' ? `https://${value}.repl.run` : value
     })
@@ -130,9 +130,8 @@ const command: GluegunCommand = {
     const logo: string = await question({
       message: 'Logo image URL or path (use empty value to skip):',
       validate: (value: string) => {
-        if (value === '') return true
-        if (!isWebURL(value) && !existingFiles(value).length) return 'Value informed not is URL/Path valid'
-        return true
+        if (value === '' || isWebURL(value) || existingFiles(itemURL(value, 1), itemURL(value, 1)).length) return true
+        return 'Value informed not is URL/Path valid'
       }
     })
 
@@ -145,9 +144,8 @@ const command: GluegunCommand = {
       const screenshot: string = await question({
         message: 'GIF/image URL or path for screenshots (use empty value to skip):',
         validate: (value: string) => {
-          if (value === '') return true
-          if (!isWebURL(value) && !existingFiles(value).length) return 'Value informed not is URL/Path valid'
-          return true
+          if (value === '' || isWebURL(value) || existingFiles(value).length) return true
+          return 'Value informed not is URL/Path valid'
         }
       })
 
@@ -163,12 +161,7 @@ const command: GluegunCommand = {
       type: 'editor',
       message: 'Inform how to use project:',
       defaultValue: '#### 💻 Desktop\n\n\n\n#### 🌐 Online',
-      validate: (value: string) => {
-        if (value === '') {
-          return 'Information how to use its necessary'
-        }
-        return true
-      }
+      validate: (value: string) => value === '' ? 'Information how to use its necessary' : true
     })
 
     const technologies: string[] = []
@@ -268,8 +261,8 @@ const command: GluegunCommand = {
     author.website = await question({
       message: 'Author website (use empty value to skip):',
       validate: (value: string) => {
-        if (value !== '' && !isWebURL(value)) return 'Invalid URL'
-        return true
+        if (value === '' || isWebURL(value)) return true
+        return 'Invalid URL'
       }
     })
 
@@ -279,7 +272,7 @@ const command: GluegunCommand = {
       type: 'checkbox',
       message: 'Select badges for use:',
       choices: badges.toSelect,
-      customReturn: (value: string[]) =>
+      customReturn: (value: string[]) => // convert to lowercase and remove spaces
         value.map((badge) => badge.toLowerCase().replace(/\s/g, ''))
     })
 
@@ -324,7 +317,7 @@ const command: GluegunCommand = {
       }
     })
 
-    message('success', '\nGenerated README.md file with success in current dir!\n')
+    print.success('\nGenerated README.md file with success in current dir!\n')
   }
 }
 

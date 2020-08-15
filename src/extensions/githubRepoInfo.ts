@@ -1,7 +1,5 @@
 import ExtendedGluegunToolbox from 'src/interfaces/extended-gluegun-toolbox'
 
-import axios from 'axios'
-
 type Info = {
   url: string,
   name: string,
@@ -18,15 +16,22 @@ export type GithubRepoInfo = {
     test: (url: string) => boolean,
     inCWD: () => string
   },
+  testConnection: () => Promise<boolean>
   information: (author: string, name: string) => Promise<Info>
 }
 
 export default (toolbox: ExtendedGluegunToolbox) => {
   const {
-    filesystem: { read, resolve }
+    filesystem: { read, resolve },
+    http: { create }
   } = toolbox
 
   const pattern = /(https|http):\/\/github\.com\/([A-z0-9]|((?<!\/)-(?!(-|\/))))+\/(\w|-|\.)+/gm
+
+  const api = create({
+    baseURL: 'https://api.github.com',
+    headers: { Accept: 'application/vnd.github.v4+json' }
+  })
 
   const githubRepoInfo: GithubRepoInfo = {
     url: {
@@ -66,29 +71,33 @@ export default (toolbox: ExtendedGluegunToolbox) => {
         return url
       }
     },
+    testConnection: async () => (await api.get('/repos')).ok,
     information: async (author, name) => {
       const info: Info = {
-        url: `https://github.com/${author}/${name}`,
-        name,
-        author,
+        url: null,
+        name: null,
+        author: null,
         api: {
           index: null,
           contributors: null
         }
       }
 
-      if (!githubRepoInfo.url.test(info.url)) return info
+      if (!githubRepoInfo.url.test(`https://github.com/${author}/${name}`)) return info
 
-      const apiURL = `https://api.github.com/repos/${info.author}/${info.name}`
+      info.url = `https://github.com/${author}/${name}`
+      info.name = name
+      info.author = author
 
-      info.api.index = await axios.get(apiURL)
-        .then(resp => resp.data)
-        .catch(() => null)
-        // .catch(error => error.response?.data)
-      info.api.contributors = await axios.get(`${apiURL}/contributors`)
-        .then(resp => resp.data)
-        .catch(() => null)
-        // .catch(error => error.response?.data)
+      info.api.index = await (async () => {
+        const { ok, data } = await api.get(`/repos/${info.author}/${info.name}`)
+        return ok ? data : null
+      })()
+
+      info.api.contributors = await (async () => {
+        const { ok, data } = await api.get(`/repos/${info.author}/${info.name}/contributors`)
+        return ok ? data : null
+      })()
 
       return info
     }
