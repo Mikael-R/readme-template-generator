@@ -28,7 +28,7 @@
 <% if (props.images.screenshots.length) {%><%- '</details>'%><% } %>
 
 ### 🔖 Table Of Contents
-<% if (props.about) {%><%= '\n- 📃 [About](#about)'%><% } %><% if (props.technologies.length) {%><%= '\n- 🤔 [How To Use](#how-to-use)'%><%= '\n- 🚀 [Technologies](#technologies)'%><% } %><% if (props.contribute.tutor.show) {%><% if (props.features.finished.length || props.features.pendent.length) {%><%= '\n- 🎇 [Features](#features)'%><% } %><%= '\n- 💡 [How To Contribute](#how-to-contribute)'%><% } %><% if (props.contribute.contributors.show) {%><%= '\n - 🤗 [Contributors](#contributors)'%><% } %><% if (props.author.exists) {%><%= '\n- 👤 [Author](#author)'%><% } %><% if (props.license.name) {%><%= '\n- 🔏 [License](#license)'%><% } %>
+<% if (props.about) {%><%= '\n- 📃 [About](#about)'%><% } %><%= '\n- 🤔 [How To Use](#how-to-use)'%><% if (props.technologies.length) {%><%= '\n- 🚀 [Technologies](#technologies)'%><% } %><% if (props.requirements.length) {%><%= '\n- 🌱 [Minimal Requirements](#minimal-requirements)'%><% } %><% if (props.contribute.tutor.show) {%><% if (props.features.finished.length || props.features.pendent.length) {%><%= '\n- 🎇 [Features](#features)'%><% } %><%= '\n- 💡 [How To Contribute](#how-to-contribute)'%><% } %><% if (props.contribute.contributors.show) {%><%= '\n - 🤗 [Contributors](#contributors)'%><% } %><% if (props.author.exists) {%><%= '\n- 👤 [Author](#author)'%><% } %><% if (props.license.name) {%><%= '\n- 🔏 [License](#license)'%><% } %>
 
 ---
 
@@ -39,6 +39,10 @@
 <% if (props.technologies.length) {%><%- '<h2 id="technologies">🚀 Technologies</h2>\n\n'%><% } %>
 <% for (tech of props.technologies) {%><%= `- ${tech}\n`%><% } %>
 <% if (props.technologies.length) {%><%= '\n\n[Back To The Top](#title)\n\n---\n'%><% } %>
+
+<% if (props.requirements.length) {%><%- '<h2 id="minimal-requirements">🌱 Minimal Requirements</h2>\n\n'%><% } %>
+<% for (requirement of props.requirements) {%><%= `- ${requirement}\n`%><% } %>
+<% if (props.requirements.length) {%><%= '\n\n[Back To The Top](#title)\n\n---\n'%><% } %>
 
 <% if (props.features.finished.length || props.features.pendent.length) {%><%- '<h2 id="features">🎇 Features</h2>\n\n'%><% } %>
 <% for (featureFinished of props.features.finished) {%><%= `- [x] ${featureFinished}\n`%><% } %><% for (featurePendent of props.features.finished) {%><%= `- [ ] ${featurePendent}\n`%><% } %>

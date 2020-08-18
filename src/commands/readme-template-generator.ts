@@ -176,6 +176,18 @@ const command: GluegunCommand = {
       technologies.push(tech)
     }
 
+    const requirements: string[] = []
+
+    while (true) {
+      const requirement: string = await question({
+        message: '🌱 List a minimal requirements to run project (use empty value to skip):'
+      })
+
+      if (!requirement) break
+
+      requirements.push(requirement)
+    }
+
     const features: Types.Features = {
       finished: [],
       pendent: []
@@ -310,6 +322,7 @@ const command: GluegunCommand = {
         about,
         howToUse,
         technologies,
+        requirements,
         features,
         contribute,
         author,
