@@ -14,16 +14,12 @@ const command: GluegunCommand = {
       isWebURL,
       showBanner,
       githubRepoInfo,
+      NPMPackageInfo,
       filesystem: { read },
       print
     } = toolbox
 
     showBanner({ text: 'Readme|Template Generator' })
-
-    print.warning(
-      'Project under development, this is a beta version!\n' +
-      'Contribute: https://github.com/Mikael-R/readme-template-generator\n'
-    )
 
     if (existingFiles('README.md').indexOf('README.md') !== -1) {
       const overwrite: boolean = await question({
@@ -36,11 +32,11 @@ const command: GluegunCommand = {
       if (!overwrite) process.exit(0)
     }
 
-    const packageJson = JSON.parse(read('package.json') || '{}')
+    const packageJson = read('package.json', 'json')
 
     const githubRepoURL: string = await question({
       message: '🎥 Repository URL in GitHub (recommend not skip):',
-      defaultValue: githubRepoInfo.url.format(githubRepoInfo.url.inCWD()) || githubRepoInfo.url.format(packageJson.repository?.url),
+      defaultValue: githubRepoInfo.url.format(githubRepoInfo.url.inCWD()) || githubRepoInfo.url.format(packageJson?.repository.url),
       validate: (value: string) => {
         if (value === '' || githubRepoInfo.url.test(`https://github.com/${value}`)) return true
         return 'Invalid GitHub repository URL'
@@ -71,7 +67,7 @@ const command: GluegunCommand = {
 
     const projectName: string = await question({
       message: '👋 Project name:',
-      defaultValue: githubRepository.name || itemURL(packageJson.repository?.url, 1)?.split('.')[0] || packageJson?.name || itemURL('.', 1)
+      defaultValue: githubRepository.name || itemURL(packageJson?.repository.url, 1)?.split('.')[0] || packageJson?.name || itemURL('.', 1)
     })
 
     const status: 'development' | 'production' | 'finished' | 'skip' = await question({
@@ -83,7 +79,7 @@ const command: GluegunCommand = {
 
     const description: string = await question({
       message: '📝 Write a short description about project:',
-      defaultValue: githubRepository.api.index?.description || packageJson.description,
+      defaultValue: githubRepository.api.index?.description || packageJson?.description,
       validate: (value: string) => value === '' ? 'Description its necessary' : true
     })
 
@@ -99,7 +95,7 @@ const command: GluegunCommand = {
       )
     }
 
-    if (packageJson.name) {
+    if (packageJson?.name) {
       badges.toSelect.push('NPM Version', 'NPM Monthly Downloads')
     }
 
@@ -241,7 +237,7 @@ const command: GluegunCommand = {
 
     const author: Types.Author = {
       exists: false,
-      name: packageJson.author,
+      name: packageJson?.author,
       github: githubRepository.author,
       twitter: '',
       website: '',
@@ -290,7 +286,7 @@ const command: GluegunCommand = {
 
     const license: Types.License = {
       name: githubRepository.api.index?.license.name || read('LICENSE')?.split('\n')[0]?.trim() ||
-      packageJson.license,
+      packageJson?.license,
       url: githubRepository.api.index?.license.url || (githubRepository.url && read('LICENSE') && `${githubRepository.url}/blob/master/LICENSE`)
     }
 
@@ -331,6 +327,14 @@ const command: GluegunCommand = {
     })
 
     print.success('\nGenerated README.md file with success in current dir!\n')
+
+    await NPMPackageInfo().then(info => {
+      if (info.needUpdate) {
+        print.warning(`\nYou using a version: ${info.version.now}`)
+        print.warning(`New version is available: ${info.version.latest}`)
+        print.warning('Run npm i readme-template-generator@latest to update/install package\n')
+      }
+    })
   }
 }
 

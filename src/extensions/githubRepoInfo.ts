@@ -90,12 +90,12 @@ export default (toolbox: ExtendedGluegunToolbox) => {
       info.author = author
 
       info.api.index = await (async () => {
-        const { ok, data } = await api.get(`/repos/${info.author}/${info.name}`)
+        const { ok, data } = await api.get(`repos/${info.author}/${info.name}`)
         return ok ? data : null
       })()
 
       info.api.contributors = await (async () => {
-        const { ok, data } = await api.get(`/repos/${info.author}/${info.name}/contributors`)
+        const { ok, data } = await api.get(`repos/${info.author}/${info.name}/contributors`)
         return ok ? data : null
       })()
 
