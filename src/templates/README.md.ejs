@@ -23,8 +23,8 @@
 
 <%- `> ${props.description}`%>
 
-<% if (props.images.screenshots.length) {%><%- '<details>\n<summary>Screenshots</summary>'%><% } %>
-<%= props.images.screenshots.map(screenshot => `<img src="${screenshot}">`)%>
+<% if (props.images.screenshots.length) {%><%- '<details>\n<summary>Screenshots</summary>\n\n'%><% } %>
+<% for (screenshot of props.images.screenshots) {%><%- `<img src="${screenshot}">\n`%><% } %>
 <% if (props.images.screenshots.length) {%><%- '</details>'%><% } %>
 
 ### 🔖 Table Of Contents

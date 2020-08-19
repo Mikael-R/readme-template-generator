@@ -131,7 +131,7 @@ const command: GluegunCommand = {
     const logo: string = await question({
       message: '🎴 Logo image URL or path (use empty value to skip):',
       validate: (value: string) => {
-        if (value === '' || isWebURL(value) || existingFiles(itemURL(value, 1), itemURL(value, 1)).length) return true
+        if (value === '' || isWebURL(value) || existingFiles(itemURL(value, 1), value.replace(itemURL(value, 1), '')).length) return true
         return 'Value informed not is URL/Path valid'
       }
     })
@@ -145,12 +145,14 @@ const command: GluegunCommand = {
       const screenshot: string = await question({
         message: '🌈 GIF/image URL or path for screenshots (use empty value to skip):',
         validate: (value: string) => {
-          if (value === '' || isWebURL(value) || existingFiles(value).length) return true
+          if (value === '' || isWebURL(value) || existingFiles(itemURL(value, 1), value.replace(itemURL(value, 1), '')).length) return true
           return 'Value informed not is URL/Path valid'
         }
       })
 
       if (!screenshot) break
+
+      images.screenshots.push(screenshot)
     }
 
     const about: string = await question({
