@@ -7,7 +7,6 @@ import { ItemURL } from 'src/extensions/itemURL'
 import { Question } from 'src/extensions/question'
 import { ShowBanner } from 'src/extensions/showBanner'
 import { GithubRepoInfo } from 'src/extensions/githubRepoInfo'
-import { NPMPackageInfo } from 'src/extensions/NPMPackageInfo'
 
 export default interface ExtendedGluegunToolbox extends IHelperExtendedGluegunToolbox {
   existingFiles: ExistingFiles,
@@ -16,6 +15,5 @@ export default interface ExtendedGluegunToolbox extends IHelperExtendedGluegunTo
   isWebURL: IsWebURL,
   question: Question,
   showBanner: ShowBanner,
-  githubRepoInfo: GithubRepoInfo,
-  NPMPackageInfo: NPMPackageInfo
+  githubRepoInfo: GithubRepoInfo
 }

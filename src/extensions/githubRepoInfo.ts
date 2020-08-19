@@ -1,22 +1,22 @@
 import ExtendedGluegunToolbox from 'src/interfaces/extended-gluegun-toolbox'
 
-type Info = {
-  url: string,
-  name: string,
-  author: string,
+interface Info {
+  haveConnection: boolean
+  url: string
+  name: string
+  author: string
   api: {
-    index: any,
+    index: any
     contributors: any
   }
 }
 
-export type GithubRepoInfo = {
+export interface GithubRepoInfo {
   url: {
-    format: (url: string) => string,
-    test: (url: string) => boolean,
+    format: (url: string) => string
+    test: (url: string) => boolean
     inCWD: () => string
-  },
-  testConnection: () => Promise<boolean>
+  }
   information: (author: string, name: string) => Promise<Info>
 }
 
@@ -71,9 +71,9 @@ export default (toolbox: ExtendedGluegunToolbox) => {
         return url
       }
     },
-    testConnection: async () => (await api.get('/repos')).ok,
     information: async (author, name) => {
       const info: Info = {
+        haveConnection: false,
         url: null,
         name: null,
         author: null,
@@ -82,6 +82,8 @@ export default (toolbox: ExtendedGluegunToolbox) => {
           contributors: null
         }
       }
+
+      if ((await api.get('repos')).ok) info.haveConnection = true
 
       if (!githubRepoInfo.url.test(`https://github.com/${author}/${name}`)) return info
 

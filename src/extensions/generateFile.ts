@@ -1,10 +1,11 @@
 import ExtendedGluegunToolbox from 'src/interfaces/extended-gluegun-toolbox'
 
-export type GenerateFile =
+export interface GenerateFile {
   (
     { template, target, props, trim }:
     { template: string, target: string, props: {}, trim?: boolean }
-  ) => void
+  ): void
+}
 
 export default (toolbox: ExtendedGluegunToolbox) => {
   const generateFile: GenerateFile = ({ template, target, props, trim = true }) => {

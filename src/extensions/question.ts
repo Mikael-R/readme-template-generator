@@ -1,6 +1,8 @@
 import ExtendedGluegunToolbox from 'src/interfaces/extended-gluegun-toolbox'
 
-export type Question =
+import { prompt } from 'inquirer'
+
+export interface Question {
   ({
     type, message, defaultValue, choices, pageSize, validate, transformer, customReturn
   }: {
@@ -12,7 +14,8 @@ export type Question =
     validate?: Function,
     transformer?: Function,
     customReturn?: Function
-  }) => any
+  }): any
+}
 
 export default (toolbox: ExtendedGluegunToolbox) => {
   const question: Question = async ({
@@ -25,8 +28,6 @@ export default (toolbox: ExtendedGluegunToolbox) => {
     transformer,
     customReturn = (value) => value
   }) => {
-    const { prompt } = require('inquirer')
-
     const { value } = await prompt({
       type,
       name: 'value',

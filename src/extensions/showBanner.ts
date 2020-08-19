@@ -2,7 +2,7 @@ import ExtendedGluegunToolbox from 'src/interfaces/extended-gluegun-toolbox'
 
 import { say } from 'cfonts'
 
-export type ShowBanner =
+export interface ShowBanner {
   ({
     text,
     font,
@@ -31,7 +31,8 @@ export type ShowBanner =
     independentGradient?: boolean,
     transitionGradient?: boolean,
     env?: string
-  }) => void
+  }): void
+}
 
 export default (toolbox: ExtendedGluegunToolbox) => {
   const showBanner: ShowBanner = ({

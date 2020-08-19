@@ -1,6 +1,8 @@
 import ExtendedGluegunToolbox from 'src/interfaces/extended-gluegun-toolbox'
 
-export type ItemURL = (url: string, index: number) => string
+export interface ItemURL {
+  (url: string, index: number): string
+}
 
 export default (toolbox: ExtendedGluegunToolbox) => {
   const itemURL: ItemURL = (url, index) => {
