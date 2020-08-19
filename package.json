@@ -1,6 +1,6 @@
 {
   "name": "readme-template-generator",
-  "version": "0.7.8",
+  "version": "0.8.2",
   "description": "CLI to help create readme file to document your project",
   "private": false,
   "repository": {

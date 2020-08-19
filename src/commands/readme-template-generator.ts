@@ -107,19 +107,20 @@ const command: GluegunCommand = {
     const herokuUrl: string = await question({
       message: '🔗 Heroku URL (use empty value to skip):',
       validate: (value: string) => {
-        if (value === '' || isWebURL(value)) {
+        if (value === '') return true
+        if (isWebURL(value)) {
           badges.toSelect.push('Heroku')
           return true
         }
         return 'Invalid URL'
-      },
-      customReturn: (value: string) => value !== '' ? `https://${value}` : value
+      }
     })
 
     const replitUrl: string = await question({
       message: '🔗 Repl.it URL (use empty value to skip):',
       validate: (value: string) => {
-        if (value === '' || isWebURL(value)) {
+        if (value === '') return true
+        if (isWebURL(`https://${value}.repl.run`)) {
           badges.toSelect.push('Repl.it')
           return true
         }
