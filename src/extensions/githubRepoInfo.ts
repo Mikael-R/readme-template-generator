@@ -83,7 +83,7 @@ export default (toolbox: ExtendedGluegunToolbox) => {
         }
       }
 
-      if ((await api.get('repos')).ok) info.haveConnection = true
+      if ((await api.get('repos') as any)?.data?.message) info.haveConnection = true
 
       if (!githubRepoInfo.url.test(`https://github.com/${author}/${name}`)) return info
 
