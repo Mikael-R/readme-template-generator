@@ -1,5 +1,3 @@
-<header align="center">
-
 [![Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/Mikael-R/readme-template-generator)
 
 [![NPM Version](https://img.shields.io/npm/v/readme-template-generator.svg?style=flat-square)](https://www.npmjs.com/package/readme-template-generator) [![NPM Monthly Downloads](https://img.shields.io/npm/dm/readme-template-generator.svg?style=flat-square)](https://npmjs.org/package/readme-template-generator)
@@ -10,11 +8,9 @@
 
 [![Author Twitter](https://img.shields.io/twitter/follow/mikaelr16.svg?style=social)](https://twitter.com/mikaelr16)
 
-<h1 id="title">Welcome to readme-template-generator 👋</h1>
+<h1 id="title" align="center">Welcome to readme-template-generator 👋</h1>
 
-#### 🚧 readme-template-generator in development... 🚧
-
-</header>
+<h4 align="center"> 🚧 readme-template-generator in development... 🚧</h4>
 
 > A readme template generator for your repositories
 
@@ -35,7 +31,7 @@
 
 #### 💻 Desktop
 
-If you use Linux, try run commands as ``sudo``
+If you use Linux, try run commands bellow as `sudo`
 
 ```sh
 npm i -g readme-template-generator
@@ -49,6 +45,10 @@ yarn add -g readme-template-generator
 
 ```sh
 npx readme-template-generator
+```
+or
+```
+yarn dlx readme-template-generator
 ```
 
 [Back To The Top](#title)
@@ -81,10 +81,6 @@ npx readme-template-generator
 - [x] Added emoji in questions
 - [x] Integration with GitHub
 - [x] Inform if need update
-- [ ] Finished template
-- [ ] Added emoji in questions
-- [ ] Integration with GitHub
-- [ ] Inform if need update
 
 [Back To The Top](#title)
 
@@ -100,11 +96,11 @@ npx readme-template-generator
 - A green button will appear at the beginning of this repository
 - Click to open and fill in the pull request information
 
-<p align="center" style="font-style: italic;">
-Contributions, issues and features requests are welcome!<br />
-📮 Submit PRs to help solve issues or add features<br />
-🐛 Find and report issues<br />
-🌟 Star the project<br />
+<p align="center">
+<i>Contributions, issues and features requests are welcome!</i><br />
+<i>📮 Submit PRs to help solve issues or add features</i><br />
+<i>🐛 Find and report issues</i><br />
+<i>🌟 Star the project</i><br />
 </p>
 
 [Back To The Top](#title)
@@ -113,13 +109,11 @@ Contributions, issues and features requests are welcome!<br />
 
 <h2 id="contributors">🤗 Contributors</h2>
 
-<div style="display: flex">
-<img
-style="width: 60px; border-radius: 33px; padding: 3px 3px 3px 3px"
-href="https://github.com/Mikael-R"
-src="https://avatars1.githubusercontent.com/u/60241602?v=4"
-/>
-</div>
+<p>
+
+<a href="https://github.com/Mikael-R"><img width="60" src="https://avatars1.githubusercontent.com/u/60241602?v=4"/>
+
+</p>
 
 [Back To The Top](#title)
 
@@ -131,7 +125,7 @@ src="https://avatars1.githubusercontent.com/u/60241602?v=4"
 
 - Twitter: [@mikaelr16](https://twitter.com/mikaelr16)
 - Github: [@Mikael-R](https://github.com/Mikael-R)
-- LinkedIn: [@/mikael-rolim-522aa21b1](https://linkedin.com/in/mikael-rolim-522aa21b1)
+- LinkedIn: [@mikael-rolim-522aa21b1](https://linkedin.com/in/mikael-rolim-522aa21b1)
 
 [Back To The Top](#title)
 
