@@ -46,8 +46,8 @@ yarn add -g readme-template-generator
 ```sh
 npx readme-template-generator
 ```
-or
-```
+or using yarn v2-beta
+```sh
 yarn dlx readme-template-generator
 ```
 
@@ -141,6 +141,4 @@ This project is licensed by [MIT License](https://api.github.com/licenses/mit).
 
 ---
 
-<span style="font-style: italic;font-size: 12px;">
-This README was generated with 💟 by <a href="https://github.com/Mikael-R/Readme-Template-Generator">Readme-Template-Generator</a>
-</span>
+_This README was generated with 💟 by [Readme-Template-Generator](https://github.com/Mikael-R/Readme-Template-Generator)_

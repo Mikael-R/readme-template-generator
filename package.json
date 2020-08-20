@@ -1,6 +1,6 @@
 {
   "name": "readme-template-generator",
-  "version": "0.8.5",
+  "version": "0.8.6",
   "description": "CLI to help create readme file to document your project",
   "private": false,
   "repository": {
@@ -35,7 +35,7 @@
     "tsconfig.json",
     "dist",
     "LICENSE",
-    "readme.md",
+    "README.md",
     "docs",
     "bin"
   ],
