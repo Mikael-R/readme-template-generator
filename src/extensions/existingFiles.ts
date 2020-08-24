@@ -1,7 +1,7 @@
 import ExtendedGluegunToolbox from 'src/interfaces/extended-gluegun-toolbox'
 
 export interface ExistingFiles {
-   (file: string, directory?: string): string[]
+  (file: string, directory?: string): string[]
 }
 
 export default (toolbox: ExtendedGluegunToolbox) => {

@@ -100,7 +100,7 @@ const command: GluegunCommand = {
       )
     }
 
-    if (packageJSON?.name) {
+    if (!packageJSON?.private) {
       badges.toSelect.push('NPM Version', 'NPM Monthly Downloads')
     }
 
