@@ -1,6 +1,6 @@
 {
   "name": "readme-template-generator",
-  "version": "0.8.9",
+  "version": "0.8.10",
   "description": "CLI to help create readme file to document your project",
   "private": false,
   "repository": {
@@ -19,17 +19,12 @@
     "url": "https://github.com/Mikael-R/readme-template-generator/issues"
   },
   "homepage": "https://github.com/Mikael-R/readme-template-generator#readme",
-  "types": "dist/types/types.d.ts",
   "bin": {
     "readme-template-generator": "bin/readme-template-generator"
   },
   "scripts": {
     "format": "eslint src --ext ts",
-    "dist": "rm -rf dist && babel src --extensions \".ts\" --out-dir dist --copy-files --no-comments",
-    "test": "jest",
-    "watch": "jest --watch",
-    "snapupdate": "jest --updateSnapshot",
-    "coverage": "jest --coverage"
+    "dist": "babel src --extensions \".ts\" --out-dir dist --copy-files --no-comments"
   },
   "files": [
     "tsconfig.json",
@@ -43,7 +38,7 @@
   "dependencies": {
     "cfonts": "^2.8.5",
     "gluegun": "latest",
-    "inquirer": "^7.3.0"
+    "inquirer": "^7.3.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.4",
@@ -54,7 +49,6 @@
     "@commitlint/cli": "^9.0.1",
     "@commitlint/config-conventional": "^9.0.1",
     "@lenne.tech/cli-plugin-helper": "0.0.8",
-    "@types/jest": "^24.0.18",
     "@types/node": "^12.7.11",
     "@typescript-eslint/eslint-plugin": "^3.6.1",
     "@typescript-eslint/parser": "^3.6.1",
@@ -66,33 +60,11 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
-    "find-file-up": "^2.0.1",
     "git-cz": "^4.7.0",
     "husky": "^4.2.5",
-    "jest": "^24.1.0",
+    "lint-staged": "^10.2.13",
     "standard": "^12.0.1",
     "ts-node": "^8.4.1",
     "typescript": "^3.6.3"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "yarn format && yarn dist",
-      "prepare-commit-msg": "exec < /dev/tty && gitcz --hook || true",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
-  },
-  "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "node"
-  },
-  "standard": {
-    "env": [
-      "jest"
-    ]
   }
 }
