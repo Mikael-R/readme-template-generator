@@ -17,8 +17,16 @@ jobs:
           node-version: 12
           registry-url: https://registry.npmjs.org
 
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
       - name: Install dependencies
-        run: yarn
+        run: yarn install
+
+      - name: Build dist files
+        run: yarn dist
 
       - name: Publish
         run: yarn publish
