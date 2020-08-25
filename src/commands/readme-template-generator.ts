@@ -331,10 +331,11 @@ const command: GluegunCommand = {
         contribute,
         author,
         license
-      }
+      },
+      trim: false
     })
-
-    print.success('\nGenerated README.md file with success in current dir!\n')
+      .then(() => print.success('\nGenerated README.md file with success in current dir!'))
+      .catch((error) => print.error(error))
   }
 }
 

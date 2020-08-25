@@ -1,42 +1,58 @@
 import ExtendedGluegunToolbox from 'src/interfaces/extended-gluegun-toolbox'
 
+import replaceAll from 'src/utils/replaceAll'
+
 export interface GenerateFile {
   (
-    { template, target, props, trim }:
-    { template: string, target: string, props: {}, trim?: boolean }
-  ): void
+    { template, target, props }
+    :{ template: string, target: string, props: {}, trim?: boolean }
+  ): Promise<void>
 }
 
 export default (toolbox: ExtendedGluegunToolbox) => {
-  const generateFile: GenerateFile = ({ template, target, props, trim = true }) => {
+  const generateFile: GenerateFile = async ({ template, target, props, trim = true }) => {
     const {
       template: { generate },
       filesystem: { read, write }
     } = toolbox
 
-    const trimFile = (str: string) => {
+    const trimFile = () => {
+      let fileText = read(target)
+
       // Remove the whitespace at the beginning of the string
-      str = str.trim()
+      fileText = fileText.trim()
 
       // Removes whitespace at the beginning and end of each line in the str
-      str = str
+      fileText = fileText
         .split('\n')
         .map(line => line.trim())
         .join('\n')
 
       // Removes blank lines, starting from two or more
-      str = str.replace(/[\r\n]{2,}/g, '\n\n')
+      fileText = fileText.replace(/[\r\n]{2,}/g, '\n\n')
 
-      return str + '\n'
+      // create end blank line
+      fileText += '\n'
+
+      // replace temporary character to normal spaces
+      // this is necessary to preserve spaces in props
+      fileText = replaceAll(fileText, { toReplace: '¨¨', replacer: '  ' })
+
+      write(target, fileText)
     }
 
-    generate({ template, target, props })
-
+    // replace spaces to temporary characters
     if (trim) {
-      const data: string = trimFile(read(target))
+      const propsContentsInArray: [string, any][] = Object.entries(props)
 
-      write(target, data)
+      for (const content of propsContentsInArray) {
+        props[content[0]] = replaceAll(content[1], { toReplace: '  ', replacer: '¨¨' })
+      }
     }
+
+    await generate({ template, target, props })
+
+    if (trim) trimFile()
   }
 
   toolbox.generateFile = generateFile
