@@ -1,22 +1,11 @@
 interface ReplaceAll {
-  (text: string, values: { toReplace: string[] | string, replacer: string }): string
+  (text: string, search: string, replace: string): string
 }
 
-const replaceAll: ReplaceAll = (text, { toReplace, replacer }) => {
+const replaceAll: ReplaceAll = (text, search, replace) => {
   if (typeof text !== 'string') return text
 
-  if (typeof toReplace === 'string') toReplace = [toReplace]
-
-  for (const value of toReplace) {
-    const searchRegex = new RegExp(value)
-
-    text = text
-      .split('\n')
-      .map(line => line.replace(searchRegex, replacer))
-      .join('\n')
-  }
-
-  return text
+  return text.split(search).join(replace)
 }
 
 export default replaceAll

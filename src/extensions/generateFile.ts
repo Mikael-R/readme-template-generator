@@ -1,6 +1,6 @@
 import ExtendedGluegunToolbox from 'src/interfaces/extended-gluegun-toolbox'
 
-import replaceAll from 'src/utils/replaceAll'
+import replaceAll from '../utils/replaceAll'
 
 export interface GenerateFile {
   (
@@ -19,7 +19,7 @@ export default (toolbox: ExtendedGluegunToolbox) => {
     const trimFile = () => {
       let fileText = read(target)
 
-      // Remove the whitespace at the beginning of the string
+      // Remove the whitespace at the beginning and end of the string
       fileText = fileText.trim()
 
       // Removes whitespace at the beginning and end of each line in the str
@@ -35,8 +35,7 @@ export default (toolbox: ExtendedGluegunToolbox) => {
       fileText += '\n'
 
       // replace temporary character to normal spaces
-      // this is necessary to preserve spaces in props
-      fileText = replaceAll(fileText, { toReplace: '¨¨', replacer: '  ' })
+      fileText = replaceAll(fileText, '¨', ' ')
 
       write(target, fileText)
     }
@@ -46,7 +45,7 @@ export default (toolbox: ExtendedGluegunToolbox) => {
       const propsContentsInArray: [string, any][] = Object.entries(props)
 
       for (const content of propsContentsInArray) {
-        props[content[0]] = replaceAll(content[1], { toReplace: '  ', replacer: '¨¨' })
+        props[content[0]] = replaceAll(content[1], ' ', '¨')
       }
     }
 

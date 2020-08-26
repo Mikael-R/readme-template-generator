@@ -331,8 +331,7 @@ const command: GluegunCommand = {
         contribute,
         author,
         license
-      },
-      trim: false
+      }
     })
       .then(() => print.success('\nGenerated README.md file with success in current dir!'))
       .catch((error) => print.error(error))

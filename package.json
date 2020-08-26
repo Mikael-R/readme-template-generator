@@ -1,6 +1,6 @@
 {
   "name": "readme-template-generator",
-  "version": "0.8.10",
+  "version": "0.9.0",
   "description": "CLI to help create readme file to document your project",
   "private": false,
   "repository": {
@@ -60,6 +60,7 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
+    "find-file-up": "^2.0.1",
     "git-cz": "^4.7.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.13",
