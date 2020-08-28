@@ -18,10 +18,10 @@ export interface PackageJSON {
   directories?: any
   repository?: any
   scripts?: {
-      [k: string]: string
+    [k: string]: string
   }
   config?: {
-      [k: string]: any
+    [k: string]: any
   }
   dependencies?: any
   devDependencies?: any
@@ -29,7 +29,7 @@ export interface PackageJSON {
   peerDependencies?: any
   resolutions?: any
   engines?: {
-      [k: string]: string
+    [k: string]: string
   }
   private?: boolean
   [k: string]: any
@@ -47,6 +47,7 @@ export interface Badges {
 }
 
 export interface Features {
+  exists: boolean
   finished: string[]
   pendent: string[]
 }

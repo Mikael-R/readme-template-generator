@@ -52,14 +52,16 @@ const command: GluegunCommand = {
       }
     })
 
-    const spinner = githubRepoURL && print.spin('Getting information about repository')
+    const spinner = githubRepoURL && print.spin('Getting information about repository...')
 
     const githubRepository = await githubRepoInfo.information(itemURL(githubRepoURL, 2), itemURL(githubRepoURL, 1))
 
-    if (githubRepository.api.index) {
-      spinner?.succeed('Found with success repository information in GitHub API')
+    if (githubRepository.api.index?.fork) {
+      spinner?.warn('Repository informed its a fork, use origin for newsletter information')
     } else if (!githubRepository.haveConnection) {
-      spinner?.warn('Not found repository because wi-fi connection')
+      spinner?.fail('Repository not found, verify wi-fi connection')
+    } else if (githubRepository.api.index) {
+      spinner?.succeed('Repository information found with success in GitHub API')
     } else {
       spinner?.fail('Repository not found in GitHub API')
     }
@@ -79,7 +81,10 @@ const command: GluegunCommand = {
       type: 'list',
       message: '🚧 Project status:',
       choices: ['Development', 'Production', 'Finished', 'Skip'],
-      customReturn: (value: string) => value.toLowerCase()
+      customReturn: (value: string) => {
+        if (value === 'Skip' || value === 'Finished') return ''
+        return value.toLowerCase()
+      }
     })
 
     const description: string = await question({
@@ -103,6 +108,15 @@ const command: GluegunCommand = {
     if (!packageJSON?.private) {
       badges.toSelect.push('NPM Version', 'NPM Monthly Downloads')
     }
+
+    githubRepository.api.index.homepage = await question({
+      message: '🏡 Home page URL (use empty value to skip):',
+      defaultValue: githubRepository.api.index?.homepage,
+      validate: (value: string) => {
+        if (value === '' || isWebURL(value)) return true
+        return 'Invalid URL'
+      }
+    })
 
     const herokuUrl: string = await question({
       message: '🔗 Heroku URL (use empty value to skip):',
@@ -193,6 +207,7 @@ const command: GluegunCommand = {
     }
 
     const features: Types.Features = {
+      exists: false,
       finished: [],
       pendent: []
     }
@@ -216,6 +231,8 @@ const command: GluegunCommand = {
 
       features.pendent.push(pendent)
     }
+
+    features.exists = !!features.finished.length || !!features.pendent.length
 
     const contribute: Types.Contribute = {
       tutor: {
@@ -334,7 +351,7 @@ const command: GluegunCommand = {
       }
     })
       .then(() => print.success('\nGenerated README.md file with success in current dir!'))
-      .catch((error) => print.error(error))
+      .catch(error => print.error(error))
   }
 }
 

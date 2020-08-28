@@ -1,4 +1,4 @@
-<% if (props.badges.exists('gitpod')) {%><%= `[![Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#${props.githubRepository.url})` %><% } %>
+<% if (props.badges.exists('gitpod')) {%><%= `[![Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#${props.githubRepository.url})`%><% } %>
 
 <% if (props.badges.exists('heroku')) {%><%= `[![Heroku](https://img.shields.io/badge/CI-%E2%9C%93-green.svg?logo=heroku&colorA=79589f&logoColor=white&style=flat-square)](${props.herokuUrl})` %><% } %> <% if (props.badges.exists('repl.it')) {%><%= `[![Repl.it](https://repl.it/badge/github/${props.githubRepository.author}/${props.githubRepository.name})](${props.replitUrl})` %><% } %>
 
@@ -12,22 +12,24 @@
 
 <h1 id="title" align="center">Welcome to <%= props.projectName %> 👋</h1>
 
-<% if (props.status === 'development' || props.status === 'production') {%><%- `<h4 align="center"> 🚧 ${props.projectName} in ${props.status}... 🚧</h4>` %><% } %>
+<%- props.status ? `<h4 align="center"> 🚧 ${props.projectName} in ${props.status}... 🚧</h4>` : '' %>
 
-<% if (props.images.logo) {%><%= `![Logo](${props.images.logo})`%><% } %>
+<%= props.images.logo ? `![Logo](${props.images.logo})` : ''%>
 
 <%- `> ${props.description}`%>
+
+<%= props.githubRepository.api.index.homepage ? `🏡 Home: ${props.githubRepository.api.index.homepage}` : '' %>
 
 <% if (props.images.screenshots.length) {%><%- '<details>\n<summary>Screenshots</summary>\n\n'%><% } %>
 <% for (index in props.images.screenshots) {%><%- `<img src="${props.images.screenshots[index]}" alt="screenshot${index}">\n`%><% } %>
 <% if (props.images.screenshots.length) {%><%- '</details>'%><% } %>
 
 ### 🔖 Table Of Contents
-<% if (props.about) {%><%= '\n- 📃 [About](#about)'%><% } %><%= '\n- 🤔 [How To Use](#how-to-use)'%><% if (props.technologies.length) {%><%= '\n- 🚀 [Technologies](#technologies)'%><% } %><% if (props.requirements.length) {%><%= '\n- 🌱 [Minimal Requirements](#minimal-requirements)'%><% } %><% if (props.features.finished.length || props.features.pendent.length) {%><%= '\n- 🎊 [Features](#features)'%><% } %><% if (props.features.finished.length) {%><%= '\n¨¨- 🎇 [Finished](#features-finished)'%><% } %><% if (props.features.pendent.length) {%><%= '\n¨¨- 🎇 [Pendent](#features-pendent)'%><% } %><% if (props.contribute.tutor.show) {%><%= '\n- 💡 [How To Contribute](#how-to-contribute)'%><% } %><% if (props.contribute.contributors.show) {%><%= '\n - 🤗 [Contributors](#contributors)'%><% } %><% if (props.author.exists) {%><%= '\n- 👤 [Author](#author)'%><% } %><% if (props.license.name) {%><%= '\n- 🔏 [License](#license)'%><% } %>
+<%= props.about ? '\n- 📃 [About](#about)' : '' %><%= '\n- 🤔 [How To Use](#how-to-use)' %><%= props.technologies.length ? '\n- 🚀 [Technologies](#technologies)' : '' %><%= props.requirements.length ? '\n- 🌱 [Minimal Requirements](#minimal-requirements)' : '' %><%= props.features.exists ? '\n- 🎊 [Features](#features)' : ''%><%= props.features.finished.length ? '\n¨¨- 🎇 [Finished](#features-finished)' : '' %><%= props.features.pendent.length ? '\n¨¨- 🎆 [Pendent](#features-pendent)' : '' %><%= props.contribute.tutor.show ? '\n- 💡 [How To Contribute](#how-to-contribute)' : '' %><%= props.contribute.contributors.show ? '\n - 🤗 [Contributors](#contributors)' : '' %><%= props.author.exists ? '\n- 👤 [Author](#author)' : '' %><%= props.license.name ? '\n- 🔏 [License](#license)' : '' %>
 
 ---
 
-<% if (props.about) {%><%- `<h2 id="about">📃 About</h2>\n\n${props.about}\n\n[Back To The Top](#title)\n\n---\n`%><% } %>
+<%- props.about ? `<h2 id="about">📃 About</h2>\n\n${props.about}\n\n[Back To The Top](#title)\n\n---\n` : '' %>
 
 <%- `<h2 id="how-to-use">🤔 How To Use</h2>\n\n${props.howToUse}\n\n[Back To The Top](#title)\n\n---\n`%>
 
