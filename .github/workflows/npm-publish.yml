@@ -2,7 +2,7 @@ name: NPM-Publish
 
 on:
   push:
-    branch: [ master ]
+    branches: [ master ]
 
 jobs:
   publish:
@@ -15,12 +15,6 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12
-          registry-url: https://registry.npmjs.org
-
-      - uses: actions/cache@v2
-        with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install dependencies
         run: yarn install
@@ -28,7 +22,6 @@ jobs:
       - name: Build dist files
         run: yarn dist
 
-      - name: Publish
-        run: yarn publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+      - uses: JS-DevTools/npm-publish@v1
+        with:
+          token: ${{ secrets.NPM_AUTH_TOKEN }}
