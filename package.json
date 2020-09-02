@@ -1,6 +1,6 @@
 {
   "name": "readme-template-generator",
-  "version": "0.9.2",
+  "version": "0.9.3",
   "description": "CLI to help create readme file to document your project",
   "private": false,
   "repository": {
@@ -31,7 +31,6 @@
     "dist",
     "LICENSE",
     "README.md",
-    "docs",
     "bin"
   ],
   "license": "MIT",
@@ -55,15 +54,18 @@
     "commitizen": "^4.1.2",
     "cz-conventional-changelog": "3.2.0",
     "eslint": "^7.5.0",
+    "eslint-config-prettier": "^6.11.0",
     "eslint-config-standard": "^14.1.1",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "find-file-up": "^2.0.1",
     "git-cz": "^4.7.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.13",
+    "prettier": "^2.1.1",
     "standard": "^12.0.1",
     "ts-node": "^8.4.1",
     "typescript": "^3.6.3"
