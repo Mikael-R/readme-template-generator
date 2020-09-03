@@ -12,9 +12,9 @@
 
 <h1 id="title" align="center">Welcome to <%= props.projectName %> 👋</h1>
 
-<%- props.status ? `<h4 align="center"> 🚧 ${props.projectName} in ${props.status}... 🚧</h4>` : '' %>
+<%- props.status ? `<h4 align="center">🚧 ${props.projectName} in ${props.status}... 🚧</h4>` : '' %>
 
-<%= props.images.logo ? `![Logo](${props.images.logo})` : ''%>
+<%- props.images.logo ? `<img align="center" src="${props.images.logo}" alt="logo">` : ''%>
 
 <%- `> ${props.description}`%>
 
@@ -42,10 +42,10 @@
 <% if (props.requirements.length) {%><%= '\n\n[Back To The Top](#title)\n\n---\n'%><% } %>
 
 <% if (props.features.finished.length || props.features.pendent.length) {%><%- '<h2 id="features">🎊 Features</h2>\n\n'%><% } %>
-<% if (props.features.finished.length) {%><%- '\n<h4> id="features-finished>🎇 Finished</h4>'%><% } %>
-<% for (featureFinished of props.features.finished) {%><%= `- [x] ${featureFinished}\n`%><% } %>
-<% if (props.features.pendent.length) {%><%- '\n<h4> id="features-pendent>🎆 Pendent</h4>'%><% } %>
-<% for (featurePendent of props.features.pendent) {%><%= `- [ ] ${featurePendent}\n`%><% } %>
+<% if (props.features.finished.length) {%><%- '\n<h4> id="features-finished>🎇 Finished</h4>\n'%><% } %>
+<% for (featureFinished of props.features.finished) {%><%= `\n- [x] ${featureFinished}`%><% } %>
+<% if (props.features.pendent.length) {%><%- '\n<h4> id="features-pendent>🎆 Pendent</h4>\n'%><% } %>
+<% for (featurePendent of props.features.pendent) {%><%= `\n- [ ] ${featurePendent}`%><% } %>
 <% if (props.features.finished.length || props.features.pendent.length) {%><%- '\n\n[Back To The Top](#title)\n\n---\n'%><% } %>
 
 <% if (props.contribute.tutor.show) {%><%- `<h2 id="how-to-contribute">💡 How To Contribute</h2>\n\n
