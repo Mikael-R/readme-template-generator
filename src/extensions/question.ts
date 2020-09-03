@@ -4,15 +4,31 @@ import { prompt } from 'inquirer'
 
 export interface Question {
   ({
-    type, message, defaultValue, choices, pageSize, validate, transformer, customReturn
+    type,
+    message,
+    defaultValue,
+    choices,
+    pageSize,
+    validate,
+    transformer,
+    customReturn,
   }: {
-    type?: 'input' | 'number' | 'confirm' | 'list' | 'rawlist' | 'expand'| 'checkbox' | 'password' | 'editor',
-    message: string,
-    defaultValue?: any,
-    choices?: string[] | Function,
-    pageSize?: number,
-    validate?: Function,
-    transformer?: Function,
+    type?:
+      | 'input'
+      | 'number'
+      | 'confirm'
+      | 'list'
+      | 'rawlist'
+      | 'expand'
+      | 'checkbox'
+      | 'password'
+      | 'editor'
+    message: string
+    defaultValue?: any
+    choices?: string[] | Function
+    pageSize?: number
+    validate?: Function
+    transformer?: Function
     customReturn?: Function
   }): any
 }
@@ -26,7 +42,7 @@ export default (toolbox: ExtendedGluegunToolbox) => {
     pageSize = 5,
     validate,
     transformer,
-    customReturn = (value) => value
+    customReturn = value => value,
   }) => {
     const { value } = await prompt({
       type,
@@ -36,7 +52,7 @@ export default (toolbox: ExtendedGluegunToolbox) => {
       choices,
       pageSize,
       validate,
-      transformer: transformer || customReturn
+      transformer: transformer || customReturn,
     })
 
     let returning = customReturn(value) || defaultValue

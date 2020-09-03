@@ -23,19 +23,19 @@ export interface GithubRepoInfo {
 export default (toolbox: ExtendedGluegunToolbox) => {
   const {
     filesystem: { read, resolve },
-    http: { create }
+    http: { create },
   } = toolbox
 
   const pattern = /(https|http):\/\/github\.com\/([A-z0-9]|((?<!\/)-(?!(-|\/))))+\/(\w|-|\.)+/gm
 
   const api = create({
     baseURL: 'https://api.github.com',
-    headers: { Accept: 'application/vnd.github.v4+json' }
+    headers: { Accept: 'application/vnd.github.v4+json' },
   })
 
   const githubRepoInfo: GithubRepoInfo = {
     url: {
-      format: (url) => {
+      format: url => {
         const lastGitInvalidWord = [false, false]
 
         const formattedURL = url
@@ -61,7 +61,7 @@ export default (toolbox: ExtendedGluegunToolbox) => {
 
         return formattedURL
       },
-      test: (url) => !!url?.match(pattern)?.length,
+      test: url => !!url?.match(pattern)?.length,
       inCWD: () => {
         const dir = resolve('.git', 'logs', 'refs', 'remotes', 'origin', 'HEAD')
         const gitFile = read(dir)
@@ -69,7 +69,7 @@ export default (toolbox: ExtendedGluegunToolbox) => {
         const url = gitFile?.match(pattern)[0] || ''
 
         return url
-      }
+      },
     },
     information: async (author, name) => {
       const info: Info = {
@@ -79,13 +79,15 @@ export default (toolbox: ExtendedGluegunToolbox) => {
         author: null,
         api: {
           index: null,
-          contributors: null
-        }
+          contributors: null,
+        },
       }
 
-      if ((await api.get('repos') as any)?.data?.message) info.haveConnection = true
+      if (((await api.get('repos')) as any)?.data?.message)
+        info.haveConnection = true
 
-      if (!githubRepoInfo.url.test(`https://github.com/${author}/${name}`)) return info
+      if (!githubRepoInfo.url.test(`https://github.com/${author}/${name}`))
+        return info
 
       info.url = `https://github.com/${author}/${name}`
       info.name = name
@@ -97,12 +99,14 @@ export default (toolbox: ExtendedGluegunToolbox) => {
       })()
 
       info.api.contributors = await (async () => {
-        const { ok, data } = await api.get(`repos/${info.author}/${info.name}/contributors`)
+        const { ok, data } = await api.get(
+          `repos/${info.author}/${info.name}/contributors`
+        )
         return ok ? data : null
       })()
 
       return info
-    }
+    },
   }
 
   toolbox.githubRepoInfo = githubRepoInfo

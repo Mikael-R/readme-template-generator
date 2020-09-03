@@ -3,17 +3,28 @@ import ExtendedGluegunToolbox from 'src/interfaces/extended-gluegun-toolbox'
 import replaceAll from '../utils/replaceAll'
 
 export interface GenerateFile {
-  (
-    { template, target, props }
-    :{ template: string, target: string, props: {}, trim?: boolean }
-  ): Promise<void>
+  ({
+    template,
+    target,
+    props,
+  }: {
+    template: string
+    target: string
+    props: {}
+    trim?: boolean
+  }): Promise<void>
 }
 
 export default (toolbox: ExtendedGluegunToolbox) => {
-  const generateFile: GenerateFile = async ({ template, target, props, trim = true }) => {
+  const generateFile: GenerateFile = async ({
+    template,
+    target,
+    props,
+    trim = true,
+  }) => {
     const {
       template: { generate },
-      filesystem: { read, write }
+      filesystem: { read, write },
     } = toolbox
 
     const trimFile = () => {

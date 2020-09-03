@@ -7,7 +7,7 @@ export interface ItemURL {
 export default (toolbox: ExtendedGluegunToolbox) => {
   const itemURL: ItemURL = (url, index) => {
     const {
-      filesystem: { cwd }
+      filesystem: { cwd },
     } = toolbox
 
     if (url === '.') url = cwd()

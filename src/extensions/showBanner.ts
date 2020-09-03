@@ -16,20 +16,20 @@ export interface ShowBanner {
     gradient,
     independentGradient,
     transitionGradient,
-    env
+    env,
   }: {
     text: string
     font?: string
     align?: string
     colors?: string[]
-    background?: string,
-    letterSpacing?: number,
-    lineHeight?: number,
-    space?: boolean,
-    maxLength?: string,
-    gradient?: boolean,
-    independentGradient?: boolean,
-    transitionGradient?: boolean,
+    background?: string
+    letterSpacing?: number
+    lineHeight?: number
+    space?: boolean
+    maxLength?: string
+    gradient?: boolean
+    independentGradient?: boolean
+    transitionGradient?: boolean
     env?: string
   }): void
 }
@@ -48,7 +48,7 @@ export default (toolbox: ExtendedGluegunToolbox) => {
     gradient = false,
     independentGradient = false,
     transitionGradient = false,
-    env = 'node'
+    env = 'node',
   }): void => {
     say(text, {
       font, // define the font face
@@ -62,7 +62,7 @@ export default (toolbox: ExtendedGluegunToolbox) => {
       gradient, // define your two gradient colors
       independentGradient, // define if you want to recalculate the gradient for each new line
       transitionGradient, // define if this is a transition between colors directly
-      env // define the environment CFonts is being executed in
+      env, // define the environment CFonts is being executed in
     })
   }
 

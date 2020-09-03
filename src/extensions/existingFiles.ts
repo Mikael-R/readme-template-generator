@@ -6,13 +6,15 @@ export interface ExistingFiles {
 
 export default (toolbox: ExtendedGluegunToolbox) => {
   const {
-    filesystem: { list }
+    filesystem: { list },
   } = toolbox
 
   const existingFiles: ExistingFiles = (file, directory = '.') => {
     const directoryListed = list(directory) || []
 
-    const existingFiles = directoryListed.filter(f => f.toLowerCase() === file.toLowerCase())
+    const existingFiles = directoryListed.filter(
+      f => f.toLowerCase() === file.toLowerCase()
+    )
 
     return existingFiles
   }

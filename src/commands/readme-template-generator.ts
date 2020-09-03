@@ -6,7 +6,7 @@ import * as Types from 'src/types'
 const command: GluegunCommand = {
   name: 'readme-template-generator',
   description: 'Generate README file in current work directory',
-  async run(toolbox: ExtendedGluegunToolbox) {
+  run: async (toolbox: ExtendedGluegunToolbox) => {
     const {
       existingFiles,
       itemURL,
@@ -17,6 +17,7 @@ const command: GluegunCommand = {
       githubRepoInfo,
       filesystem: { read },
       print,
+      parameters: { options },
     } = toolbox
 
     showBanner({ text: 'Readme|Template Generator' })
@@ -400,7 +401,7 @@ const command: GluegunCommand = {
 
     generateFile({
       template: 'README.md.ejs',
-      target: 'README.md',
+      target: options.pathTarget || options.p || 'README.md',
       props: {
         projectName,
         badges,
