@@ -39,7 +39,7 @@ npm i -g readme-template-generator
 ```
 or
 ```sh
-yarn add -g readme-template-generator
+yarn global add readme-template-generator
 ```
 
 #### 🌐 Online
