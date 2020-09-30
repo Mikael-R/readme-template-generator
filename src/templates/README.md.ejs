@@ -42,9 +42,9 @@
 <% if (props.requirements.length) {%><%= '\n\n[Back To The Top](#title)\n\n---\n'%><% } %>
 
 <% if (props.features.finished.length || props.features.pendent.length) {%><%- '<h2 id="features">🎊 Features</h2>\n\n'%><% } %>
-<% if (props.features.finished.length) {%><%- '\n<h4> id="features-finished>🎇 Finished</h4>\n'%><% } %>
+<% if (props.features.finished.length) {%><%- '\n<h4 id="features-finished">🎇 Finished</h4>\n'%><% } %>
 <% for (featureFinished of props.features.finished) {%><%= `\n- [x] ${featureFinished}`%><% } %>
-<% if (props.features.pendent.length) {%><%- '\n<h4> id="features-pendent>🎆 Pendent</h4>\n'%><% } %>
+<% if (props.features.pendent.length) {%><%- '\n<h4 id="features-pendent">🎆 Pendent</h4>\n'%><% } %>
 <% for (featurePendent of props.features.pendent) {%><%= `\n- [ ] ${featurePendent}`%><% } %>
 <% if (props.features.finished.length || props.features.pendent.length) {%><%- '\n\n[Back To The Top](#title)\n\n---\n'%><% } %>
 
