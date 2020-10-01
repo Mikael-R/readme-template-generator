@@ -8,12 +8,13 @@ import { Question } from 'src/extensions/question'
 import { ShowBanner } from 'src/extensions/showBanner'
 import { GithubRepoInfo } from 'src/extensions/githubRepoInfo'
 
-export default interface ExtendedGluegunToolbox extends IHelperExtendedGluegunToolbox {
-  existingFiles: ExistingFiles,
-  generateFile: GenerateFile,
-  itemURL: ItemURL,
-  isWebURL: IsWebURL,
-  question: Question,
-  showBanner: ShowBanner,
+export default interface ExtendedGluegunToolbox
+  extends IHelperExtendedGluegunToolbox {
+  existingFiles: ExistingFiles
+  generateFile: GenerateFile
+  itemURL: ItemURL
+  isWebURL: IsWebURL
+  question: Question
+  showBanner: ShowBanner
   githubRepoInfo: GithubRepoInfo
 }
