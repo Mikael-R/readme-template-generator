@@ -1,16 +1,17 @@
-name: Lint Commit
+name: Commitlint
 
-on:
-  pull_request:
+on: [ push, pull_request ]
 
 jobs:
   commitlint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - uses: wagoid/commitlint-github-action@v2
+      - name: Check commit message
+        uses: wagoid/commitlint-github-action@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           configFile: .commitlintrc.json
