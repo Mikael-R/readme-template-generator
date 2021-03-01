@@ -3,9 +3,6 @@ import { GluegunCommand } from 'gluegun'
 import ExtendedGluegunToolbox from 'src/interfaces/extended-gluegun-toolbox'
 import * as Types from 'src/types'
 
-// @ts-ignore
-import packageJSON from '../../package.json'
-
 const command: GluegunCommand = {
   name: 'readme-template-generator',
   description: 'Generate README file in current work directory',
@@ -40,6 +37,10 @@ const command: GluegunCommand = {
 
       if (!overwrite) process.exit(0)
     }
+
+    const packageJSON = JSON.parse(
+      read(`${process.cwd()}/package.json`) || '{}'
+    )
 
     const githubRepoURL: string = await question({
       message: '🎥 Repository URL in GitHub (recommend not skip):',
@@ -92,7 +93,7 @@ const command: GluegunCommand = {
       message: '👋 Project name:',
       defaultValue:
         githubRepository.name ||
-        itemURL(packageJSON?.repository.url, 1)?.split('.')[0] ||
+        itemURL(packageJSON?.repository?.url, 1)?.split('.')[0] ||
         packageJSON?.name ||
         itemURL('.', 1),
     })
