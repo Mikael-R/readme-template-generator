@@ -30,7 +30,8 @@ const command: GluegunCommand = {
     if (existingFiles('README.md').indexOf('README.md') !== -1) {
       const overwrite: boolean = await question({
         type: 'list',
-        message: '📢 Already exists a README.md file, overwrite it?',
+        prefix: '📢',
+        message: 'Already exists a README.md file, overwrite it?',
         choices: ['Yes', 'No'],
         customReturn: (value: string) => value === 'Yes',
       })
@@ -43,9 +44,10 @@ const command: GluegunCommand = {
     )
 
     const githubRepoURL: string = await question({
-      message: '🎥 Repository URL in GitHub (recommend not skip):',
+      prefix: '🎥',
+      message: 'Repository URL in GitHub (recommend not skip):',
       defaultValue:
-        githubRepoInfo.url.format(githubRepoInfo.url.inCWD()) ||
+        githubRepoInfo.url.inCWD() ||
         githubRepoInfo.url.format(packageJSON?.repository.url),
       validate: (value: string) => {
         if (
@@ -53,6 +55,7 @@ const command: GluegunCommand = {
           githubRepoInfo.url.test(`https://github.com/${value}`)
         )
           return true
+
         return 'Invalid GitHub repository URL'
       },
       customReturn: (value: string) => {
@@ -90,7 +93,8 @@ const command: GluegunCommand = {
     }
 
     const projectName: string = await question({
-      message: '👋 Project name:',
+      prefix: '👋',
+      message: 'Project name:',
       defaultValue:
         githubRepository.name ||
         itemURL(packageJSON?.repository?.url, 1)?.split('.')[0] ||
@@ -98,22 +102,21 @@ const command: GluegunCommand = {
         itemURL('.', 1),
     })
 
-    const status:
-      | 'development'
-      | 'production'
-      | 'finished'
-      | 'skip' = await question({
-      type: 'list',
-      message: '🚧 Project status:',
-      choices: ['Development', 'Production', 'Finished', 'Skip'],
-      customReturn: (value: string) => {
-        if (value === 'Skip' || value === 'Finished') return ''
-        return value.toLowerCase()
-      },
-    })
+    const status: 'development' | 'production' | 'finished' | 'skip' =
+      await question({
+        type: 'list',
+        prefix: '🚧',
+        message: 'Project status:',
+        choices: ['Development', 'Production', 'Finished', 'Skip'],
+        customReturn: (value: string) => {
+          if (value === 'Skip' || value === 'Finished') return ''
+          return value.toLowerCase()
+        },
+      })
 
     const description: string = await question({
-      message: '📝 Write a short description about project:',
+      prefix: '📝',
+      message: 'Write a short description about project:',
       defaultValue:
         githubRepository.api.index?.description || packageJSON?.description,
       validate: (value: string) =>
@@ -137,7 +140,8 @@ const command: GluegunCommand = {
     }
 
     githubRepository.api.index.homepage = await question({
-      message: '🏡 Home page URL (use empty value to skip):',
+      prefix: '🏡',
+      message: 'Home page URL (use empty value to skip):',
       defaultValue: githubRepository.api.index?.homepage,
       validate: (value: string) => {
         if (value === '' || isWebURL(value)) return true
@@ -146,7 +150,8 @@ const command: GluegunCommand = {
     })
 
     const herokuUrl: string = await question({
-      message: '🔗 Heroku URL (use empty value to skip):',
+      prefix: '🔗',
+      message: 'Heroku URL (use empty value to skip):',
       validate: (value: string) => {
         if (value === '') return true
         if (isWebURL(value)) {
@@ -158,7 +163,8 @@ const command: GluegunCommand = {
     })
 
     const replitUrl: string = await question({
-      message: '🔗 Repl.it URL (use empty value to skip):',
+      prefix: '🔗',
+      message: 'Repl.it URL (use empty value to skip):',
       validate: (value: string) => {
         if (value === '') return true
         if (isWebURL(`https://${value}.repl.run`)) {
@@ -172,7 +178,8 @@ const command: GluegunCommand = {
     })
 
     const logo: string = await question({
-      message: '🎴 Logo image URL or path (use empty value to skip):',
+      prefix: '🎴',
+      message: 'Logo image URL or path (use empty value to skip):',
       validate: (value: string) => {
         if (
           value === '' ||
@@ -192,8 +199,9 @@ const command: GluegunCommand = {
 
     while (true) {
       const screenshot: string = await question({
+        prefix: '🌈',
         message:
-          '🌈 GIF/image URL or path for screenshots (use empty value to skip):',
+          'GIF/image URL or path for screenshots (use empty value to skip):',
         validate: (value: string) => {
           if (
             value === '' ||
@@ -215,12 +223,14 @@ const command: GluegunCommand = {
 
     const about: string = await question({
       type: 'editor',
-      message: '📃 Write about project (use empty value to skip):',
+      prefix: '📃',
+      message: 'Write about project (use empty value to skip):',
     })
 
     const howToUse: string = await question({
       type: 'editor',
-      message: '🤔 Inform how to use project:',
+      prefix: '🤔',
+      message: 'Inform how to use project:',
       defaultValue: '#### 💻 Desktop\n\n\n\n#### 🌐 Online',
       validate: (value: string) =>
         value === '' ? 'Information how to use its necessary' : true,
@@ -230,7 +240,8 @@ const command: GluegunCommand = {
 
     while (true) {
       const tech: string = await question({
-        message: '🚀 List project technologies (use empty value to skip):',
+        prefix: '🚀',
+        message: 'List project technologies (use empty value to skip):',
       })
 
       if (!tech) break
@@ -242,8 +253,9 @@ const command: GluegunCommand = {
 
     while (true) {
       const requirement: string = await question({
+        prefix: '🌱',
         message:
-          '🌱 List a minimal requirements to run project (use empty value to skip):',
+          'List a minimal requirements to run project (use empty value to skip):',
       })
 
       if (!requirement) break
@@ -259,7 +271,8 @@ const command: GluegunCommand = {
 
     while (true) {
       const finished: string = await question({
-        message: '🎇 List project features finished (use empty value to skip):',
+        prefix: '🎇',
+        message: 'List project features finished (use empty value to skip):',
       })
 
       if (!finished) break
@@ -269,7 +282,8 @@ const command: GluegunCommand = {
 
     while (true) {
       const pendent: string = await question({
-        message: '🎆 List project features pendents (use empty value to skip):',
+        prefix: '🎆',
+        message: 'List project features pendents (use empty value to skip):',
       })
 
       if (!pendent) break
@@ -293,7 +307,8 @@ const command: GluegunCommand = {
       githubRepository.url &&
       (await question({
         type: 'list',
-        message: '💡 Add tutor how to contribute for this project?',
+        prefix: '💡',
+        message: 'Add tutor how to contribute for this project?',
         choices: ['Yes', 'No'],
         customReturn: (value: string) => value === 'Yes',
       }))
@@ -307,7 +322,8 @@ const command: GluegunCommand = {
       contribute.contributors.users.length &&
       (await question({
         type: 'list',
-        message: '🤗 Add contributors profile?',
+        prefix: '🤗',
+        message: 'Add contributors profile?',
         choices: ['Yes', 'No'],
         customReturn: (value: string) => value === 'Yes',
       }))
@@ -322,21 +338,24 @@ const command: GluegunCommand = {
     }
 
     author.name = await question({
-      message: `🤓 Author full name${
+      prefix: '🤓',
+      message: `Author full name${
         !author.name ? ' (use empty value to skip)' : ''
       }:`,
       defaultValue: author.name,
     })
 
     author.github = await question({
-      message: `👤 Author GitHub username${
+      prefix: '👤',
+      message: `Author GitHub username${
         !author.github ? ' (use empty value to skip)' : ''
       }:`,
       defaultValue: author.github,
     })
 
     author.twitter = await question({
-      message: '👤 Author twitter username (use empty value to skip):',
+      prefix: '👤',
+      message: 'Author twitter username (use empty value to skip):',
       validate: (value: string) => {
         if (value !== '') badges.toSelect.push('Author Twitter')
         return true
@@ -344,11 +363,13 @@ const command: GluegunCommand = {
     })
 
     author.linkedin = await question({
-      message: '👤 Author LinkedIn username (use empty value to skip):',
+      prefix: '👤',
+      message: 'Author LinkedIn username (use empty value to skip):',
     })
 
     author.website = await question({
-      message: '👤 Author website (use empty value to skip):',
+      prefix: '👤',
+      message: 'Author website (use empty value to skip):',
       validate: (value: string) => {
         if (value === '' || isWebURL(value)) return true
         return 'Invalid URL'
@@ -366,7 +387,8 @@ const command: GluegunCommand = {
 
     badges.selected = await question({
       type: 'checkbox',
-      message: '📛 Select badges for use:',
+      prefix: '📛',
+      message: 'Select badges for use:',
       choices: badges.toSelect,
       customReturn: (
         value: string[] // convert to lowercase and remove spaces
@@ -386,14 +408,16 @@ const command: GluegunCommand = {
     }
 
     license.name = await question({
-      message: `🔏 Project license name${
+      prefix: '🔏',
+      message: `Project license name${
         !license.name ? ' (use empty value to skip)' : ''
       }:`,
       defaultValue: license.name,
     })
 
     license.url = await question({
-      message: `🔏 Project license URL${
+      prefix: '🔏',
+      message: `Project license URL${
         !license.name ? ' (use empty value to skip)' : ''
       }:`,
       defaultValue: license.url,

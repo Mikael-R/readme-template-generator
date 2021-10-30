@@ -13,28 +13,21 @@ export interface Question {
     transformer,
     customReturn,
   }: {
-    type?:
-      | 'input'
-      | 'number'
-      | 'confirm'
-      | 'list'
-      | 'rawlist'
-      | 'expand'
-      | 'checkbox'
-      | 'password'
-      | 'editor'
+    prefix?: string
+    type?: any
     message: string
     defaultValue?: any
     choices?: string[] | Function
     pageSize?: number
-    validate?: Function
-    transformer?: Function
+    validate?: any
+    transformer?: any
     customReturn?: Function
   }): any
 }
 
 export default (toolbox: ExtendedGluegunToolbox) => {
   const question: Question = async ({
+    prefix = '',
     type = 'input',
     message,
     defaultValue,
@@ -45,6 +38,7 @@ export default (toolbox: ExtendedGluegunToolbox) => {
     customReturn = value => value,
   }) => {
     const { value } = await prompt({
+      prefix,
       type,
       name: 'value',
       message,
