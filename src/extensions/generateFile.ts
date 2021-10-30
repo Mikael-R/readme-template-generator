@@ -1,5 +1,7 @@
 import ExtendedGluegunToolbox from 'src/interfaces/extended-gluegun-toolbox'
 
+import { replaceAll } from 'src/utils'
+
 export interface GenerateFile {
   ({
     template,
@@ -9,20 +11,21 @@ export interface GenerateFile {
     template: string
     target: string
     props: {}
+
     trim?: boolean
   }): Promise<void>
 }
 
 export default (toolbox: ExtendedGluegunToolbox) => {
-  const generateFile: GenerateFile = async ({
+  toolbox.generateFile = async ({
     template,
     target,
     props,
-    trim = true,
+    trim = true
   }) => {
     const {
       template: { generate },
-      filesystem: { read, write },
+      filesystem: { read, write }
     } = toolbox
 
     const trimFile = () => {
@@ -44,17 +47,17 @@ export default (toolbox: ExtendedGluegunToolbox) => {
       fileText += '\n'
 
       // replace temporary character to normal spaces
-      fileText = fileText.split('¨').join(' ')
+      fileText = replaceAll(fileText, '¨', ' ')
 
       write(target, fileText)
     }
 
     // replace spaces to temporary characters
     if (trim) {
-      const propsContentsInArray: [string, any][] = Object.entries(props)
+      const propsContentsInArray = Object.entries(props)
 
       for (const content of propsContentsInArray) {
-        props[content[0]] = content[1].split(' ').join('¨')
+        props[content[0]] = replaceAll(content[1], ' ', '¨')
       }
     }
 
@@ -62,6 +65,4 @@ export default (toolbox: ExtendedGluegunToolbox) => {
 
     if (trim) trimFile()
   }
-
-  toolbox.generateFile = generateFile
 }
