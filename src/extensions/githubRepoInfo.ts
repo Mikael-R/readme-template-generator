@@ -68,7 +68,7 @@ export default (toolbox: ExtendedGluegunToolbox) => {
 
         const url = gitFile?.match(pattern)[0] || ''
 
-        return url
+        return githubRepoInfo.url.format(url)
       },
     },
     information: async (author, name) => {
