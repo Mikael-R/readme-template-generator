@@ -24,6 +24,7 @@
   },
   "scripts": {
     "format": "eslint src --ext ts",
+    "dev": "node bin/readme-template-generator",
     "copy:template": "cp src/templates/README.md.ejs dist/templates/README.md.ejs",
     "delete-old-dist": "[ -d \"./dist\" ] && rm -rf dist",
     "dist": "npm run delete-old-dist; sucrase src -d dist --transforms typescript,imports && npm run copy:template"

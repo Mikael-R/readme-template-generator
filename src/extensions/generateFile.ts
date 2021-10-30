@@ -1,7 +1,5 @@
 import ExtendedGluegunToolbox from 'src/interfaces/extended-gluegun-toolbox'
 
-import replaceAll from '../utils/replaceAll'
-
 export interface GenerateFile {
   ({
     template,
@@ -46,7 +44,7 @@ export default (toolbox: ExtendedGluegunToolbox) => {
       fileText += '\n'
 
       // replace temporary character to normal spaces
-      fileText = replaceAll(fileText, '¨', ' ')
+      fileText = fileText.split('¨').join(' ')
 
       write(target, fileText)
     }
@@ -56,7 +54,7 @@ export default (toolbox: ExtendedGluegunToolbox) => {
       const propsContentsInArray: [string, any][] = Object.entries(props)
 
       for (const content of propsContentsInArray) {
-        props[content[0]] = replaceAll(content[1], ' ', '¨')
+        props[content[0]] = content[1].split(' ').join('¨')
       }
     }
 
