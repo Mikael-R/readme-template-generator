@@ -48,7 +48,7 @@ const command: GluegunCommand = {
       message: 'Repository URL in GitHub (recommend not skip):',
       defaultValue:
         githubRepoInfo.url.inCWD() ||
-        githubRepoInfo.url.format(packageJSON?.repository.url),
+        githubRepoInfo.url.format(packageJSON?.repository?.url),
       validate: (value: string) => {
         if (
           value === '' ||
@@ -123,7 +123,7 @@ const command: GluegunCommand = {
         value === '' ? 'Description its necessary' : true,
     })
 
-    if (githubRepository.url) {
+    if (githubRepository?.url) {
       badges.toSelect.push(
         'Language Most Used',
         'Implementations',

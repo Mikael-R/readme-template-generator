@@ -26,7 +26,8 @@ export default (toolbox: ExtendedGluegunToolbox) => {
     http: { create },
   } = toolbox
 
-  const pattern = /(https|http):\/\/github\.com\/([A-z0-9]|((?<!\/)-(?!(-|\/))))+\/(\w|-|\.)+/gm
+  const pattern =
+    /(https|http):\/\/github\.com\/([A-z0-9]|((?<!\/)-(?!(-|\/))))+\/(\w|-|\.)+/gm
 
   const api = create({
     baseURL: 'https://api.github.com',
@@ -66,7 +67,7 @@ export default (toolbox: ExtendedGluegunToolbox) => {
         const dir = resolve('.git', 'logs', 'refs', 'remotes', 'origin', 'HEAD')
         const gitFile = read(dir)
 
-        const url = gitFile?.match(pattern)[0] || ''
+        const url = gitFile?.match(pattern)?.shift() || ''
 
         return githubRepoInfo.url.format(url)
       },
@@ -78,7 +79,9 @@ export default (toolbox: ExtendedGluegunToolbox) => {
         name: null,
         author: null,
         api: {
-          index: null,
+          index: {
+            license: {},
+          },
           contributors: null,
         },
       }

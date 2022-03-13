@@ -11,6 +11,7 @@
 
 <% if (props.badges.exists('authortwitter')) {%><%= `[![Author Twitter](https://img.shields.io/twitter/follow/${props.author.twitter}.svg?style=social)](https://twitter.com/${props.author.twitter})`%><% } %>
 <% } %>
+
 <h1 id="title" align="center">Welcome to <%= props.projectName %> 👋</h1>
 
 <%- props.status ? `<h4 align="center">🚧 ${props.projectName} in ${props.status}... 🚧</h4>` : '' %>
@@ -19,17 +20,17 @@
 
 <%- `> ${props.description}`%>
 
-<% if (props.githubRepository.api?.index?.homepage) { %>
-    🏡 Home: <%= props.githubRepository.api.index.homepage %>
-<% } %>
+<%- props.githubRepository.api?.index?.homepage ? `🏡 Home: ${props.githubRepository.api.index.homepage}` : '' %>
 
 <% if (props.images.screenshots?.length) { %>
+
 <details><summary>Screenshots</summary>
 <% for (index in props.images.screenshots) {%><%- `<img src="${props.images.screenshots[index]}" alt="screenshot${index}">\n`%><% } %>
 </details>
 <% } %>
 
 ### 🔖 Table Of Contents
+
 <%= props.about ? '\n- 📃 [About](#about)' : '' %><%= '\n- 🤔 [How To Use](#how-to-use)' %><%= props.technologies?.length ? '\n- 🚀 [Technologies](#technologies)' : '' %><%= props.requirements?.length ? '\n- 🌱 [Minimal Requirements](#minimal-requirements)' : '' %><%= props.features.exists ? '\n- 🎊 [Features](#features)' : ''%><%= props.features.finished?.length ? '\n¨¨- 🎇 [Finished](#features-finished)' : '' %><%= props.features.pendent?.length ? '\n¨¨- 🎆 [Pendent](#features-pendent)' : '' %><%= props.contribute.tutor?.show ? '\n- 💡 [How To Contribute](#how-to-contribute)' : '' %><%= props.contribute.contributors?.show ? '\n - 🤗 [Contributors](#contributors)' : '' %><%= props.author.exists ? '\n- 👤 [Author](#author)' : '' %><%= props.license.name ? '\n- 🔏 [License](#license)' : '' %>
 
 ---
@@ -54,6 +55,7 @@
 <% if (props.features.finished?.length || props.features.pendent?.length) {%><%- '\n\n[Back To The Top](#title)\n\n---\n'%><% } %>
 
 <% if (props.contribute.tutor?.show) {%><%- `<h2 id="how-to-contribute">💡 How To Contribute</h2>\n\n
+
 - Make a fork of this repository
 - Clone to you machine and entry on respective paste
 - Create a branch with your resource: \`git checkout -b my-feature\`
@@ -70,6 +72,7 @@
 \n\n[Back To The Top](#title)\n\n---`%><% } %>
 
 <% if (props.contribute.contributors?.show) { %>
+
 <h2 id="contributors">🤗 Contributors</h2>
 <p>
 <% for (contributor of props.contribute.contributors.users) {%>
@@ -87,8 +90,7 @@
 <% if (props.author.linkedin) {%><%= `- LinkedIn: [@${props.author.linkedin}](https://linkedin.com/in/${props.author.linkedin})`%><% } %>
 <% if (props.author.exists) {%><%= '\n\n[Back To The Top](#title)\n\n---\n'%><% } %>
 
-<% if (props.license.name) {%><%- `<h2 id="license">🔏 License</h2>\n\n
-${props.author.name && props.author.github && `Copyright © ${new Date().getFullYear()} [${props.author.name}](https://github.com/${props.author.github})\n\n`}
+<% if (props.license.name) {%><%- `<h2 id="license">🔏 License</h2>\n\n ${props.author.name && props.author.github && `Copyright © ${new Date().getFullYear()} [${props.author.name}](https://github.com/${props.author.github})\n\n`}
 This project is licensed by [${props.license.name}](${props.license.url}).\n\n[Back To The Top](#title)\n\n---\n`%><% } %>
 
 _This README was generated with 💟 by [readme-template-generator](https://github.com/Mikael-R/readme-template-generator)_
