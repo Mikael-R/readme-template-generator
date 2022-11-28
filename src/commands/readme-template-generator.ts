@@ -397,11 +397,11 @@ const command: GluegunCommand = {
 
     const license: Types.License = {
       name:
-        githubRepository.api.index?.license.name ||
+        githubRepository.api.index?.license?.name ||
         read('LICENSE')?.split('\n')[0]?.trim() ||
         packageJSON?.license,
       url:
-        githubRepository.api.index?.license.url ||
+        githubRepository.api.index?.license?.url ||
         (githubRepository.url &&
           read('LICENSE') &&
           `${githubRepository.url}/blob/master/LICENSE`),
