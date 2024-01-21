@@ -1,6 +1,6 @@
 import ExtendedGluegunToolbox from 'src/interfaces/extended-gluegun-toolbox'
 
-import { replaceAll } from 'src/utils'
+import { replaceAll } from '../utils'
 
 export interface GenerateFile {
   ({
@@ -17,15 +17,10 @@ export interface GenerateFile {
 }
 
 export default (toolbox: ExtendedGluegunToolbox) => {
-  toolbox.generateFile = async ({
-    template,
-    target,
-    props,
-    trim = true
-  }) => {
+  toolbox.generateFile = async ({ template, target, props, trim = true }) => {
     const {
       template: { generate },
-      filesystem: { read, write }
+      filesystem: { read, write },
     } = toolbox
 
     const trimFile = () => {
