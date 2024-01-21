@@ -23,7 +23,7 @@ const command: GluegunCommand = {
     showBanner({ text: 'Readme|Template Generator' })
 
     print.warning(
-      'Project under development, this is a beta version!\n' +
+      'Project under development, if you see any bug, please report!\n' +
         'Contribute: https://github.com/Mikael-R/readme-template-generator\n'
     )
 

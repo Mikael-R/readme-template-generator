@@ -1,6 +1,6 @@
 {
   "name": "readme-template-generator",
-  "version": "0.9.11",
+  "version": "0.9.12",
   "description": "CLI to help create readme file to document your project",
   "private": false,
   "repository": {
@@ -14,7 +14,7 @@
     "readme-template",
     "readme-template-generator"
   ],
-  "author": "Mikael Rolim de Aquino <mikarg9@gmail.com>",
+  "author": "Mikael Aquino <mikarg9@gmail.com>",
   "bugs": {
     "url": "https://github.com/Mikael-R/readme-template-generator/issues"
   },
@@ -39,7 +39,7 @@
   "license": "MIT",
   "dependencies": {
     "cfonts": "^2.8.5",
-    "gluegun": "latest",
+    "gluegun": "^5.1.6",
     "inquirer": "^7.3.3",
     "yargs": "^15.4.1"
   },

@@ -98,14 +98,14 @@ export default (toolbox: ExtendedGluegunToolbox) => {
 
       info.api.index = await (async () => {
         const { ok, data } = await api.get(`repos/${info.author}/${info.name}`)
-        return ok ? data : null
+        return ok ? data : {}
       })()
 
       info.api.contributors = await (async () => {
         const { ok, data } = await api.get(
           `repos/${info.author}/${info.name}/contributors`
         )
-        return ok ? data : null
+        return ok ? data : []
       })()
 
       return info
