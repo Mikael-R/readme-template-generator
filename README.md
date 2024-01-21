@@ -124,11 +124,11 @@ yarn dlx readme-template-generator
 
 <h2 id="author">👤 Author</h2>
 
-🤓 **Mikael Rolim de Aquino <mikarg9@gmail.com>**
+🤓 **Mikael Aquino <mikarg9@gmail.com>**
 
 - Twitter: [@mikaelr16](https://twitter.com/mikaelr16)
-- Github: [@Mikael-R](https://github.com/Mikael-R)
-- LinkedIn: [@mikael-rolim-522aa21b1](https://linkedin.com/in/mikael-rolim-522aa21b1)
+- Github: [@Mikael-R](https://github.com/mikael-r)
+- LinkedIn: [@Mikael-R](https://linkedin.com/in/mikael-r)
 
 [Back To The Top](#title)
 
